@@ -4,7 +4,7 @@ var connection = mysql.createConnection({
     host : 'localhost',
     user : 'root',
     password : '',
-    database : 'pipesocontrol_db'
+    database : 'mesacontrol_db'
 });
 
 module.exports = connection;

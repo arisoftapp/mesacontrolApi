@@ -19,6 +19,7 @@ module.exports = function (app) {
 
     app.get('/orden/:id_orden', (req, res) => {
         var id_orden = req.params.id_orden;
+        //console.log(req.params);
         orden.getOrden(id_orden, (err, data) => {
             if (err) {
                 res.json({
@@ -36,35 +37,32 @@ module.exports = function (app) {
 
     app.post('/orden', (req, res) => {
         const ordenData = {
-            id_orden : req.body.id_orden,
-            nombre : req.body.nombre,
-            ap_paterno : req.body.ap_paterno,
-            ap_materno : req.body.ap_materno,
-            fecha_nac : req.body.fecha_nac,
-            RFC : req.body.RFC,
-            cedula_prof : req.body.cedula_prof,
-            universidad : req.body.universidad,
-            especialidad_1 : req.body.especialidad_1,
-            especialidad_2 : req.body.especialidad_2,
-            tel_fijo : req.body.tel_fijo,
-            tel_cel : req.body.tel_cel,
-            tel_adicional : req.body.tel_adicional,
-            email : req.body.email,
-            id_consultorio : req.body.id_consultorio,
-            calle : req.body.calle,
-            no_ext : req.body.no_ext,
-            no_int : req.body.no_int,
-            id_estado : req.body.estado_id,
-            id_municipio : req.body.municipio_id,
-            ciudad : req.body.ciudad,
-            colonia : req.body.colonia,
-            url_receta : req.body.url_receta,
-            url_solic_analisis : req.body.url_solic_analisis,
-            url_constacia : req.body.url_constacia,
-            url_cert_med : req.body.url_cert_med,
-            url_fact : req.body.url_fact,
-            certificado : req.body.certificado,
-            url_sello : req.body.url_sello
+            expediente : req.body.expediente,
+            descripcion  : req.body.descripcion,
+            id_servicio : req.body.id_servicio,
+            id_aseguradora : req.body.id_aseguradora,
+            benef_nombre : req.body.benef_nombre,
+            benef_paterno  : req.body.benef_paterno,
+            benef_materno  : req.body.benef_materno,
+            recibe_nombre  : req.body.recibe_nombre,
+            recibe_materno  : req.body.recibe_paterno,
+            recibe_paterno  : req.body.recibe_materno,
+            id_tecnico  : req.body.id_tecnico,
+            calle  : req.body.calle,
+            num_ext  : req.body.num_ext,
+            num_int  : req.body.num_int,
+            col  : req.body.col,
+            ciudad  : req.body.ciudad,
+            estado  : req.body.estado,
+            entre_calle1  : req.body.entre_calle1,
+            entre_calle2  : req.body.entre_calle2,
+            referencia  : req.body.referencia,
+            vehiculo_tipo  : req.body.vehiculo_tipo,
+            vehiculo_color  : req.body.vehiculo_color,
+            vehiculo_placa  : req.body.vehiculo_placa,
+            vehiculo_ubicacion  : req.body.vehiculo_ubicacion,
+            vehiculo_combustible  : req.body.vehiculo_combustible,
+            vehiculo_litros : req.body.vehiculo_litros,
         };
         orden.insertOrden(ordenData, (err, data) => {
             if (err){
@@ -81,36 +79,81 @@ module.exports = function (app) {
         });
     });
 
+    app.put('/status_orden/', (req, res) => {
+        var id_empleado = req.decoded.tipo;
+        if (id_empleado == '1' || id_empleado == '3' || id_empleado !== null){
+            var id_orden = req.body.id_orden;
+            var id_status = req.body.id_status;
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date+' '+time;
+            if (id_status == '1'){
+                orden.updateArribo(id_orden, '2', dateTime, (err, data) => {
+                    if (err){
+                        res.json({
+                            success: false,
+                            message: err
+                        });
+                    }else{
+                        res.json({
+                            success: true,
+                            message: "¡Se Guardaron los cambios exitosamente!"
+                        });
+                    }
+                });
+            } else if (id_status == '2'){
+                orden.updateFinalizado(id_orden, '3', dateTime, (err, data) => {
+                    if (err){
+                        res.json({
+                            success: false,
+                            message: err
+                        });
+                    }else{
+                        res.json({
+                            success: true,
+                            message: "¡Se Guardaron los cambios exitosamente!"
+                        });
+                    }
+                });
+            }
+        } else {
+            res.json({
+                success: false,
+                message: 'No tiene permisos para modificar esta orden.'
+            });
+        }
+    });
+
     app.put('/orden', (req, res) => {
         const ordenData = {
             id_orden : req.body.id_orden,
-            nombre : req.body.nombre,
-            ap_paterno : req.body.ap_paterno,
-            ap_materno : req.body.ap_materno,
-            RFC : req.body.RFC,
-            cedula_prof : req.body.cedula_prof,
-            universidad : req.body.universidad,
-            especialidad_1 : req.body.especialidad_1,
-            especialidad_2 : req.body.especialidad_2,
-            tel_fijo : req.body.tel_fijo,
-            tel_cel : req.body.tel_cel,
-            tel_adicional : req.body.tel_adicional,
-            email : req.body.email,
-            id_consultorio : req.body.id_consultorio,
-            calle : req.body.calle,
-            no_ext : req.body.no_ext,
-            no_int : req.body.no_int,
-            estado_id : req.body.estado_id,
-            municipio_id : req.body.municipio_id,
-            ciudad : req.body.ciudad,
-            colonia : req.body.colonia,
-            url_receta : req.body.url_receta,
-            url_solic_analisis : req.body.url_solic_analisis,
-            url_constacia : req.body.url_constacia,
-            url_cert_med : req.body.url_cert_med,
-            url_fact : req.body.url_fact,
-            certificado : req.body.certificado,
-            url_sello : req.body.url_sello
+            expediente : req.body.expediente,
+            descripcion  : req.body.descripcion,
+            id_servicio : req.body.id_servicio,
+            id_aseguradora : req.body.id_aseguradora,
+            benef_nombre : req.body.benef_nombre,
+            benef_paterno  : req.body.benef_paterno,
+            benef_materno  : req.body.benef_materno,
+            recibe_nombre  : req.body.recibe_nombre,
+            recibe_materno  : req.body.recibe_paterno,
+            recibe_paterno  : req.body.recibe_materno,
+            id_tecnico  : req.body.id_tecnico,
+            calle  : req.body.calle,
+            num_ext  : req.body.num_ext,
+            num_int  : req.body.num_int,
+            col  : req.body.col,
+            ciudad  : req.body.ciudad,
+            estado  : req.body.estado,
+            entre_calle1  : req.body.entre_calle1,
+            entre_calle2  : req.body.entre_calle2,
+            referencia  : req.body.referencia,
+            vehiculo_tipo  : req.body.vehiculo_tipo,
+            vehiculo_color  : req.body.vehiculo_color,
+            vehiculo_placa  : req.body.vehiculo_placa,
+            vehiculo_ubicacion  : req.body.vehiculo_ubicacion,
+            vehiculo_combustible  : req.body.vehiculo_combustible,
+            vehiculo_litros : req.body.vehiculo_litros,
         };
         orden.updateOrden(ordenData, (err, data) => {
             if (err){
@@ -143,6 +186,4 @@ module.exports = function (app) {
             }
         });
     });
-
-
 }

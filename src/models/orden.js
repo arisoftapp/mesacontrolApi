@@ -1,4 +1,4 @@
-let dbAdmin = require('../dbPipeso');
+let dbAdmin = require('../dbMesaControl');
 let ordenModel = {};
 
 ordenModel.getOrdenes = (callback) => {
@@ -79,6 +79,36 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 certificado = ${ordenData.certificado},
                 url_sello = ${ordenData.url_sello},
                 WHERE id_consultorio = ${ordenData.id_orden}`;
+        dbAdmin.query(sql, function (error, rows){
+            if (error) {
+                console.log(error);
+                //callback(null,err.message)
+            } else {                  
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+ordenModel.updateArribo = (id_orden, id_status, time, callback) =>{
+    if (dbAdmin){
+        const sql = `UPDATE orden SET 
+                id_status = ` + id_status + `, arribo = '`+ time + `' WHERE id_orden = ` + id_orden ;
+        dbAdmin.query(sql, function (error, rows){
+            if (error) {
+                console.log(error);
+                //callback(null,err.message)
+            } else {                  
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+ordenModel.updateFinalizado = (id_orden, id_status, time, callback) =>{
+    if (dbAdmin){
+        const sql = `UPDATE orden SET 
+                id_status = ` + id_status + `, fin = '`+ time + `' WHERE id_orden = ` + id_orden ;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
                 console.log(error);

@@ -8,8 +8,8 @@ const config = require('./config');
 
 server.use(cors({ credentials: true, origin: true }));
 //settings
-const port = process.env.PORT || 3006;
-server.set('port', process.env.PORT || 3006);
+const port = process.env.PORT || 3004;
+server.set('port', process.env.PORT || 3004);
 server.set('secret', config.secret);
 //middleware
 server.use(morgan('dev'));
@@ -45,7 +45,7 @@ server.use(function (err, req, res, next) {  //Control de errores
     res.status(500).json({ message: 'an error occurred' })
 });
 
-/*//Middleware to check whether you're auth - Todas las rutas arriba estan desprotegidas
+//Middleware to check whether you're auth - Todas las rutas arriba estan desprotegidas
 server.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -70,7 +70,7 @@ server.use(function (req, res, next) {
         });
 
     }
-});*/
+});
 
 
 //// Middleware token - Todas las rutas bajo esto estaran protegidas \\\\

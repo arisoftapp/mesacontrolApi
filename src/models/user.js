@@ -1,4 +1,4 @@
-var dbAdmin = require('../dbPipeso');
+var dbAdmin = require('../dbMesaControl');
 
 let userModel = {};
 

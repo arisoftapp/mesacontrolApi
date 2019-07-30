@@ -1,4 +1,4 @@
-let dbAdmin = require('../dbPipeso');
+let dbAdmin = require('../dbMesaControl');
 let aseguradoraModel = {};
 
 aseguradoraModel.getAseguradoras = (callback) => {

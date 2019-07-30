@@ -8,6 +8,7 @@ module.exports = function (app) {
         var pass = "";
         var username = "";
         var name = "";
+        var id = "";
         var user_req = req.body.Username;
         console.log(user_req, req.body);
         //console.log(user_req);
@@ -39,6 +40,7 @@ module.exports = function (app) {
                                             tipo = 3;
                                             pass = data[0].password;
                                             username = data[0].username;
+                                            id = data[0].id_tecnico;
                                             name = data[0].name; 
                                             if (pass != req.body.Password) {
                                                 res.json({ 
@@ -46,9 +48,12 @@ module.exports = function (app) {
                                                     message: 'La contraseña indicada no es correcta',
                                                 });
                                             } else{
+                                                //EL TOKEN CONTIENE EL ID DEL TECNICO PARA SABER QUIEN HA HECHO CAMBIOS 
+                                                //A LAS ORDENES
                                                 const payload = {
                                                     tipo: tipo,
                                                     username: username,
+                                                    id: id
                                                 };
                                                 var token = jwt.sign(payload, app.get('secret'), {
                                                     expiresIn: '10080m' // expires in half an hour
@@ -111,9 +116,11 @@ module.exports = function (app) {
                             message: 'La contraseña indicada no es correcta',
                         });
                     } else{
+                        //EL TOKEN CONTIENE EL ID : ADMINISTRADOR PARA ALMACENAR EN EL HISTORIAL DE LAS ORDENES
                         const payload = {
                             tipo: tipo,
                             username: username,
+                            id : name
                         };
                         var token = jwt.sign(payload, app.get('secret'), {
                             expiresIn: '10080m' // expires in half an hour
