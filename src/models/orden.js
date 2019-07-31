@@ -4,7 +4,7 @@ let ordenModel = {};
 ordenModel.getOrdenes = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT a.id_orden, a.id_status, a.levantamiento, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
+        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
         INNER JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         INNER JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         INNER JOIN estado_orden AS d ON a.id_status = d.id_status`, function(err, rows) {
@@ -21,10 +21,12 @@ ordenModel.getOrdenes = (callback) => {
 ordenModel.getOrden = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT a.*, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
+        dbAdmin.query(`SELECT a.*, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, 
+        c.nombre_aseguradora, d.orden_status AS estado_orden, e.nombre_servicio  FROM orden AS a
         INNER JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         INNER JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         INNER JOIN estado_orden AS d ON a.id_status = d.id_status
+        INNER JOIN servicio AS e ON a.id_servicio = e.id_status
         WHERE a.id_orden = ` + id_orden, function(err, rows) {
             if (err) {
                 throw err;
@@ -108,6 +110,21 @@ ordenModel.updateFinalizado = (id_orden, id_status, time, callback) =>{
     if (dbAdmin){
         const sql = `UPDATE orden SET 
                 id_status = ` + id_status + `, fin = '`+ time + `' WHERE id_orden = ` + id_orden ;
+        dbAdmin.query(sql, function (error, rows){
+            if (error) {
+                console.log(error);
+                //callback(null,err.message)
+            } else {                  
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+ordenModel.updateFacturado = (id_orden, id_status, time, callback) =>{
+    if (dbAdmin){
+        const sql = `UPDATE orden SET 
+                id_status = ` + id_status + `, facturado = '`+ time + `' WHERE id_orden = ` + id_orden ;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
                 console.log(error);

@@ -116,7 +116,21 @@ module.exports = function (app) {
                         });
                     }
                 });
-            }
+            } else if (id_status == '3'){
+                orden.updateFacturado(id_orden, '4', dateTime, (err, data) => {
+                    if (err){
+                        res.json({
+                            success: false,
+                            message: err
+                        });
+                    }else{
+                        res.json({
+                            success: true,
+                            message: "¡Se Guardaron los cambios exitosamente!"
+                        });
+                    }
+                });
+            } 
         } else {
             res.json({
                 success: false,
