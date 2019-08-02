@@ -80,6 +80,7 @@ require ('./routes/servicio')(server);
 require ('./routes/orden')(server);
 require ('./routes/user')(server);
 require ('./routes/empresa')(server);
+require ('./routes/entidad')(server);
 
 
 

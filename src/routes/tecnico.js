@@ -39,7 +39,13 @@ module.exports = function (app) {
         const tecnicoData = {
             nombre : req.body.nombre,
             ap_paterno : req.body.ap_paterno,
-            ap_materno : req.body.ap_materno
+            ap_materno : req.body.ap_materno,
+            id_estado : req.body.id_estado,
+            id_municipio  : req.body.id_municipio,
+            servicios  : req.body.servicios,
+            num_cel  : req.body.num_cel,
+            num_fijo : req.body.num_fijo,
+            datos_banco : req.body.datos_banco,
         }
         
         tecnico.insertTecnico(tecnicoData, (err, data) => {
@@ -62,7 +68,13 @@ module.exports = function (app) {
             id_tecnico : req.body.id_tecnico,
             nombre : req.body.nombre,
             ap_paterno : req.body.ap_paterno,
-            ap_materno : req.body.ap_materno
+            ap_materno : req.body.ap_materno,
+            id_estado : req.body.id_estado,
+            id_municipio  : req.body.id_municipio,
+            servicios  : req.body.servicios,
+            num_cel  : req.body.num_cel,
+            num_fijo : req.body.num_fijo,
+            datos_banco : req.body.datos_banco,
         }
         
         tecnico.putTecnico(tecnicoData, (err, data) => {

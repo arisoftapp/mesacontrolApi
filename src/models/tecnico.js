@@ -4,7 +4,7 @@ let tecnicoModel = {};
 tecnicoModel.getTecnicos = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query("SELECT * FROM tecnico WHERE id_tecnico NOT IN (0)", function(err, rows) {
+        dbAdmin.query("SELECT a.id_tecnico, a.nombre, a.ap_paterno, a.ap_materno, a.status, b.nombre_municipio FROM tecnico AS a INNER JOIN municipio AS b ON a.id_municipio = b.id_municipio WHERE id_tecnico NOT IN (0)", function(err, rows) {
             if (err) {
                 throw err;
             }
@@ -18,7 +18,7 @@ tecnicoModel.getTecnicos = (callback) => {
 tecnicoModel.getTecnico = (id, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query("SELECT id_tecnico, nombre, ap_paterno, ap_materno, status FROM tecnico WHERE id_tecnico = " + id, function(err, rows) {
+        dbAdmin.query(`SELECT * FROM tecnico WHERE id_tecnico = ` + id, function(err, rows) {
             if (err) {
                 throw err;
             }
@@ -49,7 +49,13 @@ tecnicoModel.putTecnico = (tecnicoDta, callback) =>{
         dbAdmin.query(`UPDATE tecnico SET 
         nombre = '${tecnicoDta.nombre}',
         ap_paterno = '${tecnicoDta.ap_paterno}',
-        ap_materno = '${tecnicoDta.ap_materno}'
+        ap_materno = '${tecnicoDta.ap_materno}',
+        id_estado = ${tecnicoDta.id_estado},
+        id_municipio  = ${tecnicoDta.id_municipio},
+        servicios  = '${tecnicoDta.servicios}',
+        num_cel  = '${tecnicoDta.num_cel}',
+        num_fijo = '${tecnicoDta.num_fijo}',
+        datos_banco = '${tecnicoDta.datos_banco}'
         WHERE id_tecnico = ${tecnicoDta.id_tecnico}`, function (error, rows){
             if (error) {
                 console.log(error);
