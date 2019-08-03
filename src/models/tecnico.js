@@ -4,7 +4,7 @@ let tecnicoModel = {};
 tecnicoModel.getTecnicos = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query("SELECT a.id_tecnico, a.nombre, a.ap_paterno, a.ap_materno, a.status, b.nombre_municipio FROM tecnico AS a INNER JOIN municipio AS b ON a.id_municipio = b.id_municipio WHERE id_tecnico NOT IN (0)", function(err, rows) {
+        dbAdmin.query("SELECT a.id_tecnico, a.nombre, a.ap_paterno, a.ap_materno, a.status, a.id_estado, a.id_municipio, b.nombre_municipio FROM tecnico AS a INNER JOIN municipio AS b ON a.id_municipio = b.id_municipio WHERE id_tecnico NOT IN (0)", function(err, rows) {
             if (err) {
                 throw err;
             }
