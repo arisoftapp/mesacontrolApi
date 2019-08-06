@@ -71,7 +71,7 @@ module.exports = function (app) {
             ap_materno : req.body.ap_materno,
             id_estado : req.body.id_estado,
             id_municipio  : req.body.id_municipio,
-            servicios  : req.body.servicios,
+            servicios : req.body.servicios,
             num_cel  : req.body.num_cel,
             num_fijo : req.body.num_fijo,
             datos_banco : req.body.datos_banco,
