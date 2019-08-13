@@ -1,0 +1,10 @@
+ALTER TABLE `mesacontrol_db`.`orden` 
+MODIFY COLUMN `expediente` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `id_orden`,
+MODIFY COLUMN `facturado` datetime(6) NULL AFTER `expediente`,
+MODIFY COLUMN `descripcion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `id_status`,
+MODIFY COLUMN `arribo` datetime(6) NULL AFTER `observaciones`,
+MODIFY COLUMN `fin` datetime(6) NULL AFTER `arribo`;
+
+ALTER TABLE `mesacontrol_db`.`orden` 
+ADD COLUMN `asignada` datetime(6) NULL DEFAULT '' AFTER `levantamiento`;
+
