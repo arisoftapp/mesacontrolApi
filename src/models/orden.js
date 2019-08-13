@@ -4,7 +4,7 @@ let ordenModel = {};
 ordenModel.getOrdenes = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
+        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.id_tecnico,rs CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
         INNER JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         INNER JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         INNER JOIN estado_orden AS d ON a.id_status = d.id_status`, function(err, rows) {
