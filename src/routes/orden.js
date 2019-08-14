@@ -17,6 +17,24 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/ordenes_buscar/:buscar', (req, res) => {
+        var buscar = req.params.buscar;
+        //console.log(req.params);
+        orden.getOrdenesBuscar(buscar, (err, data) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: "Ocurrió un error al obtener los datos"
+                });
+            } else{
+                res.json({
+                    success: true,
+                    data: data
+                });
+            }
+        });
+    });
+
     app.get('/orden/:id_orden', (req, res) => {
         var id_orden = req.params.id_orden;
         //console.log(req.params);
@@ -67,10 +85,19 @@ module.exports = function (app) {
         };
         orden.insertOrden(ordenData, (err, data) => {
             if (err){
-                res.json({
-                    success: false,
-                    message: err
-                });
+                if (err.errno == 1062){
+                    res.json({
+                        success: false,
+                        message: 'Ya existe una orden con la aseguradora y expediente indicado'
+                    });
+                } else{
+                    res.json({
+                        success: false,
+                        message: err
+                    });
+                }
+                
+                //console.log(res);
             }else{
                 res.json({
                     success: true,
@@ -138,6 +165,24 @@ module.exports = function (app) {
                 message: 'No tiene permisos para modificar esta orden.'
             });
         }
+    });
+
+    app.put('/cancelar_orden/', (req, res) => {
+        var id_orden = req.body.id_orden;
+        var id_status = req.body.id_status;
+        orden.cancelarOrden(id_orden, id_status, (err, data) => {
+            if (err){
+                res.json({
+                    success: false,
+                    message: err
+                });
+            }else{
+                res.json({
+                    success: true,
+                    message: "¡Se Guardaron los cambios exitosamente!"
+                });
+            }
+        });
     });
 
     app.put('/orden', (req, res) => {
