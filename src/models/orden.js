@@ -4,10 +4,10 @@ let ordenModel = {};
 ordenModel.getOrdenes = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.id_tecnico, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
-        INNER JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
-        INNER JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
-        INNER JOIN estado_orden AS d ON a.id_status = d.id_status`, function(err, rows) {
+        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada,  a.id_tecnico, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
+        LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
+        LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
+        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status ORDER BY a.id_status ASC`, function(err, rows) {
             if (err) {
                 throw err;
             }
@@ -63,6 +63,18 @@ ordenModel.getOrden = (id_orden, callback) => {
 ordenModel.insertOrden = (ordenData, callback) => {
     if (dbAdmin){
         dbAdmin.query(`INSERT INTO orden SET ? `, ordenData, (error, rows) => {
+            if (error) {
+                //console.log(error);
+                callback(error);
+            } else {                  
+                callback(null, rows);
+            }
+        });
+    }
+}
+ordenModel.getMaxId = (callback) => {
+    if (dbAdmin){
+        dbAdmin.query(`SELECT MAX(id_orden) AS 'mayor' FROM orden `, (error, rows) => {
             if (error) {
                 //console.log(error);
                 callback(error);

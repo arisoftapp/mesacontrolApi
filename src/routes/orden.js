@@ -54,57 +54,74 @@ module.exports = function (app) {
     });
 
     app.post('/orden', (req, res) => {
-        const ordenData = {
-            expediente : req.body.expediente,
-            descripcion  : req.body.descripcion,
-            id_servicio : req.body.id_servicio,
-            id_aseguradora : req.body.id_aseguradora,
-            benef_nombre : req.body.benef_nombre,
-            benef_paterno  : req.body.benef_paterno,
-            benef_materno  : req.body.benef_materno,
-            recibe_nombre  : req.body.recibe_nombre,
-            recibe_materno  : req.body.recibe_paterno,
-            recibe_paterno  : req.body.recibe_materno,
-            id_tecnico  : req.body.id_tecnico,
-            asignada : req.body.asignada,
-            calle  : req.body.calle,
-            num_ext  : req.body.num_ext,
-            num_int  : req.body.num_int,
-            col  : req.body.col,
-            id_municipio  : req.body.id_municipio,
-            id_estado  : req.body.id_estado,
-            entre_calle1  : req.body.entre_calle1,
-            entre_calle2  : req.body.entre_calle2,
-            referencia  : req.body.referencia,
-            vehiculo_tipo  : req.body.vehiculo_tipo,
-            vehiculo_color  : req.body.vehiculo_color,
-            vehiculo_placa  : req.body.vehiculo_placa,
-            vehiculo_ubicacion  : req.body.vehiculo_ubicacion,
-            vehiculo_combustible  : req.body.vehiculo_combustible,
-            vehiculo_litros : req.body.vehiculo_litros,
-        };
-        orden.insertOrden(ordenData, (err, data) => {
+        let max;
+        orden.getMaxId( (err, data) => {
             if (err){
-                if (err.errno == 1062){
-                    res.json({
-                        success: false,
-                        message: 'Ya existe una orden con la aseguradora y expediente indicado'
-                    });
-                } else{
-                    res.json({
-                        success: false,
-                        message: err
-                    });
-                }
-                
-                //console.log(res);
-            }else{
                 res.json({
-                    success: true,
-                    message: "¡Registro exitoso!"
+                    success: false,
+                    message: err
                 });
-            }
+            } else {
+                max = data[0].mayor + 1;
+                console.log(max);
+                const ordenData = {
+                    id_orden : max,
+                    expediente : req.body.expediente,
+                    descripcion  : req.body.descripcion,
+                    id_servicio : req.body.id_servicio,
+                    id_aseguradora : req.body.id_aseguradora,
+                    benef_nombre : req.body.benef_nombre,
+                    benef_paterno  : req.body.benef_paterno,
+                    benef_materno  : req.body.benef_materno,
+                    recibe_nombre  : req.body.recibe_nombre,
+                    recibe_materno  : req.body.recibe_paterno,
+                    recibe_paterno  : req.body.recibe_materno,
+                    id_tecnico  : req.body.id_tecnico,
+                    asignada : req.body.asignada,
+                    calle  : req.body.calle,
+                    num_ext  : req.body.num_ext,
+                    num_int  : req.body.num_int,
+                    col  : req.body.col,
+                    id_municipio  : req.body.id_municipio,
+                    id_estado  : req.body.id_estado,
+                    entre_calle1  : req.body.entre_calle1,
+                    entre_calle2  : req.body.entre_calle2,
+                    referencia  : req.body.referencia,
+                    vehiculo_tipo  : req.body.vehiculo_tipo,
+                    vehiculo_color  : req.body.vehiculo_color,
+                    vehiculo_placa  : req.body.vehiculo_placa,
+                    vehiculo_ubicacion  : req.body.vehiculo_ubicacion,
+                    vehiculo_combustible  : req.body.vehiculo_combustible,
+                    vehiculo_litros : req.body.vehiculo_litros,
+                };
+                
+                
+                orden.insertOrden(ordenData, (err, data) => {
+                    if (err){
+                        if (err.errno == 1062){
+                            res.json({
+                                success: false,
+                                message: 'Ya existe una orden con la aseguradora y expediente indicado'
+                            });
+                        } else{
+                            res.json({
+                                success: false,
+                                message: err
+                            });
+                        }
+                        
+                        //console.log(res);
+                    }else{
+                        res.json({
+                            success: true,
+                            message: "¡Registro exitoso!"
+                        });
+                    }
+                });
+            } 
         });
+
+        
     });
 
     app.put('/status_orden/', (req, res) => {
