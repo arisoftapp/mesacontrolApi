@@ -1,11 +1,6 @@
-ALTER TABLE `mesacontrol_db`.`orden` 
-MODIFY COLUMN `expediente` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `id_orden`,
-DROP PRIMARY KEY,
-ADD PRIMARY KEY (`expediente`) USING BTREE;
-
-ALTER TABLE `mesacontrol_db`.`orden` 
-MODIFY COLUMN `id_orden` int(255) NULL FIRST,
-MODIFY COLUMN `id_aseguradora` int(5) NOT NULL AFTER `id_orden`,
-MODIFY COLUMN `expediente` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `id_aseguradora`,
-DROP PRIMARY KEY,
-ADD PRIMARY KEY (`id_aseguradora`, `expediente`) USING BTREE;
+ALTER TABLE `mesacontrol_db`.`empleado` 
+MODIFY COLUMN `nombre` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '' AFTER `id_empleado`,
+MODIFY COLUMN `ap_paterno` varchar(50) NULL DEFAULT '' AFTER `nombre`,
+MODIFY COLUMN `ap_materno` varchar(50) NULL DEFAULT '' AFTER `ap_paterno`,
+MODIFY COLUMN `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '' AFTER `ap_materno`,
+MODIFY COLUMN `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '' AFTER `username`;

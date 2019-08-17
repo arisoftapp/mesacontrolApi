@@ -76,6 +76,7 @@ module.exports = function (app) {
                                 tipo = 2;
                                 pass = data[0].password;
                                 username = data[0].password;
+                                id = data[0].id_empleado;
                                 name = data[0].name; 
                                 if (pass != req.body.Password) {
                                     res.json({ 
@@ -86,6 +87,7 @@ module.exports = function (app) {
                                     const payload = {
                                         tipo: tipo,
                                         username: username,
+                                        id: id
                                     };
                                     var token = jwt.sign(payload, app.get('secret'), {
                                         expiresIn: '10080m' // expires in half an hour

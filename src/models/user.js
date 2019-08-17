@@ -72,6 +72,34 @@ userModel.getUserByTecnicoUsername = (username, callback) => {
     }
 };
 
+userModel.getUsersTecnicos = (callback) => {
+    //console.log(idEmpresa);
+    if (dbAdmin) {
+        dbAdmin.query("SELECT id_tecnico, nombre, ap_paterno, ap_materno, username, password FROM tecnico WHERE id_tecnico NOT IN (0)", function(err, rows) {
+            if (err) {
+                throw err;
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
+userModel.getUsersEmpleados = (callback) => {
+    //console.log(idEmpresa);
+    if (dbAdmin) {
+        dbAdmin.query("SELECT id_empleado, nombre, ap_paterno, ap_materno, username, password FROM empleado WHERE id_empleado NOT IN (0)", function(err, rows) {
+            if (err) {
+                throw err;
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
 
 
 //Insert

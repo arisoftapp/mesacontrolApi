@@ -24,6 +24,26 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/users_tecnicos', (req, res) => {
+        var id = req.params.id;
+        user.getUsersTecnicos( (err, data) => {
+            res.json({
+                success: true,
+                data: data
+            });
+        });
+    });
+
+    app.get('/users_empleados', (req, res) => {
+        var id = req.params.id;
+        user.getUsersEmpleados( (err, data) => {
+            res.json({
+                success: true,
+                data: data
+            });
+        });
+    });
+
     //VALIDAR CONTRASEÑA
     app.post('/checkpass', (req, res) => {
         var idEmpresa = req.decoded.idEmpresa;
