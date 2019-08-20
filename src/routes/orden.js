@@ -2,37 +2,73 @@ const orden = require('../models/orden');
 
 module.exports = function (app) {
     app.get('/ordenes', (req, res) => {
-        orden.getOrdenes((err, data) => {
-            if (err) {
-                res.json({
-                    success: false,
-                    message: "Ocurrió un error al obtener los datos"
-                });
-            } else{
-                res.json({
-                    success: true,
-                    data: data
-                });
-            }
-        });
+        const decoded = req.decoded;
+        //console.log(decoded);
+        if (decoded.tipo == 3){
+            orden.getOrdenesbyTecnico(decoded.id, (err, data) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Ocurrió un error al obtener los datos"
+                    });
+                } else{
+                    res.json({
+                        success: true,
+                        data: data
+                    });
+                }
+            });
+        } else {
+            orden.getOrdenes((err, data) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Ocurrió un error al obtener los datos"
+                    });
+                } else{
+                    res.json({
+                        success: true,
+                        data: data
+                    });
+                }
+            });
+        }
+        
     });
 
     app.get('/ordenes_buscar/:buscar', (req, res) => {
         var buscar = req.params.buscar;
-        //console.log(req.params);
-        orden.getOrdenesBuscar(buscar, (err, data) => {
-            if (err) {
-                res.json({
-                    success: false,
-                    message: "Ocurrió un error al obtener los datos"
-                });
-            } else{
-                res.json({
-                    success: true,
-                    data: data
-                });
-            }
-        });
+        //const decoded = req.decoded;
+        console.log(decoded);
+        if (decoded.tipo == 3){ 
+            orden.getOrdenesBuscarbyTecnico(buscar, decoded.id, (err, data) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Ocurrió un error al obtener los datos"
+                    });
+                } else{
+                    res.json({
+                        success: true,
+                        data: data
+                    });
+                }
+            });
+        } else {
+            orden.getOrdenesBuscar(buscar, (err, data) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Ocurrió un error al obtener los datos"
+                    });
+                } else{
+                    res.json({
+                        success: true,
+                        data: data
+                    });
+                }
+            });
+        }        
     });
 
     app.get('/orden/:id_orden', (req, res) => {
@@ -124,7 +160,7 @@ module.exports = function (app) {
         
     });
 
-    app.put('/status_orden/', (req, res) => {
+    app.put('/status_orden/:fecha', (req, res) => {
         var id_empleado = req.decoded.tipo;
         if (id_empleado == '1' || id_empleado == '3' || id_empleado !== null){
             var id_orden = req.body.id_orden;
@@ -134,7 +170,8 @@ module.exports = function (app) {
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             var dateTime = date+' '+time;
             if (id_status == '1'){
-                orden.updateArribo(id_orden, '2', dateTime, (err, data) => {
+                let fecha = req.params.fecha;
+                orden.updateArribo(id_orden, '2', fecha, (err, data) => {
                     if (err){
                         res.json({
                             success: false,
@@ -249,6 +286,42 @@ module.exports = function (app) {
                 });
             }
         });
+    });
+
+    app.put('/orden_by_tecnico', (req, res) => {
+        const ordenData = {
+            id_orden : req.body.id_orden,
+            observaciones : req.body.observaciones,
+        };
+        orden.updateOrdenbyTecnico(ordenData, (err, data) => {
+            if (err){
+                res.json({
+                    success: false,
+                    message: err
+                });
+            }else{
+                res.json({
+                    success: true,
+                    message: "¡Se Guardaron los cambios exitosamente!"
+                });
+            }
+        });
+        /*
+        console.log(req.body);
+        /*orden.updateOrden(ordenData, (err, data) => {
+            if (err){
+                res.json({
+                    success: false,
+                    message: err
+                });
+            }else{
+                orden.insertEvidencia(req.body.id_orden, )
+                res.json({
+                    success: true,
+                    message: "¡Se Guardaron los cambios exitosamente!"
+                });
+            }
+        });*/
     });
 
     app.delete('/orden/:id_orden', (req, res) => {

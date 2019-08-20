@@ -5,6 +5,9 @@ const jwt = require('jsonwebtoken');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const config = require('./config');
+const upload = require('express-fileupload');
+
+server.use(upload());
 
 server.use(cors({ credentials: true, origin: true }));
 //settings
