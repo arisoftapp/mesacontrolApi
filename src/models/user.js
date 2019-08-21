@@ -103,10 +103,9 @@ userModel.getUsersEmpleados = (callback) => {
 
 
 //Insert
-userModel.insertUser = (userData, callback) => {
-
+userModel.insertEmpleado = (userData, callback) => {
     if (dbAdmin) {
-        dbAdmin.query('INSERT INTO usuario SET ?', userData,
+        dbAdmin.query('INSERT INTO empleado SET ?', userData,
             (err, result) => {
                 if (err) {
                     throw err;
@@ -118,6 +117,41 @@ userModel.insertUser = (userData, callback) => {
         )
     }
 };
+
+userModel.putEmpleado = (tecnicoDta, callback) =>{
+    if (dbAdmin){
+        dbAdmin.query(`UPDATE empleado SET 
+        nombre = '${tecnicoDta.nombre}',
+        ap_paterno = '${tecnicoDta.ap_paterno}',
+        ap_materno = '${tecnicoDta.ap_materno}',
+        username = '${tecnicoDta.username}',
+        password = '${tecnicoDta.password}'
+        WHERE id_empleado = ${tecnicoDta.id_empleado}`, function (error, rows){
+            if (error) {
+                console.log(error);
+                //callback(null,err.message)
+            } else {                  
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+userModel.putTecnico = (tecnicoDta, callback) =>{
+    if (dbAdmin){
+        dbAdmin.query(`UPDATE tecnico SET 
+        username = '${tecnicoDta.username}',
+        password = '${tecnicoDta.password}'
+        WHERE id_tecnico = ${tecnicoDta.id_tecnico}`, function (error, rows){
+            if (error) {
+                console.log(error);
+                //callback(null,err.message)
+            } else {                  
+                callback(null, rows);
+            }
+        });
+    }
+}
 
 //CHECK PASSWORD    
 userModel.getPass = (ID, empresa, callback) => {

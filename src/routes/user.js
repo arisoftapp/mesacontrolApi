@@ -44,6 +44,79 @@ module.exports = function (app) {
         });
     });
 
+    app.post('/empleado', (req, res) => {
+        const empleadoData = {
+            nombre : req.body.nombre,
+            ap_paterno : req.body.ap_paterno,
+            ap_materno : req.body.ap_materno,
+            username : req.body.username,
+            password : req.body.password
+        }
+        
+        user.insertEmpleado(empleadoData, (err, data) => {
+            if (err){
+                res.json({
+                    success: false,
+                    message: err
+                });
+            }else{
+                res.json({
+                    success: true,
+                    message: "¡Se registró al tecnico exitosamente!"
+                });
+            }
+        });
+    });
+
+    app.put('/empleado', (req, res) => {
+        const empleadoData = {
+            id_empleado : req.body.id_empleado,
+            nombre : req.body.nombre,
+            ap_paterno : req.body.ap_paterno,
+            ap_materno : req.body.ap_materno,
+            username : req.body.username,
+            password : req.body.password
+        }
+        
+        user.putEmpleado(empleadoData, (err, data) => {
+            if (err){
+                res.json({
+                    success: false,
+                    message: err
+                });
+            }else{
+                res.json({
+                    success: true,
+                    message: "¡Se registró al tecnico exitosamente!"
+                });
+            }
+        });
+    });
+
+    app.put('/admin_tecnico', (req, res) => {
+        const tecnicoData = {
+            id_tecnico : req.body.id_tecnico,
+            username : req.body.username,
+            password : req.body.password
+        }
+        
+        user.putTecnico(tecnicoData, (err, data) => {
+            if (err){
+                res.json({
+                    success: false,
+                    message: err
+                });
+            }else{
+                res.json({
+                    success: true,
+                    message: "¡Se registró al tecnico exitosamente!"
+                });
+            }
+        });
+    });
+
+
+
     //VALIDAR CONTRASEÑA
     app.post('/checkpass', (req, res) => {
         var idEmpresa = req.decoded.idEmpresa;
