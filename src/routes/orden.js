@@ -38,8 +38,8 @@ module.exports = function (app) {
 
     app.get('/ordenes_buscar/:buscar', (req, res) => {
         var buscar = req.params.buscar;
-        //const decoded = req.decoded;
-        console.log(decoded);
+        const decoded = req.decoded;
+        //console.log(decoded);
         if (decoded.tipo == 3){ 
             orden.getOrdenesBuscarbyTecnico(buscar, decoded.id, (err, data) => {
                 if (err) {
@@ -109,6 +109,7 @@ module.exports = function (app) {
                     benef_nombre : req.body.benef_nombre,
                     benef_paterno  : req.body.benef_paterno,
                     benef_materno  : req.body.benef_materno,
+                    recibe_benef : req.body.recibe_benef,
                     recibe_nombre  : req.body.recibe_nombre,
                     recibe_materno  : req.body.recibe_paterno,
                     recibe_paterno  : req.body.recibe_materno,
@@ -123,6 +124,7 @@ module.exports = function (app) {
                     entre_calle1  : req.body.entre_calle1,
                     entre_calle2  : req.body.entre_calle2,
                     referencia  : req.body.referencia,
+                    servicio_vial : req.body.servicio_vial,
                     vehiculo_tipo  : req.body.vehiculo_tipo,
                     vehiculo_color  : req.body.vehiculo_color,
                     vehiculo_placa  : req.body.vehiculo_placa,
@@ -130,7 +132,6 @@ module.exports = function (app) {
                     vehiculo_combustible  : req.body.vehiculo_combustible,
                     vehiculo_litros : req.body.vehiculo_litros,
                 };
-                
                 
                 orden.insertOrden(ordenData, (err, data) => {
                     if (err){
@@ -145,13 +146,30 @@ module.exports = function (app) {
                                 message: err
                             });
                         }
-                        
                         //console.log(res);
-                    }else{
-                        res.json({
-                            success: true,
-                            message: "¡Registro exitoso!"
-                        });
+                    } else {
+                        if (ordenData.id_tecnico > 0 && ordenData.asignada != ""){
+                            console.log('ORDEN ASIGNADA');
+                            orden.updateProgramada(max, '2', (err, data) => {
+                                if (err){
+                                    res.json({
+                                        success: false,
+                                        message: err
+                                    });
+                                }else{
+                                    res.json({
+                                        success: true,
+                                        message: "¡Se Guardaron los cambios exitosamente!"
+                                    });
+                                }
+                            });
+                        } else {
+                            console.log('ORDEN NO ASIGNADA');
+                            res.json({
+                                success: true,
+                                message: "¡Se Guardaron los cambios exitosamente!"
+                            });
+                        }
                     }
                 });
             } 
@@ -170,8 +188,7 @@ module.exports = function (app) {
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             var dateTime = date+' '+time;
             if (id_status == '1'){
-                let fecha = req.params.fecha;
-                orden.updateArribo(id_orden, '2', fecha, (err, data) => {
+                orden.updateProgramada(id_orden, '2', (err, data) => {
                     if (err){
                         res.json({
                             success: false,
@@ -185,7 +202,8 @@ module.exports = function (app) {
                     }
                 });
             } else if (id_status == '2'){
-                orden.updateFinalizado(id_orden, '3', dateTime, (err, data) => {
+                let fecha = req.params.fecha;
+                orden.updateArribo(id_orden, '3', fecha, (err, data) => {
                     if (err){
                         res.json({
                             success: false,
@@ -199,7 +217,21 @@ module.exports = function (app) {
                     }
                 });
             } else if (id_status == '3'){
-                orden.updateFacturado(id_orden, '4', dateTime, (err, data) => {
+                orden.updateFinalizado(id_orden, '4', dateTime, (err, data) => {
+                    if (err){
+                        res.json({
+                            success: false,
+                            message: err
+                        });
+                    }else{
+                        res.json({
+                            success: true,
+                            message: "¡Se Guardaron los cambios exitosamente!"
+                        });
+                    }
+                });
+            } else if (id_status == '4'){
+                orden.updateFacturado(id_orden, '5', dateTime, (err, data) => {
                     if (err){
                         res.json({
                             success: false,
@@ -224,7 +256,11 @@ module.exports = function (app) {
     app.put('/cancelar_orden/', (req, res) => {
         var id_orden = req.body.id_orden;
         var id_status = req.body.id_status;
-        orden.cancelarOrden(id_orden, id_status, (err, data) => {
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
+        orden.cancelarOrden(id_orden, id_status, dateTime, (err, data) => {
             if (err){
                 res.json({
                     success: false,
@@ -252,6 +288,7 @@ module.exports = function (app) {
             benef_nombre : req.body.benef_nombre,
             benef_paterno  : req.body.benef_paterno,
             benef_materno  : req.body.benef_materno,
+            recibe_benef : req.body.recibe_benef,
             recibe_nombre  : req.body.recibe_nombre,
             recibe_materno  : req.body.recibe_paterno,
             recibe_paterno  : req.body.recibe_materno,
@@ -266,6 +303,7 @@ module.exports = function (app) {
             entre_calle1  : req.body.entre_calle1,
             entre_calle2  : req.body.entre_calle2,
             referencia  : req.body.referencia,
+            servicio_vial : req.body.servicio_vial,
             vehiculo_tipo  : req.body.vehiculo_tipo,
             vehiculo_color  : req.body.vehiculo_color,
             vehiculo_placa  : req.body.vehiculo_placa,
@@ -273,6 +311,7 @@ module.exports = function (app) {
             vehiculo_combustible  : req.body.vehiculo_combustible,
             vehiculo_litros : req.body.vehiculo_litros,
         };
+
         orden.updateOrden(ordenData, (err, data) => {
             if (err){
                 res.json({
@@ -280,10 +319,28 @@ module.exports = function (app) {
                     message: err
                 });
             }else{
-                res.json({
-                    success: true,
-                    message: "¡Se Guardaron los cambios exitosamente!"
-                });
+                if (ordenData.id_tecnico > 0 && ordenData.asignada != ""){
+                    console.log('ORDEN ASIGNADA');
+                    orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
+                        if (err){
+                            res.json({
+                                success: false,
+                                message: err
+                            });
+                        }else{
+                            res.json({
+                                success: true,
+                                message: "¡Se Guardaron los cambios exitosamente!"
+                            });
+                        }
+                    });
+                } else {
+                    console.log('ORDEN NO ASIGNADA');
+                    res.json({
+                        success: true,
+                        message: "¡Se Guardaron los cambios exitosamente!"
+                    });
+                }
             }
         });
     });
