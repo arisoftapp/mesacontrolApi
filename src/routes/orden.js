@@ -106,6 +106,7 @@ module.exports = function (app) {
                     descripcion  : req.body.descripcion,
                     id_servicio : req.body.id_servicio,
                     id_aseguradora : req.body.id_aseguradora,
+                    id_poliza : req.body.id_poliza,
                     benef_nombre : req.body.benef_nombre,
                     benef_paterno  : req.body.benef_paterno,
                     benef_materno  : req.body.benef_materno,
@@ -319,7 +320,7 @@ module.exports = function (app) {
                     message: err
                 });
             }else{
-                if (ordenData.id_tecnico > 0 && ordenData.asignada != ""){
+                if (ordenData.id_tecnico > 0 && ordenData.asignada != "" && ordenData.id_status == 1){
                     console.log('ORDEN ASIGNADA');
                     orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
                         if (err){
