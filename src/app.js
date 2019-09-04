@@ -88,5 +88,5 @@ require ('./routes/entidad')(server);
 
 
 server.listen(server.get('port'), () => {
-    console.log("MesaControlWebService in the port 3006");
+    console.log("MesaControlWebService in the port 3004");
 });
