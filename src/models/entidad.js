@@ -1,4 +1,5 @@
-let dbAdmin = require('../dbMesaControl');
+let db = require('../dbMesaControl');
+var dbAdmin = db.getConnection();
 let entidadModel = {};
 
 entidadModel.getEntidad = (callback) => {
