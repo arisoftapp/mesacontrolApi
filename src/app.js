@@ -80,7 +80,8 @@ server.use(function (req, res, next) {
 require ('./routes/aseguradora')(server);
 require ('./routes/tecnico')(server);
 require ('./routes/servicio')(server);
-require ('./routes/orden')(server);
+require ('./routes/orden')(server);//RUTAS DE LAS ORDENES POR ASEGURADORA
+require ('./routes/orden_interna.route')(server);
 require ('./routes/user')(server);
 require ('./routes/empresa')(server);
 require ('./routes/entidad')(server);
