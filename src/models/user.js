@@ -1,4 +1,5 @@
-var dbAdmin = require('../dbMesaControl');
+let db = require('../dbMesaControl');
+var dbAdmin = db.getConnection();
 
 let userModel = {};
 
