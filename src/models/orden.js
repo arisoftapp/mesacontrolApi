@@ -25,6 +25,29 @@ ordenModel.getOrdenes = (callback) => {
     }
 };
 
+ordenModel.getAllOrdenes = (callback) => {
+    //console.log(idEmpresa);
+    if (dbAdmin) {
+        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
+        CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
+        a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
+        a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
+        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, a.descripcion,
+        d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
+        LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
+        LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
+        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio ORDER BY a.id_status ASC`, function(err, rows) {
+            if (err) {
+                throw err;
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
 
 ordenModel.getOrdenesbyTecnico = (id_tecnico, callback) => {
     if (dbAdmin) {
@@ -37,6 +60,27 @@ ordenModel.getOrdenesbyTecnico = (id_tecnico, callback) => {
         LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE a.id_tecnico = ` + id_tecnico +` AND id_tipo = 1 ORDER BY a.id_status ASC`, function(err, rows) {
+            if (err) {
+                throw err;
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
+ordenModel.getAllOrdenesbyTecnico = (id_tecnico, callback) => {
+    if (dbAdmin) {
+        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
+        a.recibe_benef, a.servicio_vial, a.benef_nombre, a.benef_paterno, a.benef_materno, a.descripcion,
+        b.nombre, b.ap_paterno, b.ap_materno, c.nombre_aseguradora, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
+        a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
+        d.orden_status AS estado_orden FROM orden AS a
+        LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio
+        LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
+        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE a.id_tecnico = ` + id_tecnico +` ORDER BY a.id_status ASC`, function(err, rows) {
             if (err) {
                 throw err;
             }
