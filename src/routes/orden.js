@@ -36,6 +36,41 @@ module.exports = function (app) {
         
     });
 
+    app.get('/all_ordenes', (req, res) => {
+        const decoded = req.decoded;
+        //console.log(decoded);
+        if (decoded.tipo == 3){
+            orden.getAllOrdenesbyTecnico(decoded.id, (err, data) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Ocurrió un error al obtener los datos"
+                    });
+                } else{
+                    res.json({
+                        success: true,
+                        data: data
+                    });
+                }
+            });
+        } else {
+            orden.getAllOrdenes((err, data) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Ocurrió un error al obtener los datos"
+                    });
+                } else{
+                    res.json({
+                        success: true,
+                        data: data
+                    });
+                }
+            });
+        }
+        
+    });
+
     app.get('/ordenes_buscar/:buscar', (req, res) => {
         var buscar = req.params.buscar;
         const decoded = req.decoded;
