@@ -114,6 +114,7 @@ module.exports = function (app) {
                             expediente : expediente,
                             descripcion  : req.body.descripcion,
                             id_servicio : req.body.id_servicio,
+                            id_aseguradora : 0,
                             recibe_benef : req.body.recibe_benef,
                             recibe_nombre  : req.body.recibe_nombre,
                             recibe_materno  : req.body.recibe_paterno,
