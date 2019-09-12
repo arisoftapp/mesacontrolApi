@@ -68,6 +68,8 @@ module.exports = function (app) {
     app.post('/aseguradora', (req, res) => {
         const ase_data = {
             nombre_aseguradora : req.body.nombre_aseguradora,
+            nombre_contacto : req.body.nombre_contacto,
+            telefono : req.body.telefono
         };
         const polizas = req.body.polizas;
         const insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor ) VALUES (");
@@ -81,7 +83,7 @@ module.exports = function (app) {
             }else{
                 var id = data.insertId;
                 for (i = 1; i < polizas.length; i++) { 
-                    insert_script = insert_script + id + "," + i + "," + polizas.poliza_nombre + "," + polizas.poliza_valor + ")";
+                    insert_script = insert_script + id + "," + i + "," + polizas[i].poliza_nombre + "," + polizas[1].poliza_valor + "," + polizas[i].poliza_cancelacion + ")";
                     if (i <= polizas.length){
                         insert_script += ",";
                     } else {
@@ -110,6 +112,8 @@ module.exports = function (app) {
         const ase_data = {
             id_aseguradora : req.body.id_aseguradora,
             nombre_aseguradora : req.body.nombre_aseguradora,
+            nombre_contacto : req.body.nombre_contacto,
+            telefono : req.body.telefono
         };
         const id_aseguradora = req.body.id_aseguradora;
         const polizas = req.body.polizas;
@@ -128,11 +132,11 @@ module.exports = function (app) {
                             message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
                         });
                     }else{
-                        var insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor ) VALUES (");
+                        var insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor, poliza_cancelacion ) VALUES (");
                         for (i = 0; i < polizas.length; i++) { 
                             console.log(polizas[i].poliza_nombre);
                             let index = i+1;
-                            insert_script = insert_script + id_aseguradora + "," + index + ",'" + polizas[i].poliza_nombre + "','" + polizas[i].poliza_valor + "')";
+                            insert_script = insert_script + id_aseguradora + "," + index + ",'" + polizas[i].poliza_nombre + "','" + polizas[i].poliza_valor + "','" + polizas[i].poliza_cancelacion + "')";
                             if (i < polizas.length-1){
                                 insert_script += ",(";
                             } else {

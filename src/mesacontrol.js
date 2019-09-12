@@ -83,6 +83,7 @@ require ('./routes/servicio')(server);
 require ('./routes/orden')(server);//RUTAS DE LAS ORDENES POR ASEGURADORA
 require ('./routes/orden_interna.route')(server);
 require ('./routes/user')(server);
+require ('./routes/costos.route')(server);
 require ('./routes/empresa')(server);
 require ('./routes/entidad')(server);
 

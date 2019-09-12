@@ -152,7 +152,7 @@ module.exports = function (app) {
                                 }
                                 //console.log(res);
                             } else {
-                                if (ordenData.id_tecnico > 0 && ordenData.asignada != ""){
+                                if (ordenData.id_tecnico > 0 && ordenData.asignada != "" && ordenData.asignada != null){
                                     console.log('ORDEN ASIGNADA');
                                     orden.updateProgramada(max, '2', (err, data) => {
                                         if (err){
@@ -328,7 +328,7 @@ module.exports = function (app) {
                     message: err
                 });
             }else{
-                if (ordenData.id_tecnico > 0 && ordenData.asignada != "" && ordenData.id_status == 1){
+                if (ordenData.id_tecnico > 0 && ordenData.asignada != "" && ordenData.id_status == 1 && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
                     console.log('ORDEN ASIGNADA');
                     orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
                         if (err){
@@ -345,9 +345,18 @@ module.exports = function (app) {
                     });
                 } else {
                     console.log('ORDEN NO ASIGNADA');
-                    res.json({
-                        success: true,
-                        message: "¡Se Guardaron los cambios exitosamente!"
+                    orden.updateProgramada(ordenData.id_orden, '1', (err, data) => {
+                        if (err){
+                            res.json({
+                                success: false,
+                                message: err
+                            });
+                        }else{
+                            res.json({
+                                success: true,
+                                message: "¡Se Guardaron los cambios exitosamente!"
+                            });
+                        }
                     });
                 }
             }

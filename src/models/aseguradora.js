@@ -88,7 +88,9 @@ aseguradoraModel.insertAseguradora = (aseData, callback) =>{
 aseguradoraModel.updateAseguradora = (aseData, callback) =>{
     if (dbAdmin){
         dbAdmin.query(`UPDATE aseguradora SET 
-        nombre_aseguradora = '${aseData.nombre_aseguradora}'
+        nombre_aseguradora = '${aseData.nombre_aseguradora}',
+        nombre_contacto = '${aseData.nombre_contacto}',
+        telefono = '${aseData.telefono}'
         WHERE id_aseguradora = ${aseData.id_aseguradora}`, function (error, rows){
             if (error) {
                 console.log(error);
