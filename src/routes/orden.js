@@ -184,7 +184,7 @@ module.exports = function (app) {
                         }
                         //console.log(res);
                     } else {
-                        if (ordenData.id_tecnico > 0 && ordenData.asignada != "" && ordenData.asignada != null){
+                        if (ordenData.asignada != "" && ordenData.asignada != null){
                             console.log('ORDEN ASIGNADA');
                             orden.updateProgramada(max, '2', (err, data) => {
                                 if (err){
@@ -356,7 +356,7 @@ module.exports = function (app) {
                     message: err
                 });
             }else{
-                if (ordenData.id_tecnico > 0 && ordenData.asignada != "" && ordenData.id_status == 1  && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
+                if (ordenData.asignada != "" && ordenData.id_status == 1  && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
                     console.log('ORDEN ASIGNADA');
                     orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
                         if (err){
@@ -443,4 +443,12 @@ module.exports = function (app) {
             }
         });
     });
+
+    app.post('/upload_evidencia', (req, res) => {
+        console.log(req);
+        res.json({
+            success: true,
+            message: "¡Se recibió el archivo de imagen!"
+        });
+    })
 }

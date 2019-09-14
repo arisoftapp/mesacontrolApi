@@ -28,7 +28,7 @@ ordenModel.getOrdenes = (callback) => {
 ordenModel.getAllOrdenes = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
+        dbAdmin.query(`SELECT a.id_tipo, a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
         CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
         a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
         a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
@@ -72,7 +72,7 @@ ordenModel.getOrdenesbyTecnico = (id_tecnico, callback) => {
 
 ordenModel.getAllOrdenesbyTecnico = (id_tecnico, callback) => {
     if (dbAdmin) {
-        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
+        dbAdmin.query(`SELECT a.id_tipo, a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
         a.recibe_benef, a.servicio_vial, a.benef_nombre, a.benef_paterno, a.benef_materno, a.descripcion,
         b.nombre, b.ap_paterno, b.ap_materno, c.nombre_aseguradora, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
         a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
