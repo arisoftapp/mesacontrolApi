@@ -19,7 +19,7 @@ module.exports.getConnection = function() {
     var connection = mysql.createConnection({
         host : 'localhost',
         user : 'root',
-        password : '',
+        password : 'arisoft.2019',
         database : 'mesacontrol_db'
     });
     connection.connect(function(err) {
