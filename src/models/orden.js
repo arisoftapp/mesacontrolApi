@@ -341,4 +341,29 @@ ordenModel.deleteOrden = (id_med, callback) => {
     }
 }
 
+ordenModel.upload_evidencia = (imageData, callback) => {
+    if (dbAdmin){
+        dbAdmin.query(imageData, function (error, rows){
+            if (error) {
+                console.log(error);
+                callback(error);
+            } else {                  
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+ordenModel.getEvidencia = (id_orden, callback) => {
+    if (dbAdmin){
+        dbAdmin.query(`SELECT * FROM evidencia WHERE id_orden = ` + id_orden, function(err, rows) {
+            if (err) {
+                throw err;
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}
+
 module.exports = ordenModel;

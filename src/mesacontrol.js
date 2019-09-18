@@ -42,6 +42,8 @@ server.use(function (req, res, next) {
 
 // Rutas
 require ('./routes/log')(server);
+server.use('/static', express.static('evidencias'));
+//server.use('/static', express.static(__dirname + '/evidencias'));
 
 server.use(function (err, req, res, next) {  //Control de errores
     console.error(err)
@@ -86,6 +88,7 @@ require ('./routes/user')(server);
 require ('./routes/costos.route')(server);
 require ('./routes/empresa')(server);
 require ('./routes/entidad')(server);
+
 
 
 
