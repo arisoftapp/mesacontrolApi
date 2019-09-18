@@ -444,11 +444,86 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/upload_evidencia', (req, res) => {
-        console.log(req);
-        res.json({
-            success: true,
-            message: "¡Se recibió el archivo de imagen!"
+    app.post('/upload_evidencia/:id_orden', (req, res) => {
+        //console.log(req.files);
+        let images = req.files.image;
+        let id_orden = req.params.id_orden;
+        
+        let imageData = 'INSERT INTO evidencia (id_orden, evidencia) VALUES (';
+        if (images.length == undefined){
+            var file = images;
+            if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
+                console.log('Formato aceptado');
+                file.mv('evidencias/'+ id_orden + '_' + file.name, function(err) {          
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send(err);
+                    }
+                    imageData += id_orden + ",'" + id_orden + '_' + file.name + "');";
+                    console.log(imageData);
+                    orden.upload_evidencia(imageData, (err, data) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            res.json({
+                                success: true,
+                                message: "¡Se recibió el archivo de imagen! " + data
+                            });
+                        }
+                    })
+                });
+            }
+        } else {
+            for (let i = 0; i <= req.files.image.length; i++){
+                var file = req.files.image[i];
+                if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
+                                 
+                    file.mv('evidencias/'+ id_orden + '_' + file.name, function(err) {          
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send(err);
+                        }
+                        imageData += id_orden + ",'" + id_orden + '_' + file.name[i] + "'";
+                        if (i < req.files.image.length-1){
+                            imageData += "),("
+                        } else {
+                            imageData += ");"
+                        }
+                        console.log(imageData);
+                        orden.upload_evidencia(imageData, (err, data) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                res.json({
+                                    success: true,
+                                    message: "¡Se recibió el archivo de imagen! " + data
+                                });
+                            }
+                        })
+                    });
+                }
+            };
+        }
+        
+       
+        
+    });
+
+
+    app.get('/evidencia/:id_orden', (req, res) => {
+        let ord = req.params.id_orden;
+        orden.getEvidencia(ord, (err, data) => {
+            if (err) {
+                res.json ({
+                    success: false,
+                    message: "No se pudo recuperar la evidencia de la orden: " + err
+                });
+            } else {
+                res.json({
+                    success: true,
+                    data: data
+                });
+            }
         });
-    })
+    });
 }
