@@ -475,22 +475,21 @@ module.exports = function (app) {
                 });
             }
         } else {
-            for (let i = 0; i <= req.files.image.length; i++){
-                let imageData = 'INSERT INTO evidencia (id_orden, evidencia) VALUES (';
-                var file = req.files.image[i];
+            for (let i = 0; i < images.length; i++){
+                var file = images[i];
                 if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){           
                     file.mv('evidencias/'+ id_orden + '_' + file.name, function(err) {          
                         if (err) {
                             console.log(err);
                             return res.status(500).send(err);
                         } else {
-                            imageData += id_orden + ",'" + id_orden + '_' + file.name[i] + "');";
+                            imageData += id_orden + ",'" + id_orden + '_' + file.name + "'";
+                            if (i < images.length-1){
+                                imageData += "),("
+                            } else {
+                                imageData += ");"
+                            }
                             console.log(imageData);
-                            orden.upload_evidencia(imageData, (err, data) => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            });
                         }
                     });
                 } else {
@@ -500,9 +499,20 @@ module.exports = function (app) {
                     });
                 }
             };
-            res.json({
-                success: true,
-                message: "¡Se recibió el archivo de imagen!"
+            console.log(imageData);
+            orden.upload_evidencia(imageData, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    res.json({
+                        success: false,
+                        message: "Error al agregar evidencia al servidor"
+                    });
+                } else {
+                    res.json({                                  
+                        success: true,
+                        message: "¡Se recibió el archivo de imagen! " + data
+                    });
+                }
             });
         }
     });
