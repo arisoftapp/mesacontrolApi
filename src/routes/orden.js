@@ -445,7 +445,8 @@ module.exports = function (app) {
     });
 
     app.post('/upload_evidencia/:id_orden', (req, res) => {
-        //console.log(req.files);
+        console.log(req.files.image);
+       
         let images = req.files.image;
         let id_orden = req.params.id_orden;
         
@@ -475,38 +476,35 @@ module.exports = function (app) {
             }
         } else {
             for (let i = 0; i <= req.files.image.length; i++){
+                let imageData = 'INSERT INTO evidencia (id_orden, evidencia) VALUES (';
                 var file = req.files.image[i];
-                if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
-                                 
+                if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){           
                     file.mv('evidencias/'+ id_orden + '_' + file.name, function(err) {          
                         if (err) {
                             console.log(err);
                             return res.status(500).send(err);
-                        }
-                        imageData += id_orden + ",'" + id_orden + '_' + file.name[i] + "'";
-                        if (i < req.files.image.length-1){
-                            imageData += "),("
                         } else {
-                            imageData += ");"
+                            imageData += id_orden + ",'" + id_orden + '_' + file.name[i] + "');";
+                            console.log(imageData);
+                            orden.upload_evidencia(imageData, (err, data) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                            });
                         }
-                        console.log(imageData);
-                        orden.upload_evidencia(imageData, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                res.json({
-                                    success: true,
-                                    message: "¡Se recibió el archivo de imagen! " + data
-                                });
-                            }
-                        })
+                    });
+                } else {
+                    res.json({
+                        success: false,
+                        message: "¡Tipo de archivo no admitido! "
                     });
                 }
             };
+            res.json({
+                success: true,
+                message: "¡Se recibió el archivo de imagen!"
+            });
         }
-        
-       
-        
     });
 
 
