@@ -517,6 +517,54 @@ module.exports = function (app) {
         }
     });
 
+    app.post('/upload_facturacion/:id_orden', (req, res) => {
+        let id_orden = req.params.id_orden;
+        if (req.files.pdf){
+            //console.log(req.files.pdf);
+            var file = req.files.pdf;
+            file.mv('evidencias/PDF/'+ id_orden + '_' + file.name, function(err) {          
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                let imageData = id_orden + '_' + file.name;
+                console.log(imageData);
+                orden.upload_pdf(id_orden, imageData, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        throw err
+                    } 
+                })
+            });
+        };
+        if (req.files.xml){
+            //console.log(req.files.xml);
+            var file = req.files.xml;
+            file.mv('evidencias/XML/'+ id_orden + '_' + file.name, function(err) {          
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                let imageData = id_orden + '_' + file.name;
+                console.log(imageData);
+                orden.upload_pdf(id_orden, imageData, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        throw err
+                    } 
+                })
+            });
+        }
+        res.json({
+            success: true,
+            message: "¡Se recibió el archivo de imagen!"
+        });
+        /*let pdf = req.files.image;
+        let xml = req.files.image;
+        let id_orden = req.params.id_orden;*/
+
+    });
+
 
     app.get('/evidencia/:id_orden', (req, res) => {
         let ord = req.params.id_orden;

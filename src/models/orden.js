@@ -347,6 +347,34 @@ ordenModel.upload_evidencia = (imageData, callback) => {
             if (error) {
                 console.log(error);
                 callback(error);
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+ordenModel.upload_pdf= (id_orden, imageData, callback) => {
+    if (dbAdmin){
+        dbAdmin.query(`UPDATE orden SET 
+        url_pdf = '` + imageData + `' WHERE id_orden = ` + id_orden , function (error, rows){
+            if (error) {
+                console.log(error);
+                callback(error);
+            } else {                  
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+ordenModel.upload_xml= (id_orden, imageData, callback) => {
+    if (dbAdmin){
+        dbAdmin.query(`UPDATE orden SET 
+        url_xml = '` + imageData + `' WHERE id_orden = ` + id_orden , function (error, rows){
+            if (error) {
+                console.log(error);
+                callback(error);
             } else {                  
                 callback(null, rows);
             }
