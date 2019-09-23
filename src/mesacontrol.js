@@ -43,6 +43,8 @@ server.use(function (req, res, next) {
 // Rutas
 require ('./routes/log')(server);
 server.use('/static', express.static('evidencias'));
+server.use('/files_p', express.static('evidencias/PDF'));
+server.use('/files_x', express.static('evidencias/PDF'));
 //server.use('/static', express.static(__dirname + '/evidencias'));
 
 server.use(function (err, req, res, next) {  //Control de errores
