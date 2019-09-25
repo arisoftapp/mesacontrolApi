@@ -181,10 +181,11 @@ module.exports = function (app) {
                                 success: false,
                                 message: err
                             });
+                            co
                         }
                         //console.log(res);
                     } else {
-                        if (ordenData.asignada != "" && ordenData.asignada != null){
+                        if (ordenData.asignada != "" && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
                             console.log('ORDEN ASIGNADA');
                             orden.updateProgramada(max, '2', (err, data) => {
                                 if (err){
@@ -356,37 +357,40 @@ module.exports = function (app) {
                     message: err
                 });
             }else{
-                if (ordenData.asignada != "" && ordenData.id_status == 1  && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
-                    console.log('ORDEN ASIGNADA');
-                    orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
-                        if (err){
-                            res.json({
-                                success: false,
-                                message: err
-                            });
-                        }else{
-                            res.json({
-                                success: true,
-                                message: "¡Se Guardaron los cambios exitosamente!"
-                            });
-                        }
-                    });
-                } else {
-                    console.log('ORDEN NO ASIGNADA', ordenData);
-                    orden.updateProgramada(ordenData.id_orden, '1', (err, data) => {
-                        if (err){
-                            res.json({
-                                success: false,
-                                message: err
-                            });
-                        }else{
-                            res.json({
-                                success: true,
-                                message: "¡Se Guardaron los cambios exitosamente!"
-                            });
-                        }
-                    });
+                if (ordenData.id_status == 1 || ordenData_id_status == 2) {
+                    if (ordenData.asignada != ""  && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
+                        console.log('ORDEN ASIGNADA');
+                        orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
+                            if (err){
+                                res.json({
+                                    success: false,
+                                    message: err
+                                });
+                            }else{
+                                res.json({
+                                    success: true,
+                                    message: "¡Se Guardaron los cambios exitosamente!"
+                                });
+                            }
+                        });
+                    } else {
+                        console.log('ORDEN NO ASIGNADA', ordenData);
+                        orden.updateProgramada(ordenData.id_orden, '1', (err, data) => {
+                            if (err){
+                                res.json({
+                                    success: false,
+                                    message: err
+                                });
+                            }else{
+                                res.json({
+                                    success: true,
+                                    message: "¡Se Guardaron los cambios exitosamente!"
+                                });
+                            }
+                        });
+                    }
                 }
+                
             }
         });
     });
