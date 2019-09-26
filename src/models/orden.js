@@ -201,6 +201,7 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 id_aseguradora = ${ordenData.id_aseguradora},
                 id_poliza = ${ordenData.id_poliza},
                 folio_cierre = '${ordenData.folio_cierre}',
+                folio_factura = '${ordenData.folio_factura}',
                 observaciones = '${ordenData.observaciones}',
                 benef_nombre = '${ordenData.benef_nombre}',
                 benef_paterno  = '${ordenData.benef_paterno}',

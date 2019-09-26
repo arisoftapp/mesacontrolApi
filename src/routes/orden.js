@@ -179,19 +179,18 @@ module.exports = function (app) {
                         } else{
                             res.json({
                                 success: false,
-                                message: err
+                                message: err.code
                             });
-                            co
                         }
                         //console.log(res);
                     } else {
-                        if (ordenData.asignada != "" && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
+                        if (ordenData.asignada !== "" && ordenData.asignada !== null && ordenData.asignada !== "0000-00-00 00:00:00.000000"){
                             console.log('ORDEN ASIGNADA');
                             orden.updateProgramada(max, '2', (err, data) => {
                                 if (err){
                                     res.json({
                                         success: false,
-                                        message: err
+                                        message: err.code
                                     });
                                 }else{
                                     res.json({
@@ -229,7 +228,7 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: err
+                            message: err.code
                         });
                     }else{
                         res.json({
@@ -244,7 +243,7 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: err
+                            message: err.code
                         });
                     }else{
                         res.json({
@@ -301,7 +300,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.code
                 });
             }else{
                 res.json({
@@ -322,6 +321,7 @@ module.exports = function (app) {
             id_aseguradora : req.body.id_aseguradora,
             id_poliza : req.body.id_poliza,
             folio_cierre : req.body.folio_cierre,
+            folio_factura : req.body.folio_factura,
             observaciones : req.body.observaciones,
             benef_nombre : req.body.benef_nombre,
             benef_paterno  : req.body.benef_paterno,
@@ -354,17 +354,17 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.code
                 });
             }else{
-                if (ordenData.id_status == 1 || ordenData_id_status == 2) {
-                    if (ordenData.asignada != ""  && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
+                if (ordenData.id_status === 1 || ordenData.id_status === 2) {
+                    if (ordenData.asignada !== ""  && ordenData.asignada !== null && ordenData.asignada !== "0000-00-00 00:00:00.000000"){
                         console.log('ORDEN ASIGNADA');
                         orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
                             if (err){
                                 res.json({
                                     success: false,
-                                    message: err
+                                    message: err.code
                                 });
                             }else{
                                 res.json({
@@ -379,7 +379,7 @@ module.exports = function (app) {
                             if (err){
                                 res.json({
                                     success: false,
-                                    message: err
+                                    message: err.code
                                 });
                             }else{
                                 res.json({
@@ -389,8 +389,12 @@ module.exports = function (app) {
                             }
                         });
                     }
+                } else {
+                    res.json({
+                        success: true,
+                        message: "¡Se Guardaron los cambios exitosamente!"
+                    });
                 }
-                
             }
         });
     });
