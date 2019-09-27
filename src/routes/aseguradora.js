@@ -132,18 +132,18 @@ module.exports = function (app) {
                             message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
                         });
                     }else{
-                        var insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor, poliza_cancelacion ) VALUES (");
+                        var insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor, poliza_cancelacion, poliza_costo ) VALUES (");
                         for (i = 0; i < polizas.length; i++) { 
                             console.log(polizas[i].poliza_nombre);
                             let index = i+1;
-                            insert_script = insert_script + id_aseguradora + "," + index + ",'" + polizas[i].poliza_nombre + "','" + polizas[i].poliza_valor + "','" + polizas[i].poliza_cancelacion + "')";
+                            insert_script = insert_script + id_aseguradora + "," + index + ",'" + polizas[i].poliza_nombre + "','" + polizas[i].poliza_valor + "','" + polizas[i].poliza_cancelacion + "','" + polizas[i].poliza_costo + "')";
                             if (i < polizas.length-1){
                                 insert_script += ",(";
                             } else {
                                 insert_script += ";";
                             }
                         }
-                        console.log(insert_script);
+                        //console.log(insert_script);
                         aseguradora.insertPolizas(insert_script, (err, dta) => {
                             if (err){
                                 res.json({

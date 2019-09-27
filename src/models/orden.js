@@ -8,13 +8,15 @@ ordenModel.getOrdenes = (callback) => {
         dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
         CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
         a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
-        a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
-        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, a.descripcion,
+        a.recibe_nombre, a.recibe_paterno, a.recibe_materno, h.poliza_costo,
+        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, e.erp, a.descripcion,
         d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
-        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio WHERE id_tipo = 1 ORDER BY a.id_status ASC`, function(err, rows) {
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
+        LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
+        WHERE id_tipo = 1 ORDER BY a.id_status ASC`, function(err, rows) {
             if (err) {
                 throw err;
             }
@@ -30,6 +32,7 @@ ordenModel.getAllOrdenes = (callback) => {
     if (dbAdmin) {
         dbAdmin.query(`SELECT a.id_tipo, a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
         CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
+        a.entre_calle1, a.entre_calle2, a.col,
         a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
         a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
         CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, a.descripcion,
@@ -75,7 +78,7 @@ ordenModel.getAllOrdenesbyTecnico = (id_tecnico, callback) => {
         dbAdmin.query(`SELECT a.id_tipo, a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
         a.recibe_benef, a.servicio_vial, a.benef_nombre, a.benef_paterno, a.benef_materno, a.descripcion,
         b.nombre, b.ap_paterno, b.ap_materno, c.nombre_aseguradora, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
-        a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
+        a.recibe_nombre, a.recibe_paterno, a.recibe_materno, 
         d.orden_status AS estado_orden FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio
@@ -133,7 +136,8 @@ ordenModel.getOrden = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
         dbAdmin.query(`SELECT a.*, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, 
-        c.nombre_aseguradora, d.orden_status AS estado_orden, e.nombre_servicio, f.nombre_entidad, g.nombre_municipio, IFNULL(h.poliza_nombre,"") AS poliza_nombre, IFNULL(h.poliza_valor,"") AS poliza_valor FROM orden AS a
+        c.nombre_aseguradora, d.orden_status AS estado_orden, e.nombre_servicio, f.nombre_entidad, g.nombre_municipio, IFNULL(h.poliza_nombre,"") AS poliza_nombre, IFNULL(h.poliza_valor,"") AS poliza_valor, h.poliza_costo FROM orden AS a
+        
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status

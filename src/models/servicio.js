@@ -44,9 +44,9 @@ servicioModel.insertServicio = (servdata, callback) =>{
 }
 
 
-servicioModel.updateServicio = (id_servicio, nombre_servicio, desc, callback) =>{
+servicioModel.updateServicio = (id_servicio, nombre_servicio, desc, erp, callback) =>{
     if (dbAdmin){
-        dbAdmin.query(`UPDATE servicio SET nombre_servicio = '`+ nombre_servicio +  `', descripcion_servicio = ' ` + desc +  `'  WHERE id_servicio = ` + id_servicio, function (error, rows){
+        dbAdmin.query(`UPDATE servicio SET nombre_servicio = '`+ nombre_servicio +  `', erp = '` + erp +`', descripcion_servicio = '` + desc +  `'  WHERE id_servicio = ` + id_servicio, function (error, rows){
             if (error) {
                 console.log(error);
                 //callback(null,err.message)

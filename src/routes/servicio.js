@@ -39,6 +39,7 @@ module.exports = function (app) {
         const serdta = {
             nombre_servicio : req.body.nombre_servicio,
             descripcion_servicio : req.body.descripcion_servicio,
+            erp : req.body.erp
         }
         
         servicio.insertServicio(serdta, (err, data) => {
@@ -60,7 +61,8 @@ module.exports = function (app) {
         var id_Servicio = req.body.id_servicio;
         var nom_Servicio = req.body.nombre_servicio;
         var desc = req.body.descripcion_servicio;
-        servicio.updateServicio(id_Servicio, nom_Servicio, desc, (err, data) => {
+        var erp = req.body.erp;
+        servicio.updateServicio(id_Servicio, nom_Servicio, desc, erp, (err, data) => {
             if (err){
                 res.json({
                     success: false,
