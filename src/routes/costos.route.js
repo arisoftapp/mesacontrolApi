@@ -34,6 +34,8 @@ module.exports = function (app) {
             mano_obra : req.body.mano_obra,
             corres : req.body.corres,
             kilometros : req.body.kilometros,
+            cant_km : req.body.cant_km,
+            precio_km : req.body.precio_km,
             importe_materiales : req.body.importe_materiales,
             total : req.body.total
         };
