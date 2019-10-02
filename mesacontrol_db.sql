@@ -1,549 +1,466 @@
-/*
- Navicat Premium Data Transfer
+-- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
+--
+-- Host: localhost    Database: mesacontrol_db
+-- ------------------------------------------------------
+-- Server version	8.0.17
 
- Source Server         : MYSQL
- Source Server Type    : MySQL
- Source Server Version : 100316
- Source Host           : localhost:3306
- Source Schema         : mesacontrol_db
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
- Target Server Type    : MySQL
- Target Server Version : 100316
- File Encoding         : 65001
+--
+-- Table structure for table `aseguradora`
+--
 
- Date: 14/09/2019 12:57:14
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for aseguradora
--- ----------------------------
 DROP TABLE IF EXISTS `aseguradora`;
-CREATE TABLE `aseguradora`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `aseguradora` (
   `id_aseguradora` int(100) NOT NULL AUTO_INCREMENT,
-  `nombre_aseguradora` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `nombre_contacto` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `telefono` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `logotipo_aseguradora` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
+  `nombre_aseguradora` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `nombre_contacto` varchar(45) DEFAULT '',
+  `telefono` varchar(45) DEFAULT '',
+  `logotipo_aseguradora` varchar(200) DEFAULT '',
   PRIMARY KEY (`id_aseguradora`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of aseguradora
--- ----------------------------
-INSERT INTO `aseguradora` VALUES (1, 'Club de Asistencia SA de CV  (Hogar)', '', '', '');
-INSERT INTO `aseguradora` VALUES (4, 'Club de Asistencia SA de CV  (P. Vial)', '', '', '');
-INSERT INTO `aseguradora` VALUES (9, 'IKE ASISTENCIA ', '', '', '');
-INSERT INTO `aseguradora` VALUES (10, 'TELEMEDIC', '', '', '');
-INSERT INTO `aseguradora` VALUES (12, 'ALLIANZ GLOBAL ', '', '', '');
-INSERT INTO `aseguradora` VALUES (13, 'IGS SERVICIOS ', '', '', '');
-INSERT INTO `aseguradora` VALUES (15, 'MAS SERVICIOS VIAL ', '', '', '');
-INSERT INTO `aseguradora` VALUES (16, 'MAS SERVICIOS HOGAR', '', '', '');
-INSERT INTO `aseguradora` VALUES (17, 'AMERICAN ASSIST MEXICO', '', '', '');
-INSERT INTO `aseguradora` VALUES (19, 'MEXICO RED INTEGRAL(RED INTEGRAL)', '', '', '');
-INSERT INTO `aseguradora` VALUES (20, 'ALCRIMEX (VIDRIOS)', '', '', '');
-INSERT INTO `aseguradora` VALUES (21, 'CRISTAKAR (VIDRIOS)', '', '', '');
+--
+-- Dumping data for table `aseguradora`
+--
 
--- ----------------------------
--- Table structure for costo
--- ----------------------------
+LOCK TABLES `aseguradora` WRITE;
+/*!40000 ALTER TABLE `aseguradora` DISABLE KEYS */;
+INSERT INTO `aseguradora` VALUES (1,'Club de Asistencia SA de CV  (Hogar)','','',''),(4,'Club de Asistencia SA de CV  (P. Vial)','','',''),(9,'IKE ASISTENCIA ','','',''),(10,'TELEMEDIC','','',''),(12,'ALLIANZ GLOBAL ','','',''),(13,'IGS SERVICIOS ','','',''),(15,'MAS SERVICIOS VIAL ','','',''),(16,'MAS SERVICIOS HOGAR','','',''),(17,'AMERICAN ASSIST MEXICO','','',''),(19,'MEXICO RED INTEGRAL(RED INTEGRAL)','','',''),(20,'ALCRIMEX (VIDRIOS)','','',''),(21,'CRISTAKAR (VIDRIOS)','','','');
+/*!40000 ALTER TABLE `aseguradora` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `costo`
+--
+
 DROP TABLE IF EXISTS `costo`;
-CREATE TABLE `costo`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `costo` (
   `id_orden` int(255) NOT NULL,
-  `mano_obra` double(255, 0) NULL DEFAULT 0,
-  `corres` double(255, 0) NULL DEFAULT 0,
-  `kilometros` double(255, 0) NULL DEFAULT 0,
-  `importe_materiales` double(255, 0) NULL DEFAULT 0,
-  `total` double(255, 0) NULL DEFAULT 0
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+  `mano_obra` double(255,0) DEFAULT '0',
+  `corres` double(255,0) DEFAULT '0',
+  `kilometros` double(255,0) DEFAULT '0',
+  `importe_materiales` double(255,0) DEFAULT '0',
+  `total` double(255,0) DEFAULT '0',
+  `cant_km` double(255,0) DEFAULT '0',
+  `precio_km` double(255,0) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of costo
--- ----------------------------
-INSERT INTO `costo` VALUES (45, 300, 100, 50, 1, 451);
+--
+-- Dumping data for table `costo`
+--
 
--- ----------------------------
--- Table structure for empleado
--- ----------------------------
+LOCK TABLES `costo` WRITE;
+/*!40000 ALTER TABLE `costo` DISABLE KEYS */;
+INSERT INTO `costo` VALUES (46,100,100,100,61,361,0,0),(60,350,90,150,360,950,0,0),(59,350,10,150,1500,2010,0,0),(67,150,0,0,0,150,0,0),(68,170,0,0,0,170,0,0),(70,250,0,0,60,310,0,0),(58,250,300,140,65,755,0,0),(47,150,300,0,0,450,0,0),(72,250,0,0,119,369,0,0),(2,250,0,0,0,250,0,0),(3,250,0,0,65,315,0,0),(6,250,0,0,95,345,0,0),(5,190,0,0,190,380,0,0),(12,200,0,0,118,318,0,0),(1,250,110,400,119,879,80,5),(9,250,300,63,137,750,9,7),(15,250,300,0,200,750,0,0),(16,100,0,0,0,100,0,0),(14,250,300,0,0,550,0,0),(20,300,150,0,900,1350,0,0),(21,300,300,0,270,870,0,0),(19,250,300,0,130,680,0,0);
+/*!40000 ALTER TABLE `costo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `empleado`
+--
+
 DROP TABLE IF EXISTS `empleado`;
-CREATE TABLE `empleado`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `empleado` (
   `id_empleado` int(10) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `ap_paterno` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `ap_materno` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
+  `nombre` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `ap_paterno` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `ap_materno` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
   PRIMARY KEY (`id_empleado`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of empleado
--- ----------------------------
-INSERT INTO `empleado` VALUES (1, 'Graciela', 'Hernandez', 'Rodriguez', 'graciela', 'pipeso');
+--
+-- Dumping data for table `empleado`
+--
 
--- ----------------------------
--- Table structure for empresa
--- ----------------------------
+LOCK TABLES `empleado` WRITE;
+/*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
+INSERT INTO `empleado` VALUES (1,'Graciela','Hernandez','Rodriguez','',''),(2,'Soporte','','','soporte','soporte'),(3,'Maria del Carmen','Martinez','Careaga','c01','1234'),(4,'Maria de Jesus','Lopez','Encinas','c02','1234'),(5,'Maria ','Ibarra','Bustamante','c03','1234'),(6,'Lourdes','Valenzuela','E.','c04','1234'),(7,'Francisco Javier ','Partida ','Lugo','c99','1234');
+/*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `empresa`
+--
+
 DROP TABLE IF EXISTS `empresa`;
-CREATE TABLE `empresa`  (
-  `nombre_empresa` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `puerto` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `url_fact` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `empresa` (
+  `nombre_empresa` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `puerto` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `url_fact` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of empresa
--- ----------------------------
-INSERT INTO `empresa` VALUES ('Pipeso', '3006', 'Admin', 'admin', NULL);
+--
+-- Dumping data for table `empresa`
+--
 
--- ----------------------------
--- Table structure for entidad_fed
--- ----------------------------
+LOCK TABLES `empresa` WRITE;
+/*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
+INSERT INTO `empresa` VALUES ('Pipeso','3006','Admin','admin',NULL);
+/*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `entidad_fed`
+--
+
 DROP TABLE IF EXISTS `entidad_fed`;
-CREATE TABLE `entidad_fed`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `entidad_fed` (
   `id_entidad` int(255) NOT NULL,
-  `nombre_entidad` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `nombre_entidad` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id_entidad`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of entidad_fed
--- ----------------------------
-INSERT INTO `entidad_fed` VALUES (25, 'Sinaloa');
-INSERT INTO `entidad_fed` VALUES (26, 'Sonora');
+--
+-- Dumping data for table `entidad_fed`
+--
 
--- ----------------------------
--- Table structure for estado_orden
--- ----------------------------
+LOCK TABLES `entidad_fed` WRITE;
+/*!40000 ALTER TABLE `entidad_fed` DISABLE KEYS */;
+INSERT INTO `entidad_fed` VALUES (25,'Sinaloa'),(26,'Sonora');
+/*!40000 ALTER TABLE `entidad_fed` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `estado_orden`
+--
+
 DROP TABLE IF EXISTS `estado_orden`;
-CREATE TABLE `estado_orden`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `estado_orden` (
   `id_status` int(1) NOT NULL,
-  `orden_status` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `orden_status` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id_status`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of estado_orden
--- ----------------------------
-INSERT INTO `estado_orden` VALUES (1, 'Por asignar');
-INSERT INTO `estado_orden` VALUES (2, 'Programada');
-INSERT INTO `estado_orden` VALUES (3, 'En proceso');
-INSERT INTO `estado_orden` VALUES (4, 'Finalizada');
-INSERT INTO `estado_orden` VALUES (5, 'Facturada');
-INSERT INTO `estado_orden` VALUES (6, 'Cancelada con costo');
-INSERT INTO `estado_orden` VALUES (7, 'Cancelada sin costo');
+--
+-- Dumping data for table `estado_orden`
+--
 
--- ----------------------------
--- Table structure for evidencia
--- ----------------------------
+LOCK TABLES `estado_orden` WRITE;
+/*!40000 ALTER TABLE `estado_orden` DISABLE KEYS */;
+INSERT INTO `estado_orden` VALUES (1,'Por asignar'),(2,'Programada'),(3,'En proceso'),(4,'Finalizada'),(5,'Facturada'),(6,'Cancelada con costo'),(7,'Cancelada sin costo');
+/*!40000 ALTER TABLE `estado_orden` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `evidencia`
+--
+
 DROP TABLE IF EXISTS `evidencia`;
-CREATE TABLE `evidencia`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `evidencia` (
   `id_evidencia` int(255) NOT NULL AUTO_INCREMENT,
   `id_orden` int(255) NOT NULL,
-  `evidencia` blob NULL,
-  `fecha` datetime(0) NULL DEFAULT current_timestamp(0),
+  `evidencia` varchar(300) DEFAULT NULL,
+  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_evidencia`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Table structure for historial_orden
--- ----------------------------
+--
+-- Dumping data for table `evidencia`
+--
+
+LOCK TABLES `evidencia` WRITE;
+/*!40000 ALTER TABLE `evidencia` DISABLE KEYS */;
+INSERT INTO `evidencia` VALUES (44,14,'14_IMG-20190918-WA0005.jpg','2019-09-19 14:13:28'),(45,14,'14_IMG-20190916-WA0000.jpg','2019-09-19 14:13:40'),(46,14,'14_Screenshot_20190915-173116_Twitter.jpg','2019-09-19 14:14:02'),(47,14,'14_dribbble-302.png','2019-09-19 15:53:23'),(48,46,'46_15692800798348258519851985684013.jpg','2019-09-23 18:07:57'),(49,70,'70_1569281210900404990533947387417.jpg','2019-09-23 18:26:44'),(50,70,'70_15692818314615810044239804569496.jpg','2019-09-23 18:37:00'),(51,72,'72_15693474895322052053064386721654.jpg','2019-09-24 12:51:17'),(52,72,'72_1569352330761834919877277420554.jpg','2019-09-24 14:11:36'),(53,1,'1_15693540984387478635046776765524.jpg','2019-09-24 14:41:03'),(54,1,'1_15693541235553493825824842491256.jpg','2019-09-24 14:41:21'),(55,2,'2_IMG-20190924-WA0120.jpeg','2019-09-24 19:55:08'),(56,2,'2_IMG-20190924-WA0120.jpeg','2019-09-24 19:55:21'),(57,2,'2_IMG-20190924-WA0112.jpeg','2019-09-24 19:56:57'),(58,3,'3_122 X 244 PIPESO CIBUTA.jpg','2019-09-26 09:45:19'),(59,5,'5_20190926_104744.jpg','2019-09-26 11:47:24'),(60,5,'5_20190926_104750.jpg','2019-09-26 11:47:38'),(61,3,'3_15695177461102646227696375465213.jpg','2019-09-26 12:08:15'),(62,6,'6_1569521475769879642117731274542.jpg','2019-09-26 13:11:21'),(63,6,'6_15695219719335714712082585001469.jpg','2019-09-26 13:19:35'),(64,12,'12_15695411611805622195875494288132.jpg','2019-09-26 18:39:18'),(65,12,'12_1569541187141592682647673570617.jpg','2019-09-26 18:39:47'),(66,13,'13_575390AE-1432-42B7-BB8A-582F470F66CA.jpeg','2019-09-29 13:27:03'),(67,13,'13_C22C1FBB-04DC-405D-80AA-02B179D77E75.jpeg','2019-09-29 13:27:56'),(68,13,'13_image.jpg','2019-09-29 13:50:17'),(69,15,'15_casa de família multi-geracional _ Arquitetos de boas-vindas #Rustico.jpg','2019-09-30 12:10:43'),(70,15,'15_28277144_1469437953182457_6517912912330842040_n.png','2019-09-30 12:11:25'),(71,15,'15_IMG-20190930-WA0000.jpg','2019-09-30 13:26:30'),(72,15,'15_IMG-20190930-WA0001.jpg','2019-09-30 13:30:27'),(73,15,'15_IMG-20190930-WA0001.jpg','2019-09-30 13:30:31'),(74,16,'16_IMG-20190930-WA0115.jpg','2019-09-30 21:19:00'),(75,16,'16_IMG-20190930-WA0114.jpg','2019-09-30 21:19:10'),(76,19,'19_IMG-20191001-WA0017.jpeg','2019-10-01 12:38:46'),(77,20,'20_reg dañada.jpg','2019-10-01 13:08:00'),(78,20,'20_reg nueva.jpg','2019-10-01 13:08:10'),(79,20,'20_reg nueva2.jpg','2019-10-01 13:08:17'),(80,21,'21_20191001_121224.jpg','2019-10-01 15:56:48'),(81,21,'21_IMG-20191001-WA0015.jpeg','2019-10-01 16:07:38'),(82,21,'21_20191001_134749.jpg','2019-10-01 16:13:51'),(83,18,'18_IMG-20190930-WA0095.jpg','2019-10-01 20:13:24'),(84,18,'18_IMG-20190930-WA0094.jpg','2019-10-01 20:13:45'),(85,18,'18_IMG-20190930-WA0093.jpg','2019-10-01 20:14:12'),(86,18,'18_IMG-20190930-WA0091.jpg','2019-10-01 20:14:32'),(87,24,'24_IMG-20191001-WA0082.jpg','2019-10-01 20:15:36'),(88,24,'24_IMG-20191001-WA0081.jpg','2019-10-01 20:15:51'),(89,24,'24_IMG-20191001-WA0080.jpg','2019-10-01 20:16:10'),(90,24,'24_IMG-20191001-WA0079.jpg','2019-10-01 20:16:23'),(91,24,'24_IMG-20191001-WA0077.jpg','2019-10-01 20:17:09'),(92,24,'24_IMG-20191001-WA0076.jpg','2019-10-01 20:17:25');
+/*!40000 ALTER TABLE `evidencia` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `historial_orden`
+--
+
 DROP TABLE IF EXISTS `historial_orden`;
-CREATE TABLE `historial_orden`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `historial_orden` (
   `id_movimiento` int(255) NOT NULL,
-  `id_tipo_usuario` int(255) NULL DEFAULT NULL,
-  `id_orden` int(255) NULL DEFAULT NULL,
-  `id_estdo_orden` int(255) NULL DEFAULT NULL,
+  `id_tipo_usuario` int(255) DEFAULT NULL,
+  `id_orden` int(255) DEFAULT NULL,
+  `id_estdo_orden` int(255) DEFAULT NULL,
   PRIMARY KEY (`id_movimiento`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Table structure for material
--- ----------------------------
+--
+-- Dumping data for table `historial_orden`
+--
+
+LOCK TABLES `historial_orden` WRITE;
+/*!40000 ALTER TABLE `historial_orden` DISABLE KEYS */;
+/*!40000 ALTER TABLE `historial_orden` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `material`
+--
+
 DROP TABLE IF EXISTS `material`;
-CREATE TABLE `material`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `material` (
   `id_orden` int(255) NOT NULL,
-  `descripcion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `cantidad` double(255, 0) NULL DEFAULT 0,
-  `precio_unitario` double(255, 0) NULL DEFAULT 0,
-  `importe` double(255, 0) NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+  `descripcion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `cantidad` double(255,0) DEFAULT '0',
+  `precio_unitario` double(255,0) DEFAULT '0',
+  `importe` double(255,0) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of material
--- ----------------------------
-INSERT INTO `material` VALUES (45, 'Tornillo', 1, 1, 1);
+--
+-- Dumping data for table `material`
+--
 
--- ----------------------------
--- Table structure for municipio
--- ----------------------------
+LOCK TABLES `material` WRITE;
+/*!40000 ALTER TABLE `material` DISABLE KEYS */;
+INSERT INTO `material` VALUES (46,'Tornillo',1,1,1),(46,'GUASA DE PRESION',10,1,10),(46,'Llave de Jardin',1,50,50),(60,'H2O aire',30,12,360),(59,'H2O ',30,50,1500),(70,'Llave de control',1,60,60),(58,'Manguera lavabo',1,65,65),(72,'gasolina magna ',7,17,119),(3,'',0,0,0),(3,'Manguera wc',1,65,65),(6,'',0,0,0),(6,'Valvila de flotador',1,95,95),(5,'Tapa doble co tacto',1,70,70),(5,'Contacto',2,40,80),(5,'CINTA AISLANTE',1,40,40),(12,'Vsd',1,118,118),(1,'Gasolina magna',7,17,119),(9,'GASOLINA',7,20,137),(15,'Cerradura mariposa',1,200,200),(20,'Regadera Lorenceti',1,400,400),(20,'Cable calibre 10 color Rojo',25,10,250),(20,'Cable calibre 10 color Negro',25,10,250),(21,'Centro de carga de 2 circuitos',1,130,130),(21,'Térmico sencillo 40 amperes',1,140,140),(19,'Gasolina Premium',7,19,130);
+/*!40000 ALTER TABLE `material` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `municipio`
+--
+
 DROP TABLE IF EXISTS `municipio`;
-CREATE TABLE `municipio`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `municipio` (
   `id_entidad` int(255) NOT NULL,
   `id_municipio` int(255) NOT NULL,
-  `nombre_municipio` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id_entidad`, `id_municipio`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+  `nombre_municipio` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`id_entidad`,`id_municipio`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of municipio
--- ----------------------------
-INSERT INTO `municipio` VALUES (25, 1872, 'Culiacán');
-INSERT INTO `municipio` VALUES (25, 1873, 'Navolato');
-INSERT INTO `municipio` VALUES (25, 1874, 'Badiraguato');
-INSERT INTO `municipio` VALUES (25, 1875, 'Cosalá');
-INSERT INTO `municipio` VALUES (25, 1876, 'Mocorito');
-INSERT INTO `municipio` VALUES (25, 1877, 'Guasave');
-INSERT INTO `municipio` VALUES (25, 1878, 'Ahome');
-INSERT INTO `municipio` VALUES (25, 1879, 'Salvador Alvarado');
-INSERT INTO `municipio` VALUES (25, 1880, 'Angostura');
-INSERT INTO `municipio` VALUES (25, 1881, 'Choix');
-INSERT INTO `municipio` VALUES (25, 1882, 'El Fuerte');
-INSERT INTO `municipio` VALUES (25, 1883, 'Sinaloa');
-INSERT INTO `municipio` VALUES (25, 1884, 'Mazatlán');
-INSERT INTO `municipio` VALUES (25, 1885, 'Escuinapa');
-INSERT INTO `municipio` VALUES (25, 1886, 'Concordia');
-INSERT INTO `municipio` VALUES (25, 1887, 'Elota');
-INSERT INTO `municipio` VALUES (25, 1888, 'Rosario');
-INSERT INTO `municipio` VALUES (25, 1889, 'San Ignacio');
-INSERT INTO `municipio` VALUES (26, 1890, 'Hermosillo');
-INSERT INTO `municipio` VALUES (26, 1891, 'San Miguel de Horcasitas');
-INSERT INTO `municipio` VALUES (26, 1892, 'Carbó');
-INSERT INTO `municipio` VALUES (26, 1893, 'San Luis Río Colorado');
-INSERT INTO `municipio` VALUES (26, 1894, 'Puerto Peñasco');
-INSERT INTO `municipio` VALUES (26, 1895, 'General Plutarco Elías Calles');
-INSERT INTO `municipio` VALUES (26, 1896, 'Caborca');
-INSERT INTO `municipio` VALUES (26, 1897, 'Altar');
-INSERT INTO `municipio` VALUES (26, 1898, 'Tubutama');
-INSERT INTO `municipio` VALUES (26, 1899, 'Atil');
-INSERT INTO `municipio` VALUES (26, 1900, 'Oquitoa');
-INSERT INTO `municipio` VALUES (26, 1901, 'Sáric');
-INSERT INTO `municipio` VALUES (26, 1902, 'Benjamín Hill');
-INSERT INTO `municipio` VALUES (26, 1903, 'Trincheras');
-INSERT INTO `municipio` VALUES (26, 1904, 'Pitiquito');
-INSERT INTO `municipio` VALUES (26, 1905, 'Nogales');
-INSERT INTO `municipio` VALUES (26, 1906, 'Imuris');
-INSERT INTO `municipio` VALUES (26, 1907, 'Santa Cruz');
-INSERT INTO `municipio` VALUES (26, 1908, 'Magdalena');
-INSERT INTO `municipio` VALUES (26, 1909, 'Naco');
-INSERT INTO `municipio` VALUES (26, 1910, 'Agua Prieta');
-INSERT INTO `municipio` VALUES (26, 1911, 'Fronteras');
-INSERT INTO `municipio` VALUES (26, 1912, 'Nacozari de García');
-INSERT INTO `municipio` VALUES (26, 1913, 'Bavispe');
-INSERT INTO `municipio` VALUES (26, 1914, 'Bacerac');
-INSERT INTO `municipio` VALUES (26, 1915, 'Huachinera');
-INSERT INTO `municipio` VALUES (26, 1916, 'Nácori Chico');
-INSERT INTO `municipio` VALUES (26, 1917, 'Granados');
-INSERT INTO `municipio` VALUES (26, 1918, 'Bacadéhuachi');
-INSERT INTO `municipio` VALUES (26, 1919, 'Cumpas');
-INSERT INTO `municipio` VALUES (26, 1920, 'Huásabas');
-INSERT INTO `municipio` VALUES (26, 1921, 'Moctezuma');
-INSERT INTO `municipio` VALUES (26, 1922, 'Villa Hidalgo');
-INSERT INTO `municipio` VALUES (26, 1923, 'Santa Ana');
-INSERT INTO `municipio` VALUES (26, 1924, 'Cananea');
-INSERT INTO `municipio` VALUES (26, 1925, 'Arizpe');
-INSERT INTO `municipio` VALUES (26, 1926, 'Cucurpe');
-INSERT INTO `municipio` VALUES (26, 1927, 'Bacoachi');
-INSERT INTO `municipio` VALUES (26, 1928, 'San Pedro de la Cueva');
-INSERT INTO `municipio` VALUES (26, 1929, 'Divisaderos');
-INSERT INTO `municipio` VALUES (26, 1930, 'Tepache');
-INSERT INTO `municipio` VALUES (26, 1931, 'Villa Pesqueira');
-INSERT INTO `municipio` VALUES (26, 1932, 'Opodepe');
-INSERT INTO `municipio` VALUES (26, 1933, 'Huépac');
-INSERT INTO `municipio` VALUES (26, 1934, 'Banámichi');
-INSERT INTO `municipio` VALUES (26, 1935, 'Ures');
-INSERT INTO `municipio` VALUES (26, 1936, 'Aconchi');
-INSERT INTO `municipio` VALUES (26, 1937, 'Baviácora');
-INSERT INTO `municipio` VALUES (26, 1938, 'San Felipe de Jesús');
-INSERT INTO `municipio` VALUES (26, 1939, 'Rayón');
-INSERT INTO `municipio` VALUES (26, 1940, 'Cajeme');
-INSERT INTO `municipio` VALUES (26, 1941, 'Navojoa');
-INSERT INTO `municipio` VALUES (26, 1942, 'Huatabampo');
-INSERT INTO `municipio` VALUES (26, 1943, 'Bácum');
-INSERT INTO `municipio` VALUES (26, 1944, 'Etchojoa');
-INSERT INTO `municipio` VALUES (26, 1945, 'Benito Juárez');
-INSERT INTO `municipio` VALUES (26, 1946, 'Empalme');
-INSERT INTO `municipio` VALUES (26, 1947, 'Guaymas');
-INSERT INTO `municipio` VALUES (26, 1948, 'San Ignacio Río Muerto');
-INSERT INTO `municipio` VALUES (26, 1949, 'La Colorada');
-INSERT INTO `municipio` VALUES (26, 1950, 'Mazatán');
-INSERT INTO `municipio` VALUES (26, 1951, 'Suaqui Grande');
-INSERT INTO `municipio` VALUES (26, 1952, 'Sahuaripa');
-INSERT INTO `municipio` VALUES (26, 1953, 'San Javier');
-INSERT INTO `municipio` VALUES (26, 1954, 'Soyopa');
-INSERT INTO `municipio` VALUES (26, 1955, 'Bacanora');
-INSERT INTO `municipio` VALUES (26, 1956, 'Arivechi');
-INSERT INTO `municipio` VALUES (26, 1957, 'Rosario');
-INSERT INTO `municipio` VALUES (26, 1958, 'Quiriego');
-INSERT INTO `municipio` VALUES (26, 1959, 'Onavas');
-INSERT INTO `municipio` VALUES (26, 1960, 'Alamos');
-INSERT INTO `municipio` VALUES (26, 1961, 'Yécora');
+--
+-- Dumping data for table `municipio`
+--
 
--- ----------------------------
--- Table structure for orden
--- ----------------------------
+LOCK TABLES `municipio` WRITE;
+/*!40000 ALTER TABLE `municipio` DISABLE KEYS */;
+INSERT INTO `municipio` VALUES (25,1872,'Culiacán'),(25,1873,'Navolato'),(25,1874,'Badiraguato'),(25,1875,'Cosalá'),(25,1876,'Mocorito'),(25,1877,'Guasave'),(25,1878,'Ahome'),(25,1879,'Salvador Alvarado'),(25,1880,'Angostura'),(25,1881,'Choix'),(25,1882,'El Fuerte'),(25,1883,'Sinaloa'),(25,1884,'Mazatlán'),(25,1885,'Escuinapa'),(25,1886,'Concordia'),(25,1887,'Elota'),(25,1888,'Rosario'),(25,1889,'San Ignacio'),(26,1890,'Hermosillo'),(26,1891,'San Miguel de Horcasitas'),(26,1892,'Carbó'),(26,1893,'San Luis Río Colorado'),(26,1894,'Puerto Peñasco'),(26,1895,'General Plutarco Elías Calles'),(26,1896,'Caborca'),(26,1897,'Altar'),(26,1898,'Tubutama'),(26,1899,'Atil'),(26,1900,'Oquitoa'),(26,1901,'Sáric'),(26,1902,'Benjamín Hill'),(26,1903,'Trincheras'),(26,1904,'Pitiquito'),(26,1905,'Nogales'),(26,1906,'Imuris'),(26,1907,'Santa Cruz'),(26,1908,'Magdalena'),(26,1909,'Naco'),(26,1910,'Agua Prieta'),(26,1911,'Fronteras'),(26,1912,'Nacozari de García'),(26,1913,'Bavispe'),(26,1914,'Bacerac'),(26,1915,'Huachinera'),(26,1916,'Nácori Chico'),(26,1917,'Granados'),(26,1918,'Bacadéhuachi'),(26,1919,'Cumpas'),(26,1920,'Huásabas'),(26,1921,'Moctezuma'),(26,1922,'Villa Hidalgo'),(26,1923,'Santa Ana'),(26,1924,'Cananea'),(26,1925,'Arizpe'),(26,1926,'Cucurpe'),(26,1927,'Bacoachi'),(26,1928,'San Pedro de la Cueva'),(26,1929,'Divisaderos'),(26,1930,'Tepache'),(26,1931,'Villa Pesqueira'),(26,1932,'Opodepe'),(26,1933,'Huépac'),(26,1934,'Banámichi'),(26,1935,'Ures'),(26,1936,'Aconchi'),(26,1937,'Baviácora'),(26,1938,'San Felipe de Jesús'),(26,1939,'Rayón'),(26,1940,'Cajeme'),(26,1941,'Navojoa'),(26,1942,'Huatabampo'),(26,1943,'Bácum'),(26,1944,'Etchojoa'),(26,1945,'Benito Juárez'),(26,1946,'Empalme'),(26,1947,'Guaymas'),(26,1948,'San Ignacio Río Muerto'),(26,1949,'La Colorada'),(26,1950,'Mazatán'),(26,1951,'Suaqui Grande'),(26,1952,'Sahuaripa'),(26,1953,'San Javier'),(26,1954,'Soyopa'),(26,1955,'Bacanora'),(26,1956,'Arivechi'),(26,1957,'Rosario'),(26,1958,'Quiriego'),(26,1959,'Onavas'),(26,1960,'Alamos'),(26,1961,'Yécora');
+/*!40000 ALTER TABLE `municipio` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orden`
+--
+
 DROP TABLE IF EXISTS `orden`;
-CREATE TABLE `orden`  (
-  `id_tipo` int(2) NULL DEFAULT 1,
-  `id_orden` int(255) NULL DEFAULT NULL,
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orden` (
+  `id_orden` int(255) DEFAULT NULL,
   `id_aseguradora` int(5) NOT NULL,
   `expediente` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `facturado` datetime(6) NULL DEFAULT NULL,
-  `levantamiento` datetime(6) NULL DEFAULT current_timestamp(6),
-  `asignada` datetime(6) NULL DEFAULT NULL,
-  `cancelada` datetime(0) NULL DEFAULT NULL,
-  `folio_cierre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `id_status` int(1) NULL DEFAULT 1,
-  `descripcion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `id_servicio` int(5) NULL DEFAULT 0,
-  `id_poliza` int(10) NULL DEFAULT 0,
-  `benef_nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `benef_paterno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `benef_materno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `recibe_benef` int(10) NULL DEFAULT 0,
-  `recibe_nombre` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `recibe_materno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `recibe_paterno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `id_tecnico` int(5) NULL DEFAULT 0,
-  `observaciones` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `arribo` datetime(6) NULL DEFAULT NULL,
-  `fin` datetime(6) NULL DEFAULT NULL,
-  `calle` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `num_ext` varchar(6) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `num_int` varchar(6) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `col` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `id_municipio` int(255) NULL DEFAULT 0,
-  `id_estado` int(255) NULL DEFAULT 0,
-  `entre_calle1` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `entre_calle2` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `referencia` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `servicio_vial` int(10) NULL DEFAULT 0,
-  `vehiculo_tipo` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `vehiculo_color` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `vehiculo_placa` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `vehiculo_ubicacion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `vehiculo_combustible` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `vehiculo_litros` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `folio_recepcion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `folio_factura` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  PRIMARY KEY (`id_aseguradora`, `expediente`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+  `facturado` datetime(6) DEFAULT NULL,
+  `levantamiento` datetime(6) DEFAULT CURRENT_TIMESTAMP(6),
+  `asignada` varchar(100) DEFAULT NULL,
+  `cancelada` datetime DEFAULT NULL,
+  `folio_cierre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `id_status` int(1) DEFAULT '1',
+  `descripcion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `id_servicio` int(5) DEFAULT '0',
+  `id_poliza` int(10) DEFAULT '0',
+  `benef_nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `benef_paterno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `benef_materno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `recibe_benef` int(10) DEFAULT '0',
+  `recibe_nombre` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `recibe_materno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `recibe_paterno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `id_tecnico` int(5) DEFAULT '0',
+  `observaciones` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `arribo` varchar(100) DEFAULT NULL,
+  `fin` datetime(6) DEFAULT NULL,
+  `calle` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `num_ext` varchar(6) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `num_int` varchar(6) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `col` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `id_municipio` int(255) DEFAULT '0',
+  `id_estado` int(255) DEFAULT '0',
+  `entre_calle1` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `entre_calle2` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `referencia` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `servicio_vial` int(10) DEFAULT '0',
+  `vehiculo_tipo` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `vehiculo_color` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `vehiculo_placa` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `vehiculo_ubicacion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `vehiculo_combustible` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `vehiculo_litros` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `folio_recepcion` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `folio_factura` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `id_tipo` int(10) unsigned DEFAULT '1',
+  `url_pdf` varchar(500) DEFAULT '',
+  `url_xml` varchar(500) DEFAULT '',
+  PRIMARY KEY (`id_aseguradora`,`expediente`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of orden
--- ----------------------------
-INSERT INTO `orden` VALUES (2, 64, 0, '1', NULL, '2019-09-10 15:39:58.576071', '0000-00-00 00:00:00.000000', NULL, '', 1, 'Se tapó el baño oooootra vez pinches cagones', 2, 0, '', '', '', 0, 'Luis Angel', 'Este apellido no', 'Ruiz', 15, '', NULL, NULL, 'Carretera Mochis-Ahome s/n', '3', 'null', 'Los Mochis', 0, 25, 'ESQ. ROMULO CORDOVA', 'MERCADERES', 'DENTRO DE COCHERA FUERA DE CASA DE TITULAR', 0, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (2, 65, 0, '2', NULL, '2019-09-10 17:24:22.266189', '2019-09-11 16:25:00.000000', NULL, '', 4, 'Se fue la luz en todo el bario', 4, 0, '', '', '', 0, 'Frank Donaldo', 'Belloso', 'Crow', 8, '', '2019-09-11 16:27:00.000000', '2019-09-11 16:27:32.000000', 'Carretera Mochis-Ahome s/n', '444', 'null', 'Los Mochis', 1884, 25, 'ESQ. ROMULO CORDOVA', 'MERCADERES', 'Casa Amarilla', 0, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (2, 66, 0, '3', NULL, '2019-09-14 10:32:04.869179', '2019-09-14 10:34:00.000000', NULL, '', 1, 'fbdfbdfbdf', 2, 0, '', '', '', 1, '', '', '', 20, '', NULL, NULL, 'null', 'null', 'null', 'null', 0, 0, '', '', '', 0, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (1, 58, 1, '11111111111', NULL, '2019-08-15 12:28:20.266740', '2019-09-06 16:53:00.000000', NULL, '', 1, '', 0, NULL, '', '', '', 0, '', '', '', 6, '', NULL, NULL, 'null', 'null', 'null', 'null', 0, 0, '', '', '', NULL, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (1, 45, 1, '173432', '2019-08-14 15:57:05.000000', '2019-08-10 18:01:37.459582', '2019-08-10 18:01:37.459582', NULL, '', 4, 'POSIBLE CORTO EN COCINA', 4, NULL, 'MIRIAM', 'MEDINA', 'BELTRAN', 0, 'PIPESO', 'DE C.V.', 'S.A.', 7, '', '2019-08-14 15:56:00.000000', '2019-08-14 15:56:06.000000', 'MAZATLAN ', '730', NULL, 'Hermosillo', 0, 0, 'PASEO COTA DE HERMOSILLO ', 'Y VILLA FONTANA', 'CASA COLOR ROSA Y CERCO CAFE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 28, 1, '173961', NULL, '2019-08-08 17:51:50.564419', '2019-08-08 17:51:50.564419', NULL, '', 3, 'NO SIRVE LA CERRADURA SI SE REQUIERE CAMBIO HABLAR A CABINA', 10, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, 11, '', '2019-08-11 10:00:02.000000', '2019-08-11 10:00:04.000000', 'GERMANICA', '15', NULL, 'PRIVADAS DEL REAL', 1890, 26, 'GERNICA', 'GUADALQUIVIR', 'FACHADA CON REJA AMARILLA Y CAFE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 29, 1, '173963', NULL, '2019-08-08 17:57:14.899970', '2019-08-08 17:57:14.899970', NULL, '', 1, 'CORTO CIRCUITO EN AREA DE LAVADO', 4, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, 0, '', NULL, NULL, 'GERMANICA', '15', NULL, 'PRIV. DEL RAL', 0, 26, 'GERNICA', 'GUADALQUIVIR', 'FACHADA CON REJA AMARILLA Y CAFE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 10, 1, '173974', NULL, '2019-08-05 23:51:23.590934', '2019-08-05 23:51:23.590934', NULL, '', 3, 'fuga de agua en la parte de abajo del wc\n\n2.-ya compraron un wc y hay que instalarlo', 2, NULL, 'Luis Ruben', 'Garcelazo', 'Vejar', 0, NULL, NULL, NULL, 7, '', '2019-08-10 18:15:28.000000', '2019-08-10 18:15:32.000000', 'bLVD DEL RETIRO', '29', NULL, 'Valle Escondido', 1890, 26, 'Jardines', 'y La Paz', 'casa enjarrada cafe', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 13, 1, '174098', NULL, '2019-08-06 12:55:59.142501', '2019-08-06 12:55:59.142501', NULL, '', 3, 'FUGA DE AGUA EN LLAVE MEZCLADORA DEL LAVABO\n', 2, NULL, 'CAYETANO', NULL, 'MAYO FELIX', 0, NULL, NULL, NULL, 7, '', '2019-08-10 18:20:43.000000', '2019-08-10 18:20:46.000000', 'LOS PINOS', '5', NULL, 'VALLE DORADO', 1890, 26, 'FLOR DE LIRIO', 'PASEO DE LOS ARENALES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 34, 1, '17410', NULL, '2019-08-09 09:31:55.545600', '2019-08-09 09:31:55.545600', NULL, '', 5, 'FUGA  EN CESPOL DE LAVABO BAÑO', 2, NULL, 'LUIS RUBEN GARCILAZO', NULL, NULL, 0, NULL, NULL, NULL, 11, '', '2019-08-11 10:05:36.000000', '2019-08-11 10:05:39.000000', 'BLVD DEL RETIRO ', '29', NULL, 'VALLE ESCONDIDO', 1890, 26, 'JARDINES ', 'LA PAZ', 'ENREJADO CAFE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 14, 1, '174101', NULL, '2019-08-06 13:05:14.166247', '2019-08-06 13:05:14.166247', NULL, '', 3, 'FUGA E AGUA EN LAVABO DEL BAÑO\n\n', 2, NULL, 'SANDRA IVONNE ', 'KRIPE', 'MARTINEZ', 0, 'null', 'null', 'null', 7, '', '2019-08-10 18:23:04.000000', '2019-08-10 18:23:06.000000', 'PASEO DEL PARQUE', '6', 'null', 'VALLE GRANDE', 1890, 26, 'ESQ. CON SAHUARIPA', 'null', 'ATRAS DE RESTAURANT  JOWAH', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 31, 1, '174102', NULL, '2019-08-08 18:58:15.562348', '2019-08-08 18:58:15.562348', NULL, '', 3, 'fuga de agua en lavabo de baño', 2, NULL, 'sandra ivonne', 'kripe', 'martinez', 0, NULL, NULL, NULL, 7, '', '2019-08-11 10:01:58.000000', '2019-08-11 10:01:59.000000', 'paseo del parque', '6', NULL, 'VALLE GRANDE', 1890, 26, 'esq. con sahuaripa', NULL, 'atras de restaurant JOWAH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 9, 1, '174132', NULL, '2019-08-05 23:38:08.271444', '2019-08-05 23:38:08.271444', NULL, '8521775', 3, 'corto en apagador de cocina', 4, NULL, 'Fausto Enrique', 'Luna ', 'Castro', 0, 'null', 'null', 'null', 11, '', '2019-08-10 18:08:42.000000', '2019-08-10 18:12:47.000000', 'dominico', '16', 'null', 'campanario', 1890, 26, 'esq antonianos', 'null', 'a tres cuadras a la derecha entrando al fraccionamiento', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 17, 1, '174133', NULL, '2019-08-06 13:41:20.245140', '2019-08-06 13:41:20.245140', NULL, '', 3, 'SE REPORTA CORTO EN APAGADOR DE COCINA', 4, NULL, 'FAUSTO ENRIQUE.', 'Luna ', 'CASTRO', 0, NULL, NULL, NULL, 7, '', '2019-08-10 19:12:40.000000', '2019-08-10 19:12:41.000000', 'dominico', '16', NULL, 'EL CAMPANARIO', 1890, 26, 'ESQ, CON ANTONIANOS', NULL, 'A TRES CUADRAS A LA DERECHA ENTRANDO AL FRACCIONAMIENTO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 18, 1, '174134', NULL, '2019-08-06 13:41:20.418149', '2019-08-06 13:41:20.418149', NULL, '', 3, 'SE REPORTA CORTO EN APAGADOR DE COCINA', 4, NULL, 'FAUSTO ENRIQUE.', 'Luna ', 'CASTRO', 0, NULL, NULL, NULL, 7, '', '2019-08-10 19:12:54.000000', '2019-08-10 19:12:54.000000', 'dominico', '16', NULL, 'EL CAMPANARIO', 1890, 26, 'ESQ, CON ANTONIANOS', NULL, 'A TRES CUADRAS A LA DERECHA ENTRANDO AL FRACCIONAMIENTO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 19, 1, '174135', NULL, '2019-08-06 13:41:22.623276', '2019-08-06 13:41:22.623276', NULL, '', 6, 'SE REPORTA CORTO EN APAGADOR DE COCINA', 4, NULL, 'FAUSTO ENRIQUE.', 'Luna ', 'CASTRO', 0, NULL, NULL, NULL, 7, '', '2019-08-10 19:13:03.000000', '2019-08-10 19:13:03.000000', 'dominico', '16', NULL, 'EL CAMPANARIO', 1890, 26, 'ESQ, CON ANTONIANOS', NULL, 'A TRES CUADRAS A LA DERECHA ENTRANDO AL FRACCIONAMIENTO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 54, 1, '174136', NULL, '2019-08-12 11:08:30.120606', '2019-08-12 11:08:30.120606', NULL, '', 1, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 22, 1, '174251', NULL, '2019-08-06 13:57:17.974919', '2019-08-06 13:57:17.974919', NULL, '', 3, 'fuga de agua en el fregadero', 2, NULL, 'RUTH', 'BRAWN', 'MOLINA', 0, NULL, NULL, NULL, 7, '', '2019-08-11 09:46:52.000000', '2019-08-11 09:46:53.000000', 'LUIS ORCI', '149', NULL, 'BALDERRAMA', 1890, 26, 'GRAL. PÑA', 'REYES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 25, 1, '174265', NULL, '2019-08-07 18:11:51.481310', '2019-08-07 18:11:51.481310', NULL, '', 3, 'fuga en mecanismo wc', 2, NULL, 'leslie yarim dominguez ', 'grijalva', NULL, 0, NULL, NULL, NULL, 7, '', '2019-08-11 09:59:25.000000', '2019-08-11 09:59:26.000000', 'catabria', '27', NULL, 'portales', 1890, 26, 'esq. puerto palos', NULL, 'clave de acceso 3027', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 30, 1, '174266', NULL, '2019-08-08 18:53:07.869749', '2019-08-08 18:53:07.869749', NULL, '', 3, 'fuga en mecanismo wc', 2, NULL, 'leslie yarim ', 'dominguez', 'grijalva', 0, NULL, NULL, NULL, 11, '', '2019-08-11 10:00:40.000000', '2019-08-11 10:00:42.000000', 'catabria', '27', NULL, 'los portales', 1890, 26, 'esq puerto de palos', NULL, 'clave acceso 3027', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 11, 1, '174275', NULL, '2019-08-06 11:41:21.862416', '2019-08-06 11:41:21.862416', NULL, '', 3, 'FUGA EN AGUA DE PORCHE', 2, NULL, 'DORA ALICIA ', 'GARCIA', 'VERDUGO', 0, NULL, NULL, NULL, 7, '', '2019-08-10 18:18:08.000000', '2019-08-10 18:18:11.000000', 'OCASO', '8', NULL, 'PALMAR DEL SOL', 1890, 26, 'BOULEVAR HIDALGO', 'ALBORADA', 'CASA AMARILLA CON REJA NEGRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 23, 1, '174369', NULL, '2019-08-06 16:04:03.063905', '2019-08-06 16:04:03.063905', NULL, '', 3, 'SE GENERO UN APAGON EN EL AREA DE LA SALA', 4, NULL, 'RAMON ', 'CHAN', 'VALENZUELA', 0, 'VIRGINIA ', 'LAM', NULL, 7, '', '2019-08-14 15:59:11.000000', '2019-08-14 16:00:18.000000', 'RETORNO ROSARIO CASTELLANOS', '33', NULL, 'URBI VILLA DEL CEDRO', 1890, 26, 'JAIME SABINES', 'GABRIEL SAID', 'A LA IZQUIERDA UN ABARREY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 24, 1, '174380', NULL, '2019-08-06 17:02:42.891227', '2019-08-06 17:02:42.891227', NULL, '', 3, 'POSIBLE CORTO CONTACTO COCINA.  **1589 ACCESO**', 4, NULL, 'GUADALUPE ', 'COTA', 'SNCHEZ', 0, NULL, NULL, NULL, 11, '', '2019-08-11 09:49:27.000000', '2019-08-11 09:49:34.000000', 'RETORNO CAMPIRANO', '12', NULL, 'CORCELES.', 1890, 26, 'BLVD QUIROGA', 'COLOSIO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 33, 1, '174905', NULL, '2019-08-09 09:20:17.599679', '2019-08-09 09:20:17.599679', NULL, '', 3, 'FUGA EN TUBERIA DE AIMENTACION QUE VA AL TINACO', 2, NULL, 'CARMEN MAGDALENA ', 'AMAYA', 'BORGARO', 0, NULL, NULL, NULL, 11, '', '2019-08-11 10:02:53.000000', '2019-08-11 10:02:56.000000', 'LA MESA', NULL, '13', 'SANTA FE', 1890, 26, 'BLVD. NAVARRETE ', 'PASEO SNTA FE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 38, 1, '174910', NULL, '2019-08-09 12:09:14.371470', '2019-08-09 12:09:14.371470', NULL, '', 3, 'FUGA DE AGUA CESPOL DE LAVABO', 2, NULL, 'LUIS RUBEN', 'GARCILAZO', NULL, 0, NULL, NULL, NULL, 11, '', '2019-08-11 10:07:55.000000', '2019-08-11 10:07:56.000000', 'BLVD. DEL RETIRO', '29', NULL, NULL, 1890, 26, 'JARDINES', 'DE LA PAZ', 'ENREJADO CAFE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 36, 1, '174934', NULL, '2019-08-09 11:54:45.204756', '2019-08-26 13:53:00.000000', NULL, '', 2, 'FALLA  DE LA MUFA DENTRO DEL DOMICILIO (POSIBLE CORTO)', 4, NULL, 'MARIA FERNANDA', 'OCANO', 'FONTE', 0, 'null', 'null', 'null', 7, '', NULL, NULL, 'PALMITO', '10-A', 'TEPIC', 'PALO VERDE', 1890, 26, 'CACTUS', 'null', 'null', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 43, 1, '175132', NULL, '2019-08-10 17:28:50.809096', '2019-08-26 17:53:00.000000', NULL, '', 2, 'APERTURA PUERTA PRINCIPAL CERRADURA CONVENCIONAL\n ', 10, NULL, 'JOSE MARIA', 'PORTILLO ', 'ALVAREZ', 0, 'null', 'null', 'null', 12, '', NULL, NULL, 'AYOLA  ', '20017', 'null', 'LAS ESPIGAS', 1940, 26, 'PARIS', 'ESCUINAPA', 'null', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 59, 1, '52213001', '2019-08-27 15:53:22.000000', '2019-08-27 15:01:46.216148', '2019-08-28 15:00:00.000000', NULL, '5212120', 4, 'Cambio de llanta delantera lado del copiloto', 18, 2, 'Frank', 'Crow ', 'Belloso', 1, '', '', '', 6, '', '2019-08-27 17:41:00.000000', '2019-08-27 17:41:25.000000', 'Carretera Mochis-Ahome s/n', '411', '44', 'Los Mochis', 1878, 25, 'ESQ. ROMULO CORDOVA', 'MERCADERES', 'ENFRENTE DE LUBR, MART', 0, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (1, 60, 1, '52213002', NULL, '2019-08-27 15:33:17.518876', '2019-08-28 15:31:00.000000', NULL, '', 3, 'Gasolina magna ', 1, 1, 'Frank', 'Crow', 'Belloso', 0, 'Antonio', 'Osuna', 'Juarez', 6, '', '2019-08-27 17:43:00.000000', NULL, 'Hidalgo', '522', '52', 'Las Fuentes', 1878, 25, '', '', '', 1, 'HONDA CIVIC 2002', 'ROJO', 'UBW-852-52', 'Las Fuentes', 'Magna', '60', '', '');
-INSERT INTO `orden` VALUES (1, 61, 1, '52213003', NULL, '2019-08-27 17:46:13.654489', '2019-09-04 18:40:00.000000', NULL, '', 2, 'Socket con corto circuito', 4, 3, 'Juan Manuel', 'Conteras', 'Felix', 0, 'Jesus Adrián', 'Peraza', 'Martinez', 6, '', NULL, NULL, 'Domingo Rubí', '444', '411', 'Centro', 1889, 25, 'Uno', 'Dos', 'Casa azul', 0, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (1, 63, 1, 'vgfddfbdfb', NULL, '2019-09-06 16:39:18.579858', '2019-09-08 16:48:00.000000', NULL, '', 2, 'bbdbdfb', 4, 1, '', '', '', 0, '', '', '', 6, '', NULL, NULL, 'null', 'null', 'null', 'null', 0, 0, '', '', '', 0, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (1, 15, 4, '13282381', NULL, '2019-08-06 13:30:38.146414', '2019-08-06 13:30:38.146414', NULL, '521452', 3, 'CAMBIO DE LLANTA IZQ. TRASERA', 18, NULL, 'NICOLAS ABELARDO ', 'BETANCUR', 'null', 0, 'null', 'null', 'null', 24, '', '2019-08-10 18:24:02.000000', '2019-08-10 18:24:06.000000', 'BLVD GUSTO SIERRA', 'null', '112', 'PITIC', 1890, 26, 'ESQ. CON AVENIDA CENTRAL', 'null', 'A ESPALDAS DE COLEGIO REGIS', NULL, 'BMW', 'GRIS', '376', 'PITIC HERMOSILLO', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 12, 4, '13290624', NULL, '2019-08-06 12:49:32.021359', '2019-08-06 12:49:32.021359', NULL, '', 1, 'null', 14, NULL, 'ALBERTO RAFAEL', 'TORRES', 'SOTO', 0, 'null', 'null', 'null', 8, '', NULL, NULL, 'TOLERANO', '13', '', 'null', 0, 0, 'PLAZA MAYOR ', 'MERCADERES', 'DENTRO DE COCHERA FUERA DE CASA DE TITULAR', NULL, 'GRAN CHEROKEE 2000', 'BLANCO', '024', 'VILLA SATELITE HERMOSILLO', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 41, 4, '13298871', NULL, '2019-08-09 14:08:03.590238', '2019-08-09 14:08:03.590238', NULL, '', 3, NULL, 14, NULL, 'ADOLFO ', 'ALVAREZ', 'QUINTERO', 0, 'IDEL', 'ALVAREZ', 'GARCIA', 12, '', '2019-08-11 10:09:40.000000', '2019-08-11 10:09:42.000000', 'VALLE DEL TIGO', '1546', NULL, 'VILLA FONTANA', 1890, 26, 'PASEO MIRA VALLE', 'AUSTRIA', 'ESQUINA ABARROTES CAMPA', NULL, 'TOYOTA RAV 2013', 'BLANCO', '3094', NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 42, 4, '13301635', NULL, '2019-08-10 12:07:25.865061', '2019-08-10 12:07:25.865061', NULL, '', 3, 'SE ABRIRA PUERTA DE AUTO POR EL LADO DEL COPILOTO\nLAS LLAVES SE QUEDARON DENTRO.\nUSUARIO INDICO QUE SOLO SERA APERTURA( HAY UN EXCEDENTE DE $96 PESOS QUE USURIO ASEPTO CUBRIR.  ASIGNO CORRSPONSALIA :ALEJANDRA LOPEZ. ', 10, NULL, 'MARIA', 'FUFUTIS', 'MENDOZA', 0, NULL, NULL, NULL, 12, '', '2019-08-10 12:40:17.000000', '2019-08-10 12:41:51.000000', 'AMBERES', '2155', NULL, 'BELLA VISTA', 1890, 26, 'ESQ. MILAN', NULL, NULL, NULL, 'MONZA', 'ARENA', '1159', NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 46, 4, '13303728', '2019-08-22 12:16:26.000000', '2019-08-11 13:35:43.278145', '2019-08-11 13:35:43.278145', NULL, '', 4, NULL, 1, NULL, 'Ana Maria ', 'Figueroa', 'Gonzalez', 0, 'PIPESO', 'DE C.V.', 'S.A.', 6, '', '2019-08-11 13:35:55.000000', '2019-08-11 13:35:58.000000', 'carretera a sanpedro km 3.7', NULL, NULL, 'san pedro', 1890, 26, NULL, NULL, 'afuera del super del norte y la ferrteria lubrimar', NULL, 'Honda', 'ROJO', '9504', NULL, 'MAGNA', '20', '', '');
-INSERT INTO `orden` VALUES (1, 52, 4, '13303729', NULL, '2019-08-12 10:37:25.245513', '2019-08-12 10:37:00.000000', NULL, '', 2, 'SAN PEDRO KM 37 ', 1, NULL, 'ANA MARIA', 'FIGUEROA', 'GONZALEZ', 0, 'null', 'null', 'null', 6, 'hola como estas', '2019-09-01 17:13:00.000000', NULL, 'KM 37', 'null', 'null', 'SAN PEDRO', 0, 26, 'ESQ. ROMULO CORDOVA', 'null', 'ENFRENTE DE LUBR, MART', NULL, 'HONDA CIVIC 2002', 'ROJO', '9504', 'null', 'MAGNA', '20', '', '');
-INSERT INTO `orden` VALUES (1, 47, 4, '13304837', NULL, '2019-08-12 09:01:27.760741', '2019-08-12 09:01:27.760741', NULL, '', 1, 'KM ADICIONALES 25KM X 7 175 + IVA', 1, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, 12, '', NULL, NULL, NULL, NULL, NULL, NULL, 1940, 26, NULL, NULL, NULL, NULL, NULL, NULL, 'VE-35-821', NULL, 'PREMIUM ', '20', '', '');
-INSERT INTO `orden` VALUES (1, 51, 4, '13306057', NULL, '2019-08-12 10:30:26.675773', '2019-08-12 10:30:26.675773', NULL, '', 1, NULL, 18, NULL, 'LUZ ALEJANDRA', 'VILLALBA', NULL, 0, NULL, NULL, NULL, 11, '', NULL, NULL, 'DIEGO HURTADO', '661-A', NULL, 'SAN JAVIER', 1890, 26, 'SOLIDARIDAD', 'CRITOLBAL COLON', NULL, NULL, 'SENTRA NISSAN 2018', 'BLANCO', 'VVE3A', NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 49, 4, '13306058', NULL, '2019-08-12 10:17:26.471395', '2019-08-12 10:17:26.471395', NULL, '', 1, 'LLANTA DELANTERA DERECHA', 18, NULL, 'LUZ ALEJANDRA', 'VILLALBA', NULL, 0, NULL, NULL, NULL, 11, '', NULL, NULL, 'DIEGO HURTADO', '661-A', NULL, 'SAN JAVIER', 1890, 26, 'SOLIDARIDAD', 'CRISTOBAL COLON', 'EBFRENDE DE FLORERIA CHADAI', NULL, 'SENTRA 2018', 'BLANCO', NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 50, 4, '13306187', NULL, '2019-08-12 10:25:24.801440', '2019-08-12 10:25:24.801440', NULL, '', 1, NULL, 1, NULL, 'LUIS JAVIER', 'AMAVIZCA', NULL, 0, NULL, NULL, NULL, 11, '', NULL, NULL, 'BLVD SOLIDARIDAD', NULL, NULL, NULL, 1890, 26, 'SOLIDARIDAD', 'NAVARRETE ', NULL, NULL, 'FORD ESCORT 98', 'VERDE', '669A', NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 55, 4, '13306515', NULL, '2019-08-12 12:57:28.851344', '2019-08-12 12:57:28.851344', NULL, '', 1, 'CAMBIO DE LLANTA DERECHA DELANTERA USUARIO CUENTA CON BIRLOS Y LLAVE.\nENTRAR POR LA ZONA DE PROVEEDORES ACCESO 3809', 18, NULL, 'EMILIANO ', 'RUIZ', 'LUCERO', 0, NULL, NULL, NULL, 7, '', NULL, NULL, 'LAGO SUPERIOR', '9', NULL, 'VALLE DEL LAGO', 1890, 26, 'RETORNO GRANDES LAGOS', NULL, 'VALLE DEL LAGO SECCION ATARDECERES', NULL, 'HONDA HODISAY 2011', 'PLATA', NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 20, 4, '174189', NULL, '2019-08-06 13:45:09.187234', '2019-08-06 13:45:09.187234', NULL, '', 1, 'FUGA EN LAVAMANOS DE BAÑO', 2, 1, 'VICTOR', 'AGUILAR', 'CORDOVA', 0, 'null', 'null', 'null', 25, '', NULL, NULL, 'JOSE MARIA MENDOZA', '1213', 'null', 'SAHUARO INDECO', 1890, 26, 'CALLE 9 ', 'CALLE 11', 'null', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 53, 4, '175188', NULL, '2019-08-12 10:43:41.186177', '2019-08-12 10:43:41.186177', NULL, '', 1, 'APERTURA PUERTA PRINCIPAL (SOLO APERTURA)', 10, NULL, 'JULIO CESAR', 'MIJARES', 'SALAS', 0, NULL, NULL, NULL, 19, '', NULL, NULL, 'CIRCUITO DEL OLIVER PTE', '3', NULL, NULL, 1890, 26, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 8, 9, '1555827', NULL, '2019-08-03 10:21:48.276131', '2019-08-03 10:21:48.276131', NULL, '', 1, 'FUGA DE LAVABO', 2, NULL, 'ARMIDA ', 'BARRON', NULL, 0, NULL, NULL, NULL, 0, '', NULL, NULL, 'LAGO ERIEN ', '20', NULL, 'VALLE DE LAGO', 1890, 26, 'CERRADA AMANECER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 7, 9, '15558669', NULL, '2019-08-03 09:15:54.810006', '2019-08-03 09:15:54.810006', NULL, '', 1, 'FUGA TUBERIA DE TINACO,  FACIL ACCESO', 2, NULL, 'SANDRA ', 'PRECIADO', NULL, 0, NULL, NULL, NULL, 0, '', NULL, NULL, 'DR. VOURLAR', '84', NULL, NULL, 1890, 26, 'SAHUARIPA', 'DR. CANALES', 'CERCA DE BENAVIDES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 35, 9, '15562371', NULL, '2019-08-09 10:26:16.490115', '2019-08-09 10:26:00.000000', NULL, '', 2, 'null', 0, NULL, 'null', 'null', 'null', 0, 'null', 'null', 'null', 7, '', NULL, NULL, 'null', 'null', 'null', 'null', 0, 0, 'null', 'null', 'null', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 39, 9, '15562372', NULL, '2019-08-09 12:14:37.543954', '2019-08-09 12:14:37.543954', NULL, '', 3, 'FUGA DE FREGADERO DESGUE', 2, NULL, 'FRANCISCA ', 'RODRIGUEZ', 'MOLINA', 0, NULL, NULL, NULL, 11, '', '2019-08-10 12:44:11.000000', '2019-08-10 13:00:56.000000', 'ACACIA BLANCA', '46', NULL, 'PUERTA REAL', 1890, 26, NULL, NULL, 'CERRADA SECCION CORDOVA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 16, 9, '15564445', NULL, '2019-08-06 13:35:40.362699', '2019-08-06 13:35:40.362699', NULL, '', 1, 'FUGA DE AGUA EN CISTERNA  EN TUBERIA E HIDRONEUMATICO', 2, NULL, 'EDUARDO RAMIRO', 'VALENZUELA', NULL, 0, 'PIPESO', 'DE C.V.', 'S.A.', 0, '', NULL, NULL, 'RETORNO FALABLLA', '13', NULL, 'RECIDENCIAL CORSELES', 1890, 26, NULL, NULL, 'MARCAR CLAVE DE ACCESO 1370', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 21, 9, '15565347', NULL, '2019-08-06 13:52:24.383126', '2019-08-06 13:52:24.383126', NULL, '', 1, 'FUGA EN FREGADERO (alimentacion)', 2, NULL, 'mari', 'Brawer', 'null', 0, 'null', 'null', 'null', 8, '', NULL, NULL, 'primo de verdad ', '52', 'null', 'pitic', 1890, 26, 'null', 'null', 'null', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 27, 9, '15571811', NULL, '2019-08-08 17:42:12.647364', '2019-08-08 17:42:12.647364', NULL, '', 3, 'FUGA DE WC ALIMENTACION', 2, NULL, 'HECTOR JAVIER ', 'PEREZ', 'GASTELUM', 0, NULL, NULL, NULL, 7, '', '2019-08-11 09:58:50.000000', '2019-08-11 09:58:51.000000', 'COLONIZADORES', '4', NULL, 'DE ANZA', 1890, 26, 'ESQ. SOLIDARIDAD', NULL, 'FRENTE FARMACIA GI', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 26, 9, '15573616', NULL, '2019-08-08 17:36:28.624687', '2019-08-08 17:36:28.624687', NULL, '', 3, 'FUGA ENTUBERIA DE TINACO', 2, NULL, 'ELEN ', 'MARTINEZ', 'GARCIA', 0, NULL, NULL, NULL, 7, '', '2019-08-11 09:58:40.000000', '2019-08-11 09:58:41.000000', 'CABALLET PONIENTE', '7', NULL, 'EL ESPLENDOR', 1890, 26, 'BLVD DEL ARTE', NULL, 'PERIMETRAL NTE  Y HAY UN CAR WACH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 40, 9, '15575915', NULL, '2019-08-09 13:56:54.101945', '2019-08-09 13:56:54.101945', NULL, '', 3, 'FALLA INTERRUPTOR GENERL', 4, NULL, 'VICTOR ', 'MELO', 'RIVERA', 0, NULL, NULL, NULL, 7, '', '2019-08-10 13:05:44.000000', '2019-08-10 13:05:54.000000', 'CERRADA VISCONTI', '11', NULL, 'PUERTA REAL', 1890, 26, 'NAVOJOA', 'REYES CATOLICO', 'ENTRADA SEGUNADA ETAPA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 56, 9, '15585574', NULL, '2019-08-12 13:09:08.627179', '2019-08-12 13:09:08.627179', NULL, '', 1, 'FUGA EN TUBERIA QUE DA AL PATIO\nEN LA CASETA INFORMAR QUE VA AL DOMICILIO', 2, NULL, 'MARIA TERESA', 'CARLON', NULL, 0, NULL, NULL, NULL, 11, '', NULL, NULL, 'CERRADA DE LOS PROFETAS', '27', NULL, 'SAN MARCOS RECIEDENCIAL', 1890, 26, NULL, NULL, 'EN CERRADA DE LOS PROFETAS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 57, 9, '15585599', NULL, '2019-08-12 13:25:15.833283', '2019-08-12 13:25:15.833283', NULL, '', 1, 'APERTURA DE PUERTA PRINCIPAL, CHAPA CONVENCIONAL', 10, NULL, 'CLAUDIA ', 'RAMOS', NULL, 0, NULL, NULL, NULL, 12, '', NULL, NULL, 'REAL DE CATALUÑA', '1921', NULL, 'MISION  DEL SOL', 1940, 26, 'BLVD MISION DEL REAL', 'SANTA FE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '');
-INSERT INTO `orden` VALUES (1, 62, 9, '85211474', NULL, '2019-09-06 16:20:59.489721', '0000-00-00 00:00:00.000000', NULL, '', 2, 'fgdfgdfgvdf', 2, 1, 'fgdgfdg', 'gdfgd', 'fdgdf', 0, 'gdfgd', 'fdgd', 'gfdg', 6, '', NULL, NULL, 'null', 'null', 'null', 'null', 1883, 25, '', '', '', 0, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (1, NULL, 10, '174101', NULL, '2019-08-14 14:54:05.578220', '2019-08-14 14:54:05.578220', NULL, '', 1, '', 0, NULL, '', '', '', 0, '', '', '', 0, '', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '', '', '', NULL, '', '', '', '', '', '', '', '');
-INSERT INTO `orden` VALUES (1, 44, 10, 'TA2524821', NULL, '2019-08-10 17:56:07.579714', '2019-08-26 12:56:00.000000', NULL, '', 1, 'SE REQUIERE CAMBIAR ', 4, NULL, 'null', 'null', 'null', 0, 'null', 'null', 'null', 0, '', NULL, NULL, 'null', 'null', 'null', 'null', 0, 0, 'null', 'null', 'null', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
-INSERT INTO `orden` VALUES (1, 32, 17, '14995', NULL, '2019-08-08 19:12:09.280034', '2019-08-08 19:12:09.280034', NULL, '', 1, 'FUGA EN LAVABO (GOTEA)', 2, NULL, 'FERNANDO', 'LOHERA', 'null', 0, 'null', 'null', 'null', 15, '', NULL, NULL, 'GRABADOS PONIENTE ', '2', 'null', 'EL ESPLENDOR', 1890, 26, 'ESQ. BLVD BELARDE', 'null', 'null', NULL, 'null', 'null', 'null', 'null', 'null', 'null', '', '');
+--
+-- Dumping data for table `orden`
+--
 
--- ----------------------------
--- Table structure for poliza
--- ----------------------------
+LOCK TABLES `orden` WRITE;
+/*!40000 ALTER TABLE `orden` DISABLE KEYS */;
+INSERT INTO `orden` VALUES (18,0,'1',NULL,'2019-09-30 15:08:39.168200','2019-09-30 15:08:00.000000',NULL,'',4,'falla en 1/2 casa tiene luz',4,0,'','','',0,'Maximiliano','','',0,'','2019-10-1 18:8','2019-10-01 20:36:34.000000','Fronteras ','173-A','','san benito',1890,26,'esq cuernavaca','','',0,'','','','','','','','',2,'',''),(24,0,'2',NULL,'2019-10-01 20:04:47.494600','2019-10-01 17:01:00',NULL,'',4,'revision de trabajos de plomeria',2,0,'','','',0,'fidel ','Quezada','Jimenez',28,'','2019-10-1 18:15','2019-10-01 20:17:33.000000','blvd antonio quiroga','344','','luis donaldo colosio',1890,26,'','','quezada mayoreo',0,'','','','','','','','',2,'',''),(10,1,'1111','2019-09-26 18:03:39.000000','2019-09-26 17:47:06.880800','2019-09-26 18:47:00.000000',NULL,'123456',5,'FUGA EN LLAVE JARDIN',2,2,'AAAAAAAAA','AAA','AAA',1,'','','',7,'','2019-09-26 20:49:00.000000','2019-09-26 18:02:48.000000','AAAAA','AAA','null','AAAAAA',1879,25,'','','',0,'','','','','','','','fc08976',1,'',''),(19,1,'13441289',NULL,'2019-10-01 10:47:28.029600','2019-10-01 16:33:59',NULL,'',4,'7  premium\n',1,1,'fco jose ','VALENZUELA','',1,'','','',12,'','2019-10-1 12:11','2019-10-01 14:10:17.000000','plan de agua prieta','','','luis echeverria',1940,26,'esq. otilio montañoi','','atras de ley expres',0,'dodge duarango 2004','negro','3311','','premium','7','','',1,'',''),(12,1,'181661','2019-09-26 18:59:24.000000','2019-09-26 18:32:10.439400','2019-09-26 10:30:00.000000',NULL,'13426648',5,'VIDRIO ROTO QUE DA AL EXTERIOR ',8,1,'MANUEL ','HOLGUIN ','',1,'','','',11,'Vidrio que da paña  calle de 0.37 x 0.91 vsd','2019-09-26 17:33:00.000000','2019-09-26 18:38:45.000000','PRIVADA GRANADA ','8','null','las lomas ',1890,26,'privada granadas ','privada la rioja ','',0,'','','','','','','','',1,'',''),(8,1,'181822','2019-09-26 18:41:12.000000','2019-09-26 16:47:27.212400','2019-09-26 15:17:00.000000',NULL,'',5,'APERTURA DE CERRADURA ',10,2,'DAVID ALBERTO','DURAN','FIERRO',1,'','','',12,'','2019-09-26 17:24:00.000000','2019-09-26 17:46:14.000000','JUAREZ','466',NULL,'BENITO JUAREZ',1940,26,'ZARAGOZA','REVOLUCION','',0,'','','','','','','','',1,'',''),(15,1,'182197','2019-09-30 12:10:02.000000','2019-09-30 10:13:21.015800','2019-09-30 12:09:00.000000',NULL,'',5,'APERTURA DE DOMICILIO ',10,1,'ALBERTO','ROJAS','LOPEZ',1,'','','',12,'','2019-09-30 12:08:00.000000','2019-09-30 12:09:35.000000','SAN ANTONIO','2359','','EL CAMPANARIO',1940,26,'ESQ BARTOLOME DELGADO','','FRENTE A UN SUPER DEL NORTE',0,'','','','','','','','',1,'',''),(17,1,'182307',NULL,'2019-09-30 15:05:41.923600','2019-09-30 23:17:47',NULL,'',4,'vidrio roto que da a la calle',8,1,'Ana Lourdes','Morales ','Espinoza',1,'','','',9,'','2019-9-30 18:30','2019-10-01 10:13:24.000000','provincia asturias','3 B','','Las Lomas',1890,26,'entre paseo santa cruz','','a espaldas de abarrotes almacen',0,'','','','','','','','',1,'',''),(23,1,'182524',NULL,'2019-10-01 18:57:13.464600','2019-10-02 23:42:20',NULL,'',2,'VIDRIO  ROTO EN RECAMARA\n',8,1,'MAYRA LIZETH','MORENO ','GONZALEZ',1,'','','',8,'',NULL,NULL,'RETORNO TOUGLANI ','56','','villa bonita',1890,26,'','','entrada por villa lourdes , casa de dos pisos y enseguida de un lote baldio',0,'','','','','','','','',1,'',''),(9,1,'ordenPrueba','2019-09-29 15:02:12.000000','2019-09-26 17:10:49.219000','2019-09-27 20:50:00.000000',NULL,'123',5,'Drenaje tapado',2,1,'Trabajo','','',1,'','','',0,'','2019-09-26 17:50:00.000000','2019-09-26 17:46:23.000000','Callejón Domingo Rubí','444','null','AHOME',1878,25,'','','',0,'','','','','','','','321',1,'',''),(25,1,'pruebachuy',NULL,'2019-10-01 21:27:09.317200','2019-10-02 00:33:59',NULL,'',2,'prueba',2,1,'prueba','prueba','prueba',1,'','','',30,'',NULL,NULL,'cocrit','20','','lopez mateos',1940,26,'miguel aleman ','12','atras del oxxo',0,'','','','','','','','',1,'',''),(1,4,'13422690','2019-09-24 14:50:29.000000','2019-09-24 14:39:25.067200','2019-09-26 22:45:00.000000',NULL,'5354609',4,'SUMINISTRO 7 LTS GASOLINA',1,2,'OLGA VERONICA ','CEJUDO','',1,'','','',6,'','2019-09-26 17:25:00.000000','2019-09-26 17:45:56.000000','MIGUEL ALEMAN  NORTE ','null','null','null',1940,26,'ESQ 6 DE ABRIL','','',1,'RAV4 MODELO 2010','PLATA','83-A','','MAGNA','7  LITROS ','','',1,'',''),(2,9,'15716013',NULL,'2019-09-24 17:32:46.962400','2019-09-24 17:41:00.000000',NULL,'',4,'APERTURA DE PUERTA PRINCIPAL',10,14,'MYRNA GUADALUPE ','ACUÑA ','OSORIO ',1,'','','',12,'','2019-09-24 17:51:00.000000','2019-09-24 19:57:47.000000','CALLE SOYOPA ','916','null','LA JOYA',1940,26,'QUINTANA ROO','ONAVAS','HAY UN TINACO ENFRENTE DE LA CALLE ',0,'','','','','','','','',1,'',''),(6,9,'15721138 ','2019-09-26 17:06:46.000000','2019-09-26 13:02:27.041600','2019-09-26 21:23:00.000000',NULL,'1234',5,'fuga en tuberia de tinacoo',2,9,'DORA ESTELA','CLARK ','LOPEZ',1,'','','',7,'No sirve valvula de llenado','2019-09-26 20:06:00.000000','2019-09-26 17:06:05.000000','saturnino campoy','1085','null','hacienda del sol',1890,26,'cabo san lucas ','de los maestros','en la purificadora de agua y ferrteria',0,'','','','','','','','fc2345',1,'',''),(13,9,'15729555',NULL,'2019-09-29 13:10:17.311200','2019-09-29 12:08:00.000000',NULL,'',4,'fuga de agua en el fregadero',2,10,'Juan','Salazar','',1,'','','',10,'Estaba tapado el filtro de la llave','2019-09-29 12:24:00.000000','2019-09-29 13:28:31.000000','FLORES MAGON ANDADOR O','13','','Las Granjas',1890,26,'minorca ','olivares','CERCA DE ESCUELA GOMEZ MAGON',0,'','','','','','','','',1,'',''),(14,9,'15731769',NULL,'2019-09-30 10:01:51.588400','2019-09-30 15:50:00.000000',NULL,'',4,'APERTURA DE AUTO',10,10,'LILIANA','GARCIA','MARTINEZ',1,'','','',12,'Apertura puerta chofer','2019-9-30 8:38','2019-10-01 10:44:33.000000','CONQUISTADORES ','422','','URBI VILLA DEL REY',1940,26,'','','LA POLICIA CERCA DEL DOMICILIO',1,'CHEVROLET SILVERADO 2001','BLANCO','VB 33 712','','','','','',1,'',''),(16,9,'15732951',NULL,'2019-09-30 14:47:49.313600','2019-09-30 17:00:00',NULL,'15732951',4,'CORTO CIRCUITO GENERAL',4,10,'Julio Cesar','Camargo','Rodriguez',1,'','','',27,'Se hizo revisión de centro de carga y base de medición, se checo voltaje y estaba todo correcto','2019-9-30 17:50','2019-09-30 20:55:34.000000','ISEO PONIENTE ','3416','','Residencial Montecarlo',1940,26,' JESUS GARCIA ','oasis','A ESPALDA DE SUPER MONTECARLO RECIBE ILEANA CASTRO ',0,'','','','','','','','',1,'',''),(21,9,'15735584',NULL,'2019-10-01 15:39:16.334200','2019-10-01 20:36:00',NULL,'15735584',4,'corto circuito parcial',4,9,'Lorena Guadalupe','Cabos ','Diaz',1,'','','',27,'Diagnostico. Corto circuito en centro de carga principal y térmico dañado.\nSolución: cambiar centro de carga y térmico. ','2019-10-1 13:43','2019-10-01 16:23:30.000000','los Legionarios','2709','','Las haciendas',1940,26,'Franciscanos y','Lagunas','',0,'','','','','','','','',1,'',''),(3,9,'30800100','2019-09-26 10:03:04.000000','2019-09-25 14:17:39.485200','2019-09-25 23:31:00.000000',NULL,'123',5,'gasl',1,1,'Camilo ','Sesto','',1,'','','',7,'','2019-09-26 08:03:00.000000','2019-09-26 10:03:02.000000','km 34 hillo - nogales','null','null','AHOME',1939,26,'','','',1,'HONDA CIVIC 2002','ROJO','9504VPS','KM 39','MAGNA','20','','',1,'3_F-19629.xml',''),(11,9,'9998888','2019-09-26 18:07:25.000000','2019-09-26 18:00:35.748000','2019-09-26 16:01:00.000000',NULL,'45644',5,'FUGA',2,9,'CHABELO','','',1,'','','',7,'','2019-09-26 17:02:00.000000','2019-09-26 18:07:23.000000','MUEBLES TRONCOSO','null','null','SI',1889,25,'','','',0,'','','','','','','','FV001',1,'',''),(20,9,'Z0001','2019-10-01 13:10:49.000000','2019-10-01 13:01:07.418200','2019-10-02 15:02:00',NULL,'FC001',5,'Reposición de cable y regadera eléctrica',4,9,'Juan','Dominguez ','No me chingues',1,'','','',7,'','2019-10-2 9:14','2019-10-01 13:07:31.000000','Leyva','350','','Los Mochis',1878,25,'Juarez','Independencia','Frente casa de cambio',0,'','','','','','','','A3750',1,'20_A3750.xml',''),(5,10,'9999',NULL,'2019-09-26 11:38:10.217400','2019-09-26 13:39:00.000000',NULL,'',4,'reposicion contacto',4,1,'Maria del Carmen','Soto','Armenta',1,'','','',7,'','2019-09-26 10:43:00.000000','2019-09-26 11:43:21.000000','Huertos','2250','null','HERMOSILLO',1890,26,'Mangos','Aguacates','',0,'','','','','','','','',1,'',''),(22,12,'H119000872',NULL,'2019-10-01 16:21:51.691000','2019-10-01 21:08:00',NULL,'',2,'FUGA EN LABAVO DEL BAÑO',2,0,'BLANCA IDALIA ','OLEA','RUIZ',1,'','','',11,'',NULL,NULL,'CERRADA LA BARRANCA','30','','CASA BONITA',1890,26,'BLVD AGUSTIN DEL CAMPO','','CASA BEICH C/ ROJO Y  CARRO DE TACOS',0,'','','','','','','','',1,'','');
+/*!40000 ALTER TABLE `orden` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `poliza`
+--
+
 DROP TABLE IF EXISTS `poliza`;
-CREATE TABLE `poliza`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `poliza` (
   `id_aseguradora` int(10) NOT NULL,
   `id_poliza` int(255) NOT NULL,
-  `poliza_nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `poliza_valor` double(255, 0) NULL DEFAULT NULL,
-  `poliza_cancelacion` double(255, 0) NULL DEFAULT 0,
-  PRIMARY KEY (`id_aseguradora`, `id_poliza`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+  `poliza_nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `poliza_valor` double(255,0) DEFAULT '0',
+  `poliza_cancelacion` double(255,0) DEFAULT '0',
+  `poliza_costo` double(255,0) DEFAULT '0',
+  PRIMARY KEY (`id_aseguradora`,`id_poliza`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of poliza
--- ----------------------------
-INSERT INTO `poliza` VALUES (1, 1, 'Liverpool', 400, 100);
-INSERT INTO `poliza` VALUES (1, 2, 'Suburbia', 400, 0);
-INSERT INTO `poliza` VALUES (1, 3, 'Axtel', 500, 0);
-INSERT INTO `poliza` VALUES (1, 4, 'ACE HOGAR', 431, 0);
-INSERT INTO `poliza` VALUES (1, 5, 'CORRESPONSALIA FORANEO', 300, 0);
-INSERT INTO `poliza` VALUES (1, 6, 'COSTO SALIDA (SERVICIO VIAL)', 250, 0);
-INSERT INTO `poliza` VALUES (4, 1, 'liverpool', 400, 0);
-INSERT INTO `poliza` VALUES (4, 2, 'BANAMEX LIBRA', 500, 0);
-INSERT INTO `poliza` VALUES (4, 3, '', 0, 0);
-INSERT INTO `poliza` VALUES (4, 4, '', 0, 0);
-INSERT INTO `poliza` VALUES (9, 1, 'COSTO DE SALIDA X KILOMETRO', 7, 0);
-INSERT INTO `poliza` VALUES (9, 2, 'CORRESPONSALIA FORANEA', 300, 0);
-INSERT INTO `poliza` VALUES (9, 3, 'ASISTENCIA MUJER  BANORTE', 500, 0);
-INSERT INTO `poliza` VALUES (9, 4, 'ASISTENCIA INTEGRALSCOTIABANK CREDITO', 400, 0);
-INSERT INTO `poliza` VALUES (9, 5, 'ASISTENCIA CREDITO HSBC', 500, 0);
-INSERT INTO `poliza` VALUES (9, 6, '', 0, 0);
-INSERT INTO `poliza` VALUES (9, 7, '', 0, 0);
-INSERT INTO `poliza` VALUES (9, 8, 'ASISTENCIA HABITT', 500, 0);
-INSERT INTO `poliza` VALUES (9, 9, 'ADT PLUS RESIDENCIAL', 500, 0);
-INSERT INTO `poliza` VALUES (9, 10, 'GNP', 862, 0);
-INSERT INTO `poliza` VALUES (9, 11, '', 0, 0);
-INSERT INTO `poliza` VALUES (9, 12, 'BANAMEX HOGAR Y AJUSTES', 1000, 0);
-INSERT INTO `poliza` VALUES (9, 13, '', 0, 0);
-INSERT INTO `poliza` VALUES (9, 14, 'LIBRA PLUS', 500, 0);
-INSERT INTO `poliza` VALUES (9, 15, '', 0, 0);
-INSERT INTO `poliza` VALUES (17, 1, 'COSTO POR KM (SERVICIO VIAL)', 0, 0);
-INSERT INTO `poliza` VALUES (17, 2, 'PLOMERIA (BASICO)', 390, 0);
-INSERT INTO `poliza` VALUES (17, 3, 'SANITARIO (SOLO MANO DE OBRA)', 650, 0);
-INSERT INTO `poliza` VALUES (17, 4, 'ELECTRICIDAD', 390, 0);
-INSERT INTO `poliza` VALUES (17, 5, 'CERRAJERIA', 400, 0);
+--
+-- Dumping data for table `poliza`
+--
 
--- ----------------------------
--- Table structure for servicio
--- ----------------------------
+LOCK TABLES `poliza` WRITE;
+/*!40000 ALTER TABLE `poliza` DISABLE KEYS */;
+INSERT INTO `poliza` VALUES (1,1,'Liverpool',400,150,345),(1,2,'Suburbia',400,150,345),(1,3,'Axtel',500,150,431),(1,4,'Asistencia Trus',400,150,345),(4,1,'LIVERPOOL VIAL HMO',250,150,250),(4,2,'LIVERPOOL  VIAL FORANEO',300,150,300),(9,1,'ASISTENCIA MUJER  BANORTE',500,0,450),(9,2,'ASISTENCIA INTEGRALSCOTIABANK CREDITO',400,0,450),(9,3,'ASISTENCIA CREDITO HSBC',500,0,450),(9,4,'ASISTENCIA HABITT',500,0,450),(9,5,'ADT PLUS RESIDENCIAL',500,0,450),(9,6,'GNP',862,0,450),(9,7,'BANAMEX HOGAR Y AJUSTES',1000,0,450),(9,8,'LIBRA PLUS',500,0,450),(10,1,'Bancomer',500,200,500),(17,1,'COSTO POR KM (SERVICIO VIAL)',0,0,0),(17,2,'PLOMERIA (BASICO)',390,0,0),(17,3,'SANITARIO (SOLO MANO DE OBRA)',650,0,0),(17,4,'ELECTRICIDAD',390,0,0),(17,5,'CERRAJERIA',400,0,0);
+/*!40000 ALTER TABLE `poliza` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `servicio`
+--
+
 DROP TABLE IF EXISTS `servicio`;
-CREATE TABLE `servicio`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `servicio` (
   `id_servicio` int(255) NOT NULL AUTO_INCREMENT,
-  `nombre_servicio` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `descripcion_servicio` varchar(400) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `nombre_servicio` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `descripcion_servicio` varchar(400) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `erp` varchar(50) DEFAULT '',
   PRIMARY KEY (`id_servicio`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of servicio
--- ----------------------------
-INSERT INTO `servicio` VALUES (1, 'Gasolina', '  Llenado de gasolina a un vehículo en la dirección acordada por el cliente');
-INSERT INTO `servicio` VALUES (2, 'Plomeria', ' Trabajos de plomeria menor en domicilios particular');
-INSERT INTO `servicio` VALUES (4, 'Electricidad', 'Mantenimiento y reparación de instalaciones eléctricas particulares');
-INSERT INTO `servicio` VALUES (6, 'Impermeabilización', ' Servicio de impermeabilizar ');
-INSERT INTO `servicio` VALUES (7, 'Taxi', 'Traslado de personas de un lugar a otro indicado por la aseguradora');
-INSERT INTO `servicio` VALUES (8, 'Vidrio', 'cambio de cristales en ventanas y puertas');
-INSERT INTO `servicio` VALUES (9, 'Aluminio', 'Fabricacion y Reparacion de canceleria, puertas y ventanas de aluminio');
-INSERT INTO `servicio` VALUES (10, 'Cerrajeria', ' Apertura de cerraduras, candados y automoviles');
-INSERT INTO `servicio` VALUES (11, 'Albañileria', 'Trabajos menor de albañileria');
-INSERT INTO `servicio` VALUES (12, 'Herreria', 'fabricacion y reparacion de trabajos de herreria');
-INSERT INTO `servicio` VALUES (14, 'Paso de Corriente', 'pasar corriente a vehiculos con cables o jumper');
-INSERT INTO `servicio` VALUES (15, 'Refrigeracion', 'servicio de mantenimiento preventivo a aire acondicionado');
-INSERT INTO `servicio` VALUES (16, 'Pintura', 'aplicacion de pintura en muros estanteria  y rejas');
-INSERT INTO `servicio` VALUES (17, 'Carpinteria', 'fabricacion y reparacion de muebles de madera');
-INSERT INTO `servicio` VALUES (18, 'Cambio de Llanta', 'Cambio de llanta baja por llnata de refaccion nota no se parchan llantas ni se llevan a llantera el cliente debe contar con dados para candados de rines ');
-INSERT INTO `servicio` VALUES (19, 'Tablaroca', ' fabricacion de panel de yeso y durock co n estructura metalica para divisiones');
+--
+-- Dumping data for table `servicio`
+--
 
--- ----------------------------
--- Table structure for tecnico
--- ----------------------------
+LOCK TABLES `servicio` WRITE;
+/*!40000 ALTER TABLE `servicio` DISABLE KEYS */;
+INSERT INTO `servicio` VALUES (1,'Gasolina','Suministro de gasolina a un vehículo en la dirección acordada por el cliente','GAS'),(2,'Plomeria',' Trabajos de plomeria menor en domicilios particular','PLO'),(4,'Electricidad','Mantenimiento y reparación de instalaciones eléctricas particulares','ELE'),(6,'Impermeabilización',' Servicio de impermeabilizar ','IMP'),(7,'Taxi','Traslado de personas de un lugar a otro indicado por la aseguradora','TX'),(8,'Vidrio','cambio de cristales en ventanas y puertas','VID'),(9,'Aluminio','Fabricacion y Reparacion de canceleria, puertas y ventanas de aluminio',''),(10,'Cerrajeria',' Apertura de cerraduras, candados y automoviles',''),(11,'Albañileria','Trabajos menor de albañileria',''),(12,'Herreria','fabricacion y reparacion de trabajos de herreria',''),(14,'Paso de Corriente','pasar corriente a vehiculos con cables o jumper','FPASO'),(15,'Refrigeracion','servicio de mantenimiento preventivo a aire acondicionado',''),(16,'Pintura','aplicacion de pintura en muros estanteria  y rejas','PIN'),(17,'Carpinteria','fabricacion y reparacion de muebles de madera','CARP'),(18,'Cambio de Llanta','Cambio de llanta baja por llnata de refaccion nota no se parchan llantas ni se llevan a llantera el cliente debe contar con dados para candados de rines ','FLLANTA'),(19,'Tablaroca',' fabricacion de panel de yeso y durock co n estructura metalica para divisiones','');
+/*!40000 ALTER TABLE `servicio` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tecnico`
+--
+
 DROP TABLE IF EXISTS `tecnico`;
-CREATE TABLE `tecnico`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tecnico` (
   `id_tecnico` int(255) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `ap_paterno` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `ap_materno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `status` int(1) NULL DEFAULT 0,
-  `id_estado` int(10) NULL DEFAULT 0,
-  `id_municipio` int(10) NULL DEFAULT 0,
-  `servicios` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `num_cel` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `num_fijo` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `datos_banco` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
-  `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ap_paterno` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ap_materno` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `status` int(1) DEFAULT '0',
+  `id_estado` int(10) DEFAULT '0',
+  `id_municipio` int(10) DEFAULT '0',
+  `servicios` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `num_cel` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `num_fijo` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `datos_banco` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '',
+  `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id_tecnico`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of tecnico
--- ----------------------------
-INSERT INTO `tecnico` VALUES (6, 'Javier', 'Partida', 'Lugo', 0, 26, 1890, '1,7,2,4,6,8,9,10,11,12,14', '6622568642', '', '', 'juanito', 'pipesorules');
-INSERT INTO `tecnico` VALUES (7, 'Jose Luis', 'Gonzalez', '', 0, 26, 1890, '4,2,15', '', '', '', '', '');
-INSERT INTO `tecnico` VALUES (8, 'Rey Baltazar', 'Maldonado', 'Samayoa', 0, 26, 1890, '8,9,10,7,1,14', '6621786167', '', '', '', '');
-INSERT INTO `tecnico` VALUES (9, 'Rene ', 'Gonzalez', '', 0, 26, 1890, '8,9,6,16', '6621429182', '', '', '', '');
-INSERT INTO `tecnico` VALUES (10, 'Jose', 'Chavez', 'Gaviño', 0, 26, 1890, '2,12,8', '6621454790', '', '', '', '');
-INSERT INTO `tecnico` VALUES (11, 'Ramon ', 'Mac Group', '', 0, 26, 1890, '4,2,8,12', '6621575936', '', '', '', '');
-INSERT INTO `tecnico` VALUES (12, 'Juan Carlos ', 'Hacha', '', 0, 26, 1940, '10,1,7', '6444082100', '', '', '', '');
-INSERT INTO `tecnico` VALUES (13, 'Adrian ', 'Acosta', '', 0, 26, 1940, '1,14', '', '', '', '', '');
-INSERT INTO `tecnico` VALUES (14, 'Genaro', 'Muñoz', '', 0, 26, 1947, '2,4,6', '6221112745', '', '', '', '');
-INSERT INTO `tecnico` VALUES (15, 'Cristhian', 'Reyna', '', 0, 26, 0, '6,4,2,15', '6564194245', '', '', '', '');
-INSERT INTO `tecnico` VALUES (16, 'Carlos ', 'Contreras', '', 0, 26, 1890, '19', '6623530203', '', '', '', '');
-INSERT INTO `tecnico` VALUES (17, 'Francisco', 'Rodriguez', '', 0, 26, 1924, '2,4,6,12,16', '6453335111', '', '', '', '');
-INSERT INTO `tecnico` VALUES (18, 'Juan Ramon ', 'Esquer', '', 0, 26, 1940, '2,8', '', '', '', '', '');
-INSERT INTO `tecnico` VALUES (19, 'Marcos ', 'Valenzuela', '', 0, 26, 1890, '10', '6622004816', '6622249468', '', '', '');
-INSERT INTO `tecnico` VALUES (20, 'Joel', 'Magaña', '', 0, 26, 1940, '4,15,2', '6441219761', '', '', '', '');
-INSERT INTO `tecnico` VALUES (21, 'Everardo ', 'Gutierrez', '', 0, 26, 1890, '16,6,11', '6621554880', '', '', '', '');
-INSERT INTO `tecnico` VALUES (22, 'Omar ', 'Becerra', 'Gomez', 0, 26, 1890, '2,4,15', '6623953740', '', '', '', '');
-INSERT INTO `tecnico` VALUES (23, 'Armando', 'Veloz', '', 0, 26, 1905, '8', '6311028328', '', '', '', '');
-INSERT INTO `tecnico` VALUES (24, 'German ', 'Noperi ', '', 0, 26, 1890, '7,1,14', '6621600437', '', '', '', '');
-INSERT INTO `tecnico` VALUES (25, 'Ivan ', 'Gonzalez', '', 0, 26, 1947, '10', '6221513625', '', '', '', '');
+--
+-- Dumping data for table `tecnico`
+--
 
--- ----------------------------
--- Table structure for tipo_orden
--- ----------------------------
-DROP TABLE IF EXISTS `tipo_orden`;
-CREATE TABLE `tipo_orden`  (
-  `id_tipo_orden` int(2) NOT NULL,
-  `tipo_orden` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id_tipo_orden`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+LOCK TABLES `tecnico` WRITE;
+/*!40000 ALTER TABLE `tecnico` DISABLE KEYS */;
+INSERT INTO `tecnico` VALUES (6,'Javier','Partida','Lugo',0,26,1890,'1,7,2,4,6,8,9,10,11,12,14','6622568642','','','javier.lugo','javierlugo'),(7,'Juan Carlos','Valenzuela','',0,26,1890,'1,14,18','6624481297','','Banorte ','juancarlosvalenzuela','1234'),(8,'Rey Baltazar','Maldonado','Samayoa',0,26,1890,'8,9,10,7,1,14','6621786167','','','maldonado','1234'),(9,'Rene ','Gonzalez','',0,26,1890,'8,9,6,16','6621429182','','','',''),(10,'Jose','Chavez','Gaviño',0,26,1890,'2,12,8','6621454790','','','josechavez','1234'),(11,'Ramon ','Mac Group','',0,26,1890,'4,2,8,12','6621575936','','','ramonmac','1234'),(12,'Juan Carlos ','Acha','Piña',0,26,1940,'10,1,7','6444082100','','','Juan.acha','2100'),(13,'Adrian ','Acosta','',0,26,1940,'1,14','','','','',''),(14,'Genaro','Muñoz','',0,26,1947,'2,4,6','6221112745','','','',''),(15,'Cristhian','Reyna','',0,26,0,'6,4,2,15','6564194245','','','',''),(16,'Carlos ','Contreras','',0,26,1890,'19','6623530203','','','',''),(17,'Francisco','Rodriguez','',0,26,1924,'2,4,6,12,16','6453335111','','','',''),(18,'Juan Ramon ','Esquer','',0,26,1940,'2,8','','','','',''),(19,'Marcos ','Valenzuela','',0,26,1890,'10','6622004816','6622249468','','',''),(20,'Joel','Magaña','',0,26,1940,'4,15,2','6441219761','','','',''),(21,'Everardo ','Gutierrez','',0,26,1890,'16,6,11','6621554880','','','',''),(22,'Omar ','Becerra','Gomez',0,26,1890,'2,4,15','6623953740','','','',''),(23,'Armando','Veloz','',0,26,1905,'8','6311028328','','','',''),(24,'German ','Noperi ','',0,26,1890,'7,1,14','6621600437','','','',''),(25,'Ivan ','Gonzalez','',0,26,1947,'10','6221513625','','','',''),(26,'Eliseo','Perez','',0,26,1910,'2,4,6,7,8,9,10,11,12,14,15,16,17,18,19','6333349000',NULL,'Santander ',NULL,NULL),(27,'Mario ','Soto','',0,26,1940,'4','6441222221',NULL,NULL,'mariosoto','2221'),(28,'Marco','Delgado','Gaspar',0,26,1890,'2,4,15','6621237054',NULL,NULL,'mariodelgado','7054'),(29,'Marco','Delgado','Gaspar',0,26,1890,'4,15,2','6621237054',NULL,NULL,NULL,NULL),(30,'Jesus Maria','Lopez','Castro',0,26,1940,'2,8,9','6441738063',NULL,NULL,'jesuslopez','8063');
+/*!40000 ALTER TABLE `tecnico` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- ----------------------------
--- Records of tipo_orden
--- ----------------------------
-INSERT INTO `tipo_orden` VALUES (1, 'Aseguradora');
-INSERT INTO `tipo_orden` VALUES (2, 'Interna');
+--
+-- Table structure for table `usuario`
+--
 
--- ----------------------------
--- Table structure for usuario
--- ----------------------------
 DROP TABLE IF EXISTS `usuario`;
-CREATE TABLE `usuario`  (
-  `id_user` int(255) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuario` (
+  `id_user` int(255) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id_user`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-SET FOREIGN_KEY_CHECKS = 1;
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-10-01 23:04:41
