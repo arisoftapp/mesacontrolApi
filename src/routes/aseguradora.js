@@ -39,6 +39,7 @@ module.exports = function (app) {
                             ase: data,
                             pol: dta
                         });
+                        console.log(dta);
                     }
                 });
             }
@@ -59,6 +60,7 @@ module.exports = function (app) {
                     success: true,
                     data: dta
                 });
+                console.log(dta);
             }
         });
     });

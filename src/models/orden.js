@@ -8,14 +8,13 @@ ordenModel.getOrdenes = (callback) => {
         dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
         CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
         a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
-        a.recibe_nombre, a.recibe_paterno, a.recibe_materno, h.poliza_costo,
-        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, e.erp, a.descripcion,
+        a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
+        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, a.descripcion,
         d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
         LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
-        LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
         WHERE id_tipo = 1 ORDER BY a.id_status ASC`, function(err, rows) {
             if (err) {
                 throw err;
@@ -94,12 +93,42 @@ ordenModel.getAllOrdenesbyTecnico = (id_tecnico, callback) => {
     }
 };
 
+ordenModel.getLayoutData = (id_orden, callback) => {
+    if (dbAdmin){
+        const query = `SELECT a.id_orden, a.expediente,  
+        CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
+        e.nombre_servicio, a.calle, IFNULL(a.num_ext, 'S/N') AS num_ext, IFNULL(a.col, '') AS col, h.poliza_costo, f.nombre_entidad, m.nombre_municipio,
+        e.erp, i.corres, i.gasolina, i.gasolina_litros, i.tipo_gasolina, i.kilometros, i.cant_km FROM orden AS a
+        LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
+        LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
+        LEFT JOIN entidad_fed AS f ON a.id_estado = f.id_entidad
+        LEFT JOIN municipio AS m ON a.id_municipio = m.id_municipio
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
+        LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
+        LEFT JOIN costo AS i ON a.id_orden = i.id_orden
+        WHERE a.id_orden = ` + id_orden;
+        dbAdmin.query(query, function (err, rows) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+}
 ordenModel.getOrdenesBuscar = (buscar, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        const query = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.id_tecnico, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
+        const query = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.id_tecnico, a.asignada,
+        CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, 
+        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora,
+        e.erp, h.poliza_valor,
+        d.orden_status AS estado_orden FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
+        LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE id_tipo = 1 AND (expediente LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%')`;
         //console.log(query);
         dbAdmin.query(query, function(err, rows) {

@@ -44,6 +44,32 @@ costosModel.insertCostos = (costoData, callback) => {
     }
 };
 
+costosModel.updateCostos = (costoData, callback) => {
+    //console.log(idEmpresa);
+    if (dbAdmin) {
+        const sql = `UPDATE costo SET 
+            mano_obra = '${costoData.mano_obra}',
+            corres = '${costoData.corres}',
+            kilometros = '${costoData.kilometros}',
+            cant_km = '${costoData.cant_km}',
+            precio_km = '${costoData.precio_km}',
+            tipo_gasolina = '${costoData.tipo_gasolina}',
+            gasolina_litros = ${costoData.gasolina_litros},
+            gasolina = '${costoData.gasolina}',
+            importe_materiales = '${costoData.importe_materiales}',
+            total = '${costoData.total}'
+            WHERE id_orden = ${costoData.id_orden}`;
+        dbAdmin.query(sql, function (error, rows) {
+            if (error) {
+                console.log(error);
+                //callback(null,err.message)
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
 costosModel.insertMateriales = (materialesData, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
