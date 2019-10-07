@@ -1,4 +1,5 @@
 const orden = require('../models/orden');
+const costos = require('../models/costos.model');
 
 module.exports = function (app) {
     app.get('/ordenes', (req, res) => {
@@ -269,56 +270,23 @@ module.exports = function (app) {
                     }
                 });
             } else if (id_status == '3'){
-                orden.updateFinalizado(id_orden, '4', dateTime, (err, data) => {
-                    if (err){
-                        res.json({
-                            success: false,
-                            message: err
-                        });
-                    }else{
-                        var es_foraneo = true;
-                        var corre = 300;
-                        orden.getOrden(id_orden, (err, data) => {
-                            if (!err) {
-                                const municipio = data[0].id_municipio;
-                                if (municipio == 1890) {
-                                    es_foraneo = false;
-                                    corre = 0;
-                                }
-                            }
-                        });
-                        const costosData = {
-                            id_orden: id_orden,
-                            mano_obra: 0,
-                            corres: corre,
-                            kilometros: 0,
-                            cant_km: 0,
-                            precio_km: 0,
-                            tipo_gasolina: 0,
-                            gasolina_litros: 0,
-                            gasolina: 0,
-                            importe_materiales: corre,
-                            total: corre
-                        };
-                        const id_orden = req.body.id_orden;
-                        costos.insertCostos(costosData, (err, data) => {
-                            if (err) {
-                                console.log('Se presentó un error al intentar guardar los datos de costos. ' + err)
-                                res.json({
-                                    success: false,
-                                    message: "'Se presentó un error al intentar guardar los datos de costos, " + err
-                                });
-                            } else {
-                                res.json({
-                                    success: true,
-                                    message: "¡Se Guardaron los cambios exitosamente!"
-                                });
-                            }
-
-                        });
-                        
-                    }
-                });
+                var costo = makeCostos(id_orden);
+                    orden.updateFinalizado(id_orden, '4', dateTime, (err, data) => {
+                        if (err){
+                            res.json({
+                                success: false,
+                                message: err
+                            });
+                        }else{
+                            
+                            res.json({
+                                success: true,
+                                message: "¡Se Guardaron los cambios exitosamente!"
+                            });
+                        }
+                    });
+                
+                
             } else if (id_status == '4'){
                 orden.updateFacturado(id_orden, '5', dateTime, (err, data) => {
                     if (err){
@@ -367,14 +335,16 @@ module.exports = function (app) {
             importe_materiales: corre,
             total: corre
         };
-        const id_orden = req.body.id_orden;
+        
         costos.insertCostos(costosData, (err, data) => {
             if ( err ) {
-                console.log('Se presentó un error al intentar guardar los datos de costos. ' + err)
+                return false;
+            } else {
+                return true;
             }
            
         });
-
+        
     };
 
     app.put('/cancelar_orden/', (req, res) => {
