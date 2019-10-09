@@ -225,6 +225,22 @@ ordenModel.getMaxId = (callback) => {
     }
 }
 
+ordenModel.updateFolioFact = (ordenData, callback) => {
+    if ( dbAdmin ) {
+        const sql = `UPDATE orden SET 
+               folio_factura = '${ordenData.folio_factura}'
+               WHERE id_orden = ${ordenData.id_orden}`;
+        dbAdmin.query(sql, function (error, rows) {
+            if (error) {
+                console.log(error);
+                //callback(null,err.message)
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}
+
 ordenModel.updateOrden = (ordenData, callback) =>{
     if (dbAdmin){
         const sql = `UPDATE orden SET 
@@ -362,14 +378,31 @@ ordenModel.updateFacturado = (id_orden, id_status, time, callback) =>{
     }
 }
 
-ordenModel.deleteOrden = (id_med, callback) => {
+ordenModel.deleteOrden = (id_orden, callback) => {
     if (dbAdmin){
-        dbAdmin.query(`DELETE FROM orden WHERE id_orden = ` + id_med, function (error, rows){
+        const orden = `DELETE FROM orden WHERE id_orden = ` + id_orden;
+        const evi = `DELETE FROM evidencia WHERE id_orden = ` + id_orden;
+        const costo = `DELETE FROM costo WHERE id_orden = ` + id_orden;
+        dbAdmin.query(orden, function (error, rows){
             if (error) {
                 console.log(error);
                 //callback(null,err.message)
-            } else {                  
-                callback(null, rows);
+            } else {   
+                dbAdmin.query(evi, function (error, rows) {
+                    if (error) {
+                        console.log(error);
+                        //callback(null,err.message)
+                    } else { 
+                        dbAdmin.query(costo, function (error, rows) {
+                            if (error) {
+                                console.log(error);
+                                //callback(null,err.message)
+                            } else {                                                  
+                                callback(null, rows);
+                            }
+                        })
+                    }
+                })
             }
         });
     }
@@ -421,6 +454,20 @@ ordenModel.getEvidencia = (id_orden, callback) => {
         dbAdmin.query(`SELECT * FROM evidencia WHERE id_orden = ` + id_orden, function(err, rows) {
             if (err) {
                 throw err;
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+ordenModel.updateStatus = (id_orden, nuevo, callback) => {
+    if (dbAdmin) {
+        dbAdmin.query(`UPDATE orden SET 
+        id_status = '` + nuevo + `' WHERE id_orden = ` + id_orden, function (error, rows) {
+            if (error) {
+                console.log(error);
+                callback(error);
             } else {
                 callback(null, rows);
             }

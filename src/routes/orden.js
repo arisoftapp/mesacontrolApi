@@ -1,5 +1,6 @@
 const orden = require('../models/orden');
 const costos = require('../models/costos.model');
+const path = require('path');
 
 module.exports = function (app) {
     app.get('/ordenes', (req, res) => {
@@ -369,6 +370,32 @@ module.exports = function (app) {
         });
     });
 
+    app.post('/update_status/:orden/:status', (req, res) => {
+        var id_empleado = req.decoded.tipo;
+        if (id_empleado == '1' || id_empleado !== null) {
+            var id_orden = req.params.orden;
+            var id_status = req.params.status;
+                orden.updateStatus(id_orden, id_status, (err, data) => {
+                    if (err) {
+                        res.json({
+                            success: false,
+                            message: err.code
+                        });
+                    } else {
+                        res.json({
+                            success: true,
+                            message: "¡Se Guardaron los cambios exitosamente!"
+                        });
+                    }
+                });
+        } else {
+            res.json({
+                success: false,
+                message: 'El usuario no cuanta con los permisos para realizar esta acción.'
+            });
+        }
+    });
+
     app.put('/orden', (req, res) => {
         const ordenData = {
             id_orden : req.body.id_orden,
@@ -512,11 +539,14 @@ module.exports = function (app) {
 
     app.post('/upload_evidencia/:id_orden', (req, res) => {
         console.log(req.files.image);
-       
         let images = req.files.image;
         let id_orden = req.params.id_orden;
-        
+       
         let imageData = 'INSERT INTO evidencia (id_orden, evidencia) VALUES (';
+        res.json({
+            success: true,
+            message: "¡Se recibió el archivo de imagen! " + data
+        });
         if (images.length == undefined){
             var file = images;
             if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
@@ -583,37 +613,49 @@ module.exports = function (app) {
         }
     });
 
-    app.post('/upload_facturacion/:id_orden', (req, res) => {
+    app.post('/upload_facturacion/:id_orden/:factura', (req, res) => {
+        let factura = req.params.factura;
         let id_orden = req.params.id_orden;
         if (req.files.pdf){
             //console.log(req.files.pdf);
-            var file = req.files.pdf;
+            const file = req.files.pdf;
             file.mv('evidencias/PDF/'+ id_orden + '_' + file.name, function(err) {          
                 if (err) {
                     console.log(err);
-                    return res.status(500).send(err);
+                    throw (err);
                 }
                 let imageData = id_orden + '_' + file.name;
-                console.log(imageData);
+                //console.log(imageData);
                 orden.upload_pdf(id_orden, imageData, (err, data) => {
                     if (err) {
                         console.log(err);
                         throw err
                     } 
-                })
+                });
+                if (factura){
+                    const factData = {
+                        id_orden : id_orden,
+                        folio_factura: path.parse(file.name).name
+                    }
+                    orden.updateFolioFact(factData, (err, data) => {
+                        if (err) {
+                            throw console.error(err);
+                        }
+                    })
+                }
             });
         };
         if (req.files.xml){
             //console.log(req.files.xml);
-            var file = req.files.xml;
-            file.mv('evidencias/XML/'+ id_orden + '_' + file.name, function(err) {          
+            const xml = req.files.xml;
+            xml.mv('evidencias/XML/'+ id_orden + '_' + xml.name, function(err) {          
                 if (err) {
                     console.log(err);
                     return res.status(500).send(err);
                 }
-                let imageData = id_orden + '_' + file.name;
-                console.log(imageData);
-                orden.upload_pdf(id_orden, imageData, (err, data) => {
+                let xmlData = id_orden + '_' + xml.name;
+                //console.log(xmlData);
+                orden.upload_xml(id_orden, xmlData, (err, data) => {
                     if (err) {
                         console.log(err);
                         throw err
@@ -647,5 +689,25 @@ module.exports = function (app) {
                 });
             }
         });
+    });
+
+    app.delete('/orden/:id_orden', (req, res) => {
+        const decoded = req.decoded;
+        const id = req.params.id_orden;
+        if (decoded.tipo == 1) {
+            orden.deleteOrden(id, (err, data) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Error al eliminar la orden: " + err.code
+                    });
+                } else {
+                    res.json({
+                        success: true,
+                        data: 'Se eliminó la orden indicada.'
+                    });
+                }
+            })
+        }
     });
 }
