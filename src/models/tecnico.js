@@ -30,6 +30,20 @@ tecnicoModel.getTecnico = (id, callback) => {
     }
 };
 
+tecnicoModel.getCelTecnico = (id, callback) => {
+    //console.log(idEmpresa);
+    if (dbAdmin) {
+        dbAdmin.query(`SELECT num_cel FROM tecnico WHERE id_tecnico = ` + id, function (err, rows) {
+            if (err) {
+                throw err;
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
 
 tecnicoModel.insertTecnico = (tecnicoData, callback) =>{
 

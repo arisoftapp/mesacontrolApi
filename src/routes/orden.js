@@ -1,6 +1,10 @@
 const orden = require('../models/orden');
+const tecnico = require('../models/tecnico');
 const costos = require('../models/costos.model');
 const path = require('path');
+const accountSid = 'ACe4f8ba482da90602871dd463b0900ed1';
+const authToken = 'd0c1bbde9c3ccb8a590428942233c0c5';
+const client = require('twilio')(accountSid, authToken); 
 
 module.exports = function (app) {
     app.get('/ordenes', (req, res) => {
@@ -217,7 +221,9 @@ module.exports = function (app) {
                                         success: true,
                                         message: "¡Se Guardaron los cambios exitosamente!"
                                     });
+                                    sendNotification(ordenData);
                                 }
+
                             });
                         } else {
                             console.log('ORDEN NO ASIGNADA');
@@ -231,6 +237,28 @@ module.exports = function (app) {
             }
         }); 
     });
+
+    function sendNotification(orden) {
+        tecnico.getTecnico(orden.id_tecnico, (err, data) => {
+            if (!err) {
+                var today = new Date(orden.asignada);
+                var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+                var time = today.getHours() + ":" + today.getMinutes();
+                var dateTime = date + ' ' + time;
+                let message = 'Se te ha asignado la orden con folio *' + orden.expediente + '*, con fecha programada el día *' + date + '* a las *' + time + ` hrs*. Para conocer más detalles de la orden ingresa a: http://www.arisoft.com.mx/mesadecontrol/`;
+                celular = data[0].num_cel;
+                if (celular.length == 10){
+                    let para = 'whatsapp:+521'+celular;
+                    client.messages.create({
+                        body: message,
+                        from: 'whatsapp:+14155238886',
+                        to: para
+                    }).then(message => console.log(message.sid)).done();
+                }                
+            }
+        });
+        
+    }
 
     app.put('/arribo_tecnico/:id_orden', (req, res) => {
         const id_orden = req.params.id_orden;
@@ -292,29 +320,20 @@ module.exports = function (app) {
                     }
                 });
             } else if (id_status == '3'){
-                //var costo = makeCostos(id_orden);
-                if (makeCostos(id_orden)) {
-                    orden.updateFinalizado(id_orden, '4', dateTime, (err, data) => {
-                        if (err) {
-                            res.json({
-                                success: false,
-                                message: err
-                            });
-                        } else {
-
-                            res.json({
-                                success: true,
-                                message: "¡Se Guardaron los cambios exitosamente!"
-                            });
-                        }
-                    });
-                } else {
-                    res.json({
-                        success: false,
-                        message: 'ERROR. No se pudieron generar los costos de la orden. Contacte a soporte.'
-                    });
-                }
-                     
+                makeCostos(id_orden);
+                orden.updateFinalizado(id_orden, '4', dateTime, (err, data) => {
+                    if (err) {
+                        res.json({
+                            success: false,
+                            message: err
+                        });
+                    } else {
+                        res.json({
+                            success: true,
+                            message: "¡Se Guardaron los cambios exitosamente!"
+                        });
+                    }
+                });  
             } else if (id_status == '4'){
                 orden.updateFacturado(id_orden, '5', dateTime, (err, data) => {
                     if (err){
@@ -465,7 +484,7 @@ module.exports = function (app) {
             vehiculo_combustible  : req.body.vehiculo_combustible,
             vehiculo_litros : req.body.vehiculo_litros,
         };
-
+        //sendNotification(ordenData);
         orden.updateOrden(ordenData, (err, data) => {
             if (err){
                 res.json({

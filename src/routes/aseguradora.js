@@ -39,7 +39,7 @@ module.exports = function (app) {
                             ase: data,
                             pol: dta
                         });
-                        console.log(dta);
+                        //console.log(dta);
                     }
                 });
             }
