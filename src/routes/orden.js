@@ -437,6 +437,7 @@ module.exports = function (app) {
             id_poliza : req.body.id_poliza,
             folio_cierre : req.body.folio_cierre,
             folio_factura : req.body.folio_factura,
+            folio_recepcion : req.body.folio_recepcion,
             observaciones : req.body.observaciones,
             benef_nombre : req.body.benef_nombre,
             benef_paterno  : req.body.benef_paterno,
