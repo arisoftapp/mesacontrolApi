@@ -241,11 +241,15 @@ module.exports = function (app) {
     function sendNotification(orden) {
         tecnico.getTecnico(orden.id_tecnico, (err, data) => {
             if (!err) {
-                var today = new Date(orden.asignada);
-                var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-                var time = today.getHours() + ":" + today.getMinutes();
-                var dateTime = date + ' ' + time;
-                let message = 'Se te ha asignado la orden con folio *' + orden.expediente + '*, con fecha programada el día *' + date + '* a las *' + time + ` hrs*. Para conocer más detalles de la orden ingresa a: http://www.arisoft.com.mx/mesadecontrol/`;
+                var fecha = new Date(orden.asignada);
+                let year = fecha.getFullYear();
+                let mes = fecha.getMonth() + 1;
+                let dia = fecha.getDate();
+                let hora = fecha.getHours();
+                let min = fecha.getMinutes();
+                const string = (year + '-' + mes + '-' + dia + ' ' + hora + ':' + min + ' UTC');
+                var today = new Date(string).toLocaleString("en-US", { timeZone: "America/Hermosillo" });
+                let message = 'Se te ha asignado la orden con folio *' + orden.expediente + '*, con fecha programada el día *' + today + '* (fecha y hora local de Hermosillo). Para conocer más detalles de la orden ingresa a: http://www.arisoft.com.mx/mesadecontrol/';
                 celular = data[0].num_cel;
                 if (celular.length == 10){
                     let para = 'whatsapp:+521'+celular;
@@ -484,7 +488,7 @@ module.exports = function (app) {
             vehiculo_combustible  : req.body.vehiculo_combustible,
             vehiculo_litros : req.body.vehiculo_litros,
         };
-        //sendNotification(ordenData);
+        sendNotification(ordenData);
         orden.updateOrden(ordenData, (err, data) => {
             if (err){
                 res.json({
