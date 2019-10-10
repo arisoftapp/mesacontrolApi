@@ -232,6 +232,27 @@ module.exports = function (app) {
         }); 
     });
 
+    app.put('/arribo_tecnico/:id_orden', (req, res) => {
+        const id_orden = req.params.id_orden;
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date + ' ' + time;
+        orden.updateArribo(id_orden, '3', dateTime, (err, data) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: err.code
+                });
+            } else {
+                res.json({
+                    success: true,
+                    message: "¡Se Guardaron los cambios exitosamente!"
+                });
+            }
+        });
+    })
+
     app.put('/status_orden/:fecha', (req, res) => {
         var id_empleado = req.decoded.tipo;
         if (id_empleado == '1' || id_empleado == '3' || id_empleado !== null){
@@ -271,23 +292,29 @@ module.exports = function (app) {
                     }
                 });
             } else if (id_status == '3'){
-                var costo = makeCostos(id_orden);
+                //var costo = makeCostos(id_orden);
+                if (makeCostos(id_orden)) {
                     orden.updateFinalizado(id_orden, '4', dateTime, (err, data) => {
-                        if (err){
+                        if (err) {
                             res.json({
                                 success: false,
                                 message: err
                             });
-                        }else{
-                            
+                        } else {
+
                             res.json({
                                 success: true,
                                 message: "¡Se Guardaron los cambios exitosamente!"
                             });
                         }
                     });
-                
-                
+                } else {
+                    res.json({
+                        success: false,
+                        message: 'ERROR. No se pudieron generar los costos de la orden. Contacte a soporte.'
+                    });
+                }
+                     
             } else if (id_status == '4'){
                 orden.updateFacturado(id_orden, '5', dateTime, (err, data) => {
                     if (err){
@@ -320,31 +347,34 @@ module.exports = function (app) {
                 if ( municipio == 1890) {
                     es_foraneo = false;
                     corre = 0;
+                    const costosData = {
+                        id_orden: id_orden,
+                        mano_obra: 0,
+                        corres: corre,
+                        kilometros: 0,
+                        cant_km: 0,
+                        precio_km: 0,
+                        tipo_gasolina: 0,
+                        gasolina_litros : 0,
+                        gasolina : 0,
+                        importe_materiales: corre,
+                        total: corre
+                    };
+                    costos.insertCostos(costosData, (err, data) => {
+                        if (err) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+
+                    });
                 }
-            }
-        });
-        const costosData = {
-            id_orden: id_orden,
-            mano_obra: 0,
-            corres: corre,
-            kilometros: 0,
-            cant_km: 0,
-            precio_km: 0,
-            tipo_gasolina: 0,
-            gasolina_litros : 0,
-            gasolina : 0,
-            importe_materiales: corre,
-            total: corre
-        };
-        
-        costos.insertCostos(costosData, (err, data) => {
-            if ( err ) {
-                return false;
             } else {
-                return true;
+                return false;
             }
-           
         });
+        
+        
         
     };
 
@@ -543,10 +573,6 @@ module.exports = function (app) {
         let id_orden = req.params.id_orden;
        
         let imageData = 'INSERT INTO evidencia (id_orden, evidencia) VALUES (';
-        res.json({
-            success: true,
-            message: "¡Se recibió el archivo de imagen! " + data
-        });
         if (images.length == undefined){
             var file = images;
             if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
@@ -564,7 +590,7 @@ module.exports = function (app) {
                         } else {
                             res.json({
                                 success: true,
-                                message: "¡Se recibió el archivo de imagen! " + data
+                                message: "¡Se recibió el archivo de imagen!"
                             });
                         }
                     })
@@ -591,7 +617,7 @@ module.exports = function (app) {
                 } else {
                     res.json({
                         success: false,
-                        message: "¡Tipo de archivo no admitido! "
+                        message: "¡Tipo de archivo no admitido!"
                     });
                 }
             };
@@ -606,7 +632,7 @@ module.exports = function (app) {
                 } else {
                     res.json({                                  
                         success: true,
-                        message: "¡Se recibió el archivo de imagen! " + data
+                        message: "¡Se recibió el archivo de imagen!"
                     });
                 }
             });
