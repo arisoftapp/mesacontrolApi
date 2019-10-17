@@ -364,36 +364,38 @@ module.exports = function (app) {
     function makeCostos(id_orden) {
         var es_foraneo = true;
         var corre = 300;
-        orden.getOrden(id_orden, (err, data) => {
-            if (!err){
+        orden.getOrden(id_orden, (error, data) => {
+            if (!error){
                 const municipio = data[0].id_municipio;
+                console.log(municipio);
                 if ( municipio == 1890) {
                     es_foraneo = false;
                     corre = 0;
-                    const costosData = {
-                        id_orden: id_orden,
-                        mano_obra: 0,
-                        corres: corre,
-                        kilometros: 0,
-                        cant_km: 0,
-                        precio_km: 0,
-                        tipo_gasolina: 0,
-                        gasolina_litros : 0,
-                        gasolina : 0,
-                        importe_materiales: corre,
-                        total: corre
-                    };
-                    costos.insertCostos(costosData, (err, data) => {
-                        if (err) {
-                            return false;
-                        } else {
-                            return true;
-                        }
-
-                    });
                 }
+                const costosData = {
+                    id_orden: id_orden,
+                    mano_obra: 0,
+                    corres: corre,
+                    kilometros: 0,
+                    cant_km: 0,
+                    precio_km: 0,
+                    tipo_gasolina: 0,
+                    gasolina_litros: 0,
+                    gasolina: 0,
+                    importe_materiales: corre,
+                    total: corre
+                };
+                costos.insertCostos(costosData, (err, data) => {
+                    if (err) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+
+                });
             } else {
                 return false;
+                console.log(error);
             }
         });
         
