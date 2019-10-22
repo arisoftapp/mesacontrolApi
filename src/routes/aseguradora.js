@@ -71,7 +71,8 @@ module.exports = function (app) {
         const ase_data = {
             nombre_aseguradora : req.body.nombre_aseguradora,
             nombre_contacto : req.body.nombre_contacto,
-            telefono : req.body.telefono
+            telefono : req.body.telefono,
+            telefono_supervisor : req.body.telefono_supervisor
         };
         const polizas = req.body.polizas;
         const insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor ) VALUES (");
@@ -115,7 +116,8 @@ module.exports = function (app) {
             id_aseguradora : req.body.id_aseguradora,
             nombre_aseguradora : req.body.nombre_aseguradora,
             nombre_contacto : req.body.nombre_contacto,
-            telefono : req.body.telefono
+            telefono : req.body.telefono,
+            telefono_supervisor : req.body.telefono_supervisor
         };
         const id_aseguradora = req.body.id_aseguradora;
         const polizas = req.body.polizas;

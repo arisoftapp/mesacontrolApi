@@ -17,7 +17,7 @@ ordenModel.getOrdenes = (callback) => {
         LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
         WHERE id_tipo = 1 ORDER BY a.id_status ASC`, function(err, rows) {
             if (err) {
-                throw err;
+                throw (err);
             }
             else {
                 callback(null, rows);
