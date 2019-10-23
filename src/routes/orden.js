@@ -250,15 +250,17 @@ module.exports = function (app) {
                 const string = (year + '-' + mes + '-' + dia + ' ' + hora + ':' + min + ' UTC');
                 var today = new Date(string).toLocaleString("en-US", { timeZone: "America/Hermosillo" });
                 let message = 'Se te ha asignado la orden con folio *' + orden.expediente + '*, con fecha programada para el día *' + today + '* (fecha y hora local de Hermosillo). Para conocer más detalles de la orden ingresa a: http://www.arisoft.com.mx/mesadecontrol/';
-                celular = data[0].num_cel;
-                if (celular.length == 10){
-                    let para = 'whatsapp:+521'+celular;
-                    client.messages.create({
-                        body: message,
-                        from: 'whatsapp:+14155238886',
-                        to: para
-                    }).then(message => console.log(message.sid)).done();
-                }                
+                const celular = data[0].num_cel;
+                if (celular !== undefined){
+                    if (celular.length == 10){
+                        let para = 'whatsapp:+521'+celular;
+                        client.messages.create({
+                            body: message,
+                            from: 'whatsapp:+14155238886',
+                            to: para
+                        }).then(message => console.log(message.sid)).done();
+                    }       
+                }         
             }
         });
         

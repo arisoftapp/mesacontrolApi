@@ -142,7 +142,7 @@ ordenInternaModel.getMaxId = (callback) => {
 
 ordenInternaModel.getMaxExpInt = (callback) => {
     if (dbAdmin){
-        dbAdmin.query(`SELECT MAX(expediente) AS 'mayor' FROM orden WHERE id_tipo = 2 AND id_aseguradora = 0`, (error, rows) => {
+        dbAdmin.query(`SELECT MAX(Convert('expediente', double)) AS 'mayor' FROM orden WHERE id_tipo = 2 AND id_aseguradora = 0`, (error, rows) => {
             if (error) {
                 //console.log(error);
                 callback(error);

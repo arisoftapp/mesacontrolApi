@@ -7,7 +7,7 @@ servicioModel.getServicios = (callback) => {
     if (dbAdmin) {
         dbAdmin.query("SELECT * FROM servicio WHERE id_servicio NOT IN (0)", function(err, rows) {
             if (err) {
-                throw err;
+                throw (err);
             }
             else {
                 callback(null, rows);
@@ -21,7 +21,7 @@ servicioModel.getServicio = (id, callback) => {
     if (dbAdmin) {
         dbAdmin.query("SELECT * FROM servicio WHERE id_servicio = " + id, function(err, rows) {
             if (err) {
-                throw err;
+                throw (err);
             }
             else {
                 callback(null, rows);
