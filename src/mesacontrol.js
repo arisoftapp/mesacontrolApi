@@ -90,6 +90,7 @@ require ('./routes/user')(server);
 require ('./routes/costos.route')(server);
 require ('./routes/empresa')(server);
 require ('./routes/entidad')(server);
+require('./routes/reporte.route')(server);
 
 
 

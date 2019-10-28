@@ -1,39 +1,58 @@
 const orden = require('../models/orden_interna.model');
 
 module.exports = function (app) {
-    app.get('/ordenes_internas', (req, res) => {
+    app.get('/ordenes_internas/:id_status/:id_tecnico/:fecha_opc/:fecha/:fecha_inicio/:fecha_fin', (req, res) => {
         const decoded = req.decoded;
+        const id_status = req.params.id_status;
+        const id_aseguradora = req.params.id_aseguradora;
+        var id_tecnico = req.params.id_tecnico;
+        const fecha_opc = req.params.fecha_opc;
+        const fecha = req.params.fecha;
+        const fecha_inicio = req.params.fecha_inicio;
+        const fecha_fin = req.params.fecha_fin;
         //console.log(decoded);
-        if (decoded.tipo == 3){
-            orden.getOrdenesbyTecnico(decoded.id, (err, data) => {
-                if (err) {
-                    res.json({
-                        success: false,
-                        message: "Ocurrió un error al obtener los datos"
-                    });
-                } else{
-                    res.json({
-                        success: true,
-                        data: data
-                    });
-                }
-            });
-        } else {
-            orden.getOrdenes((err, data) => {
-                if (err) {
-                    res.json({
-                        success: false,
-                        message: "Ocurrió un error al obtener los datos"
-                    });
-                } else{
-                    res.json({
-                        success: true,
-                        data: data
-                    });
-                }
-            });
+        if (decoded.tipo == 3) {
+            id_tecnico = decoded.id;
         }
-        
+        let script = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
+        e.nombre_servicio, a.calle, a.num_int, a.num_ext, a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
+        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, a.descripcion,
+        d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
+        LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
+        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio WHERE id_tipo = 2`;
+        if (id_status > 0) {
+            if (decoded.tipo == 3) {
+                script += ' AND a.id_status < ' + '5';
+            } else {
+                script += ' AND a.id_status = ' + id_status;
+            }
+        }
+        if (id_tecnico > 0) {
+            script += ' AND a.id_tecnico = ' + id_tecnico;
+        }
+        if (fecha_opc > 0) {
+            if (fecha_opc <= 2) {
+                script += " AND DATE(a.asignada) = '" + fecha + "'";
+            } else {
+                script += " AND DATE(a.asignada) BETWEEN '" + fecha_inicio + "' AND '" + fecha_fin + "'";
+            }
+        }
+        script += ' ORDER BY a.id_status ASC, a.asignada ASC;'
+        console.log(script);
+        orden.getOrdenes(script, (err, data) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: "Ocurrió un error al obtener los datos"
+                });
+            } else {
+                res.json({
+                    success: true,
+                    data: data
+                });
+            }
+        });
     });
 
     app.get('/ordenes_internas_buscar/:buscar', (req, res) => {
@@ -119,6 +138,7 @@ module.exports = function (app) {
                             recibe_nombre  : req.body.recibe_nombre,
                             recibe_materno  : req.body.recibe_paterno,
                             recibe_paterno  : req.body.recibe_materno,
+                            recibe_tel: req.body.recibe_tel,
                             id_tecnico  : req.body.id_tecnico,
                             asignada : req.body.asignada,
                             calle  : req.body.calle,
@@ -298,10 +318,12 @@ module.exports = function (app) {
             benef_nombre : req.body.benef_nombre,
             benef_paterno  : req.body.benef_paterno,
             benef_materno  : req.body.benef_materno,
+            benef_tel: req.body.benef_tel,
             recibe_benef : req.body.recibe_benef,
             recibe_nombre  : req.body.recibe_nombre,
             recibe_materno  : req.body.recibe_paterno,
             recibe_paterno  : req.body.recibe_materno,
+            recibe_tel: req.body.recibe_tel,
             id_tecnico  : req.body.id_tecnico,
             asignada : req.body.asignada,
             calle  : req.body.calle,

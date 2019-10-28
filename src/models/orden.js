@@ -2,20 +2,10 @@ let db = require('../dbMesaControl');
 var dbAdmin = db.getConnection();
 let ordenModel = {};
 
-ordenModel.getOrdenes = (callback) => {
+ordenModel.getOrdenes = (script, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
-        CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
-        a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
-        a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
-        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, a.descripcion,
-        d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
-        LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
-        LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
-        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
-        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
-        WHERE id_tipo = 1 ORDER BY a.id_status ASC`, function(err, rows) {
+        dbAdmin.query(script, function(err, rows) {
             if (err) {
                 throw (err);
             }
@@ -256,9 +246,11 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 benef_nombre = '${ordenData.benef_nombre}',
                 benef_paterno  = '${ordenData.benef_paterno}',
                 benef_materno  = '${ordenData.benef_materno}',
+                benef_tel  = '${ordenData.benef_tel}',
                 recibe_nombre  = '${ordenData.recibe_nombre}',
                 recibe_materno  = '${ordenData.recibe_materno}',
                 recibe_paterno  = '${ordenData.recibe_paterno}',
+                recibe_tel  = '${ordenData.benef_tel}',
                 id_tecnico  = ${ordenData.id_tecnico},
                 asignada  = '${ordenData.asignada}',
                 calle  = '${ordenData.calle}',

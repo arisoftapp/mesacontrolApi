@@ -2,15 +2,9 @@ let db = require('../dbMesaControl');
 var dbAdmin = db.getConnection();
 let ordenInternaModel = {};
 
-ordenInternaModel.getOrdenes = (callback) => {
+ordenInternaModel.getOrdenes = (script, callback) => {
     if (dbAdmin) {
-        dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
-        e.nombre_servicio, a.calle, a.num_int, a.num_ext, a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
-        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, a.descripcion,
-        d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
-        LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
-        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
-        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio WHERE id_tipo = 2 ORDER BY a.id_status ASC`, function(err, rows) {
+        dbAdmin.query(script, function(err, rows) {
             if (err) {
                 throw err;
             }
@@ -26,7 +20,7 @@ ordenInternaModel.getOrdenesbyTecnico = (id_tecnico, callback) => {
         dbAdmin.query(`SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
         a.recibe_benef, a.servicio_vial, a.descripcion,
         b.nombre, b.ap_paterno, b.ap_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
-        a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
+        a.recibe_nombre, a.recibe_paterno, a.recibe_materno, a.recibe_tel
         d.orden_status AS estado_orden FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio
@@ -142,7 +136,7 @@ ordenInternaModel.getMaxId = (callback) => {
 
 ordenInternaModel.getMaxExpInt = (callback) => {
     if (dbAdmin){
-        dbAdmin.query(`SELECT MAX(Convert('expediente', double)) AS 'mayor' FROM orden WHERE id_tipo = 2 AND id_aseguradora = 0`, (error, rows) => {
+        dbAdmin.query("SELECT MAX(Convert(`expediente`, double)) AS 'mayor' FROM orden WHERE id_tipo = 2 AND id_aseguradora = 0", (error, rows) => {
             if (error) {
                 //console.log(error);
                 callback(error);
@@ -166,9 +160,11 @@ ordenInternaModel.updateOrden = (ordenData, callback) =>{
                 benef_nombre = '${ordenData.benef_nombre}',
                 benef_paterno  = '${ordenData.benef_paterno}',
                 benef_materno  = '${ordenData.benef_materno}',
+                benef_tel  = '${ordenData.benef_tel}',
                 recibe_nombre  = '${ordenData.recibe_nombre}',
                 recibe_materno  = '${ordenData.recibe_materno}',
                 recibe_paterno  = '${ordenData.recibe_paterno}',
+                recibe_tel  = '${ordenData.recibe_tel}',
                 id_tecnico  = ${ordenData.id_tecnico},
                 asignada  = '${ordenData.asignada}',
                 calle  = '${ordenData.calle}',
