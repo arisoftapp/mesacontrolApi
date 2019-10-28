@@ -49,7 +49,7 @@ module.exports = function (app) {
             }
         }
         script += ' ORDER BY a.id_status ASC, a.asignada ASC;'
-        console.log(script);
+        //console.log(script);
         orden.getOrdenes(script, (err, data) => {
             if (err) {
                 res.json({

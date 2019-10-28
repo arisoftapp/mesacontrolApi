@@ -39,7 +39,7 @@ module.exports = function (app) {
             }
         }
         script += ' ORDER BY a.id_status ASC, a.asignada ASC;'
-        console.log(script);
+        //console.log(script);
         orden.getOrdenes(script, (err, data) => {
             if (err) {
                 res.json({
@@ -348,7 +348,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.code
                 });
             }else{
                 if (ordenData.asignada != "" && ordenData.id_status == 1 && ordenData.asignada != null && ordenData.asignada != "0000-00-00 00:00:00.000000"){
@@ -357,7 +357,7 @@ module.exports = function (app) {
                         if (err){
                             res.json({
                                 success: false,
-                                message: err
+                                message: err.code
                             });
                         }else{
                             res.json({
@@ -372,7 +372,7 @@ module.exports = function (app) {
                         if (err){
                             res.json({
                                 success: false,
-                                message: err
+                                message: err.code
                             });
                         }else{
                             res.json({
@@ -395,7 +395,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.code
                 });
             }else{
                 res.json({
@@ -428,7 +428,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.code
                 });
             }else{
                 res.json({
