@@ -7,7 +7,7 @@ tecnicoModel.getTecnicos = (callback) => {
     if (dbAdmin) {
         dbAdmin.query("SELECT a.id_tecnico, a.nombre, a.ap_paterno, a.ap_materno, a.status, a.id_estado, a.servicios, a.id_municipio, b.nombre_municipio FROM tecnico AS a LEFT JOIN municipio AS b ON a.id_municipio = b.id_municipio WHERE id_tecnico NOT IN (0)", function(err, rows) {
             if (err) {
-                throw err;
+                throw (err);
             }
             else {
                 callback(null, rows);
@@ -21,7 +21,7 @@ tecnicoModel.getTecnico = (id, callback) => {
     if (dbAdmin) {
         dbAdmin.query(`SELECT * FROM tecnico WHERE id_tecnico = ` + id, function(err, rows) {
             if (err) {
-                throw err;
+                throw (err);
             }
             else {
                 callback(null, rows);
@@ -35,7 +35,7 @@ tecnicoModel.getCelTecnico = (id, callback) => {
     if (dbAdmin) {
         dbAdmin.query(`SELECT num_cel FROM tecnico WHERE id_tecnico = ` + id, function (err, rows) {
             if (err) {
-                throw err;
+                throw (err);
             }
             else {
                 callback(null, rows);
