@@ -60,7 +60,7 @@ module.exports = function (app) {
                     success: true,
                     data: dta
                 });
-                console.log(dta);
+                //console.log(dta);
             }
         });
     });
@@ -122,7 +122,7 @@ module.exports = function (app) {
         };
         const id_aseguradora = req.body.id_aseguradora;
         const polizas = req.body.polizas;
-        console.log(polizas[0]);
+        //console.log(polizas[0]);
         aseguradora.updateAseguradora(ase_data, (err, data) => {
             if (err){
                 res.json({

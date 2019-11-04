@@ -5,9 +5,13 @@ let aseguradoraModel = {};
 aseguradoraModel.getAseguradoras = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query("SELECT * FROM aseguradora WHERE id_aseguradora NOT IN (0)", function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query("SELECT * FROM aseguradora WHERE id_aseguradora NOT IN (0)", function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -110,7 +114,7 @@ aseguradoraModel.deleteAseguradora = (id_aseguradora, callback) => {
         dbAdmin.query(`DELETE FROM aseguradora WHERE id_aseguradora = ` + id_aseguradora, function (error, rows){
             if (error) {
                 if (error.fatal) {
-                    throw (err);
+                    throw (error);
                 } else {
                     callback(error)
                 }
