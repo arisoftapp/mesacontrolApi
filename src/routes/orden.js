@@ -452,8 +452,9 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/update_status/:orden/:status', (req, res) => {
+    app.put('/update_status/:orden/:status', (req, res) => {
         var id_empleado = req.decoded.tipo;
+        //console.log(id_empleado);
         if (id_empleado == '1' || id_empleado !== null) {
             var id_orden = req.params.orden;
             var id_status = req.params.status;

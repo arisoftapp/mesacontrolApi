@@ -42,7 +42,7 @@ module.exports = function (app) {
             importe_materiales : req.body.importe_materiales,
             total : req.body.total
         };
-        console.log(costosData);
+        //console.log(costosData);
         const id_orden = req.body.id_orden;
         const materiales = req.body.materiales;
         var insert_script = ("INSERT INTO material (id_orden, descripcion, cantidad, precio_unitario, importe ) VALUES (");

@@ -63,7 +63,9 @@ aseguradoraModel.insertPolizas = (poliData, callback) => {
     if (dbAdmin) {
         dbAdmin.query(poliData, function(err, rows) {
             if (err) {
-                throw err;
+                console.log(err);
+                callback(err);
+                throw (err);
             }
             else {
                 callback(null, rows);
@@ -107,8 +109,11 @@ aseguradoraModel.deleteAseguradora = (id_aseguradora, callback) => {
     if (dbAdmin){
         dbAdmin.query(`DELETE FROM aseguradora WHERE id_aseguradora = ` + id_aseguradora, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (err);
+                } else {
+                    callback(error)
+                }
             } else {                  
                 callback(null, rows);
             }
