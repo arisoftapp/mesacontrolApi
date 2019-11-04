@@ -5,10 +5,10 @@ let tecnicoModel = {};
 tecnicoModel.getTecnicos = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query("SELECT a.id_tecnico, a.nombre, a.ap_paterno, a.ap_materno, a.status, a.id_estado, a.servicios, a.id_municipio, b.nombre_municipio FROM tecnico AS a LEFT JOIN municipio AS b ON a.id_municipio = b.id_municipio WHERE id_tecnico NOT IN (0)", function(err, rows) {
+        dbAdmin.query("SELECT a.id_tecnico, a.nombre, a.ap_paterno, a.ap_materno, a.status, a.id_estado, a.servicios, a.id_municipio, b.nombre_municipio FROM tecnico AS a LEFT JOIN municipio AS b ON a.id_municipio = b.id_municipio WHERE id_tecnico NOT IN (0)", function(error, rows) {
             if (error) {
                 if (error.fatal) {
-                    throw (err);
+                    throw (error);
                 } else {
                     callback(error)
                 }

@@ -39,7 +39,7 @@ aseguradoraModel.getPolizas = (id_aseguradora, callback) => {
     if (dbAdmin) {
         dbAdmin.query(`SELECT * FROM poliza WHERE id_aseguradora =  `+ id_aseguradora, function(err, rows) {
             if (err) {
-                throw err;
+                throw (err);
             }
             else {
                 callback(null, rows);
@@ -53,7 +53,7 @@ aseguradoraModel.deletePolizas = (id_aseguradora, callback) => {
     if (dbAdmin) {
         dbAdmin.query(`DELETE FROM poliza WHERE id_aseguradora =  `+ id_aseguradora, function(err, rows) {
             if (err) {
-                throw err;
+                throw (err);
             }
             else {
                 callback(null, rows);
