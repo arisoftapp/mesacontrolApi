@@ -5,11 +5,14 @@ let ordenModel = {};
 ordenModel.getOrdenes = (script, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(script, function(err, rows) {
-            if (err) {
-                throw (err);
-            }
-            else {
+        dbAdmin.query(script, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
+            } else {
                 callback(null, rows);
             }
         });

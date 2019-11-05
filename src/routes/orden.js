@@ -275,8 +275,8 @@ module.exports = function (app) {
                 const string = (year + '-' + mes + '-' + dia + ' ' + hora + ':' + min + ' UTC');
                 var today = new Date(string).toLocaleString("en-US", { timeZone: "America/Hermosillo" });
                 let message = 'Se te ha asignado la orden con folio *' + orden.expediente + '*, con fecha programada para el día *' + today + '* (fecha y hora local de Hermosillo). Para conocer más detalles de la orden ingresa a: http://www.arisoft.com.mx/mesadecontrol/';
-                const celular = data[0].num_cel;
-                if (celular !== undefined){
+                if (data[0].num_cel !== undefined){
+                    const celular = data[0].num_cel;
                     if (celular.length == 10){
                         let para = 'whatsapp:+521'+celular;
                         client.messages.create({
@@ -656,7 +656,7 @@ module.exports = function (app) {
             for (let i = 0; i < images.length; i++){
                 var file = images[i];
                 if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){           
-                    file.mv('evidencias/'+ id_orden + '_' + file.name, function(err) {          
+                    file.mv('../evidencias/'+ id_orden + '_' + file.name, function(err) {          
                         if (err) {
                             console.log(err);
                             return res.status(500).send(err);
@@ -701,7 +701,7 @@ module.exports = function (app) {
         if (req.files.pdf){
             //console.log(req.files.pdf);
             const file = req.files.pdf;
-            file.mv('evidencias/PDF/'+ id_orden + '_' + file.name, function(err) {          
+            file.mv('../evidencias/PDF/'+ id_orden + '_' + file.name, function(err) {          
                 if (err) {
                     console.log(err);
                     throw (err);
@@ -730,7 +730,7 @@ module.exports = function (app) {
         if (req.files.xml){
             //console.log(req.files.xml);
             const xml = req.files.xml;
-            xml.mv('evidencias/XML/'+ id_orden + '_' + xml.name, function(err) {          
+            xml.mv('../evidencias/XML/'+ id_orden + '_' + xml.name, function(err) {          
                 if (err) {
                     console.log(err);
                     return res.status(500).send(err);
