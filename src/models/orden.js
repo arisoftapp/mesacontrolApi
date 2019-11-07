@@ -1,5 +1,5 @@
 let db = require('../dbMesaControl');
-var dbAdmin = db.getConnection();
+let dbAdmin = require('../dbMesaControl');
 let ordenModel = {};
 
 ordenModel.getOrdenes = (script, callback) => {
@@ -32,9 +32,13 @@ ordenModel.getAllOrdenes = (callback) => {
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
-        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio ORDER BY a.id_status ASC`, function(err, rows) {
-            if (err) {
-                throw err;
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio ORDER BY a.id_status ASC`, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -54,9 +58,13 @@ ordenModel.getOrdenesbyTecnico = (id_tecnico, callback) => {
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
-        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE a.id_tecnico = ` + id_tecnico +` AND id_tipo = 1 ORDER BY a.id_status ASC`, function(err, rows) {
-            if (err) {
-                throw err;
+        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE a.id_tecnico = ` + id_tecnico +` AND id_tipo = 1 ORDER BY a.id_status ASC`, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -75,9 +83,13 @@ ordenModel.getAllOrdenesbyTecnico = (id_tecnico, callback) => {
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
-        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE a.id_tecnico = ` + id_tecnico +` ORDER BY a.id_status ASC`, function(err, rows) {
-            if (err) {
-                throw err;
+        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE a.id_tecnico = ` + id_tecnico +` ORDER BY a.id_status ASC`, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -100,9 +112,13 @@ ordenModel.getLayoutData = (id_orden, callback) => {
         LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
         LEFT JOIN costo AS i ON a.id_orden = i.id_orden
         WHERE a.id_orden = ` + id_orden;
-        dbAdmin.query(query, function (err, rows) {
-            if (err) {
-                console.log(err);
+        dbAdmin.query(query, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -124,9 +140,13 @@ ordenModel.getOrdenesBuscar = (buscar, callback) => {
         LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE id_tipo = 1 AND (expediente LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%')`;
         //console.log(query);
-        dbAdmin.query(query, function(err, rows) {
-            if (err) {
-                console.log(err);
+        dbAdmin.query(query, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -143,9 +163,13 @@ ordenModel.getOrdenesBuscarbyTecnico = (buscar, id_tecnico, callback) => {
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE id_tipo = 1 AND (expediente LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%') AND a.id_tecnico = ` + id_tecnico;
         //console.log(query);
-        dbAdmin.query(query, function(err, rows) {
-            if (err) {
-                console.log(err);
+        dbAdmin.query(query, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -159,7 +183,6 @@ ordenModel.getOrden = (id_orden, callback) => {
     if (dbAdmin) {
         dbAdmin.query(`SELECT a.*, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, 
         c.nombre_aseguradora, d.orden_status AS estado_orden, e.nombre_servicio, f.nombre_entidad, g.nombre_municipio, IFNULL(h.poliza_nombre,"") AS poliza_nombre, IFNULL(h.poliza_valor,"") AS poliza_valor, h.poliza_costo FROM orden AS a
-        
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
@@ -167,9 +190,13 @@ ordenModel.getOrden = (id_orden, callback) => {
         LEFT JOIN entidad_fed AS f ON a.id_estado = f.id_entidad
         LEFT JOIN municipio AS g ON a.id_municipio = g.id_municipio
         LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
-        WHERE a.id_orden = ` + id_orden, function(err, rows) {
-            if (err) {
-                throw err;
+        WHERE a.id_orden = ` + id_orden, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -182,8 +209,11 @@ ordenModel.insertOrden = (ordenData, callback) => {
     if (dbAdmin){
         dbAdmin.query(`INSERT INTO orden SET ? `, ordenData, (error, rows) => {
             if (error) {
-                //console.log(error);
-                callback(error);
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -196,8 +226,11 @@ ordenModel.insertEvidencia = (id_orden, ordenData, callback) => {
         dbAdmin.query(`DELETE FROM evidencia WHERE id_orden = ` + id_orden + `;
                     INSERT INTO evidencia SET ? `, ordenData, (error, rows) => {
             if (error) {
-                //console.log(error);
-                callback(error);
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -209,8 +242,11 @@ ordenModel.getMaxId = (callback) => {
     if (dbAdmin){
         dbAdmin.query(`SELECT MAX(id_orden) AS 'mayor' FROM orden `, (error, rows) => {
             if (error) {
-                //console.log(error);
-                callback(error);
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -225,8 +261,11 @@ ordenModel.updateFolioFact = (ordenData, callback) => {
                WHERE id_orden = ${ordenData.id_orden}`;
         dbAdmin.query(sql, function (error, rows) {
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {
                 callback(null, rows);
             }
@@ -274,9 +313,14 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 WHERE id_orden = ${ordenData.id_orden}`;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
-            } else {                  
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    console.log(error.message);
+                    callback(error);
+                }
+            } else {  
+                //console.log(rows);                
                 callback(null, rows);
             }
         });
@@ -290,8 +334,11 @@ ordenModel.updateOrdenbyTecnico = (ordenData, callback) =>{
                 WHERE id_orden = ${ordenData.id_orden}`;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -305,8 +352,11 @@ ordenModel.updateProgramada = (id_orden, id_status, callback) => {
                 id_status = ` + id_status + ` WHERE id_orden = ` + id_orden ;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -320,8 +370,11 @@ ordenModel.updateArribo = (id_orden, id_status, time, callback) =>{
                 id_status = ` + id_status + `, arribo = '`+ time + `' WHERE id_orden = ` + id_orden ;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -335,8 +388,11 @@ ordenModel.cancelarOrden = (id_orden, id_status, dateTime, callback) =>{
                 id_status = ` + id_status + `, cancelada = '`+ dateTime +`' WHERE id_orden = ` + id_orden;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -350,8 +406,11 @@ ordenModel.updateFinalizado = (id_orden, id_status, time, callback) =>{
                 id_status = ` + id_status + `, fin = '`+ time + `' WHERE id_orden = ` + id_orden ;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -365,8 +424,11 @@ ordenModel.updateFacturado = (id_orden, id_status, time, callback) =>{
                 id_status = ` + id_status + `, facturado = '`+ time + `' WHERE id_orden = ` + id_orden ;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -381,18 +443,27 @@ ordenModel.deleteOrden = (id_orden, callback) => {
         const costo = `DELETE FROM costo WHERE id_orden = ` + id_orden;
         dbAdmin.query(orden, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {   
                 dbAdmin.query(evi, function (error, rows) {
                     if (error) {
-                        console.log(error);
-                        //callback(null,err.message)
+                        if (error.fatal) {
+                            throw (error);
+                        } else {
+                            callback(error);
+                        }
                     } else { 
                         dbAdmin.query(costo, function (error, rows) {
                             if (error) {
-                                console.log(error);
-                                //callback(null,err.message)
+                                if (error.fatal) {
+                                    throw (error);
+                                } else {
+                                    callback(error);
+                                }
                             } else {                                                  
                                 callback(null, rows);
                             }
@@ -408,8 +479,11 @@ ordenModel.upload_evidencia = (imageData, callback) => {
     if (dbAdmin){
         dbAdmin.query(imageData, function (error, rows){
             if (error) {
-                console.log(error);
-                callback(error);
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {
                 callback(null, rows);
             }
@@ -422,8 +496,11 @@ ordenModel.upload_pdf= (id_orden, imageData, callback) => {
         dbAdmin.query(`UPDATE orden SET 
         url_pdf = '` + imageData + `' WHERE id_orden = ` + id_orden , function (error, rows){
             if (error) {
-                console.log(error);
-                callback(error);
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -436,8 +513,11 @@ ordenModel.upload_xml= (id_orden, imageData, callback) => {
         dbAdmin.query(`UPDATE orden SET 
         url_xml = '` + imageData + `' WHERE id_orden = ` + id_orden , function (error, rows){
             if (error) {
-                console.log(error);
-                callback(error);
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -447,9 +527,13 @@ ordenModel.upload_xml= (id_orden, imageData, callback) => {
 
 ordenModel.getEvidencia = (id_orden, callback) => {
     if (dbAdmin){
-        dbAdmin.query(`SELECT * FROM evidencia WHERE id_orden = ` + id_orden, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(`SELECT * FROM evidencia WHERE id_orden = ` + id_orden, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {
                 callback(null, rows);
             }
@@ -462,8 +546,11 @@ ordenModel.updateStatus = (id_orden, nuevo, callback) => {
         dbAdmin.query(`UPDATE orden SET 
         id_status = '` + nuevo + `' WHERE id_orden = ` + id_orden, function (error, rows) {
             if (error) {
-                console.log(error);
-                callback(error);
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {
                 callback(null, rows);
             }

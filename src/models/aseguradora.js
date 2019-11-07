@@ -1,5 +1,5 @@
 let db = require('../dbMesaControl');
-var dbAdmin = db.getConnection();
+let dbAdmin = require('../dbMesaControl');
 let aseguradoraModel = {};
 
 aseguradoraModel.getAseguradoras = (callback) => {
@@ -23,9 +23,13 @@ aseguradoraModel.getAseguradoras = (callback) => {
 aseguradoraModel.getAseguradora = (id_aseguradora, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT * FROM aseguradora WHERE id_aseguradora =  `+ id_aseguradora, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(`SELECT * FROM aseguradora WHERE id_aseguradora =  `+ id_aseguradora, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -37,9 +41,13 @@ aseguradoraModel.getAseguradora = (id_aseguradora, callback) => {
 aseguradoraModel.getPolizas = (id_aseguradora, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT * FROM poliza WHERE id_aseguradora =  `+ id_aseguradora, function(err, rows) {
-            if (err) {
-                throw (err);
+        dbAdmin.query(`SELECT * FROM poliza WHERE id_aseguradora =  `+ id_aseguradora, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -51,9 +59,13 @@ aseguradoraModel.getPolizas = (id_aseguradora, callback) => {
 aseguradoraModel.deletePolizas = (id_aseguradora, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`DELETE FROM poliza WHERE id_aseguradora =  `+ id_aseguradora, function(err, rows) {
-            if (err) {
-                throw (err);
+        dbAdmin.query(`DELETE FROM poliza WHERE id_aseguradora =  `+ id_aseguradora, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -65,11 +77,13 @@ aseguradoraModel.deletePolizas = (id_aseguradora, callback) => {
 aseguradoraModel.insertPolizas = (poliData, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(poliData, function(err, rows) {
-            if (err) {
-                console.log(err);
-                callback(err);
-                throw (err);
+        dbAdmin.query(poliData, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -82,8 +96,11 @@ aseguradoraModel.insertAseguradora = (aseData, callback) =>{
     if (dbAdmin){
         dbAdmin.query(`INSERT INTO aseguradora SET ? `, aseData, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -100,8 +117,11 @@ aseguradoraModel.updateAseguradora = (aseData, callback) =>{
         telefono_supervisor = '${aseData.telefono_supervisor}'
         WHERE id_aseguradora = ${aseData.id_aseguradora}`, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             } else {                  
                 callback(null, rows);
             }

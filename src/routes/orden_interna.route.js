@@ -44,7 +44,7 @@ module.exports = function (app) {
             if (err) {
                 res.json({
                     success: false,
-                    message: "Ocurrió un error al obtener los datos"
+                    message: "Ocurrió un error al obtener los datos. " + err.message
                 });
             } else {
                 res.json({
@@ -64,7 +64,7 @@ module.exports = function (app) {
                 if (err) {
                     res.json({
                         success: false,
-                        message: "Ocurrió un error al obtener los datos"
+                        message: "Ocurrió un error al obtener los datos. " + err.message
                     });
                 } else{
                     res.json({
@@ -78,7 +78,7 @@ module.exports = function (app) {
                 if (err) {
                     res.json({
                         success: false,
-                        message: "Ocurrió un error al obtener los datos"
+                        message: "Ocurrió un error al obtener los datos. " + err.message
                     });
                 } else{
                     res.json({
@@ -97,7 +97,7 @@ module.exports = function (app) {
             if (err) {
                 res.json({
                     success: false,
-                    message: "Ocurrió un error al obtener los datos"
+                    message: "Ocurrió un error al obtener los datos. " + err.message
                 });
             } else{
                 res.json({
@@ -123,7 +123,7 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: err
+                            message: err.message
                         });
                     } else {
                         let expediente = Number(data[0].mayor) + 1;
@@ -179,7 +179,7 @@ module.exports = function (app) {
                                         if (err){
                                             res.json({
                                                 success: false,
-                                                message: err
+                                                message: err.message
                                             });
                                         }else{
                                             res.json({

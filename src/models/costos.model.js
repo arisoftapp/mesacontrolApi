@@ -1,13 +1,17 @@
 let db = require('../dbMesaControl');
-var dbAdmin = db.getConnection();
+let dbAdmin = require('../dbMesaControl');
 let costosModel = {};
 
 costosModel.getCostos = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT * FROM costo WHERE id_orden =  `+ id_orden, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(`SELECT * FROM costo WHERE id_orden =  `+ id_orden, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -19,9 +23,13 @@ costosModel.getCostos = (id_orden, callback) => {
 costosModel.deleteCostos = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`DELETE FROM costo WHERE id_orden =  `+ id_orden, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(`DELETE FROM costo WHERE id_orden =  `+ id_orden, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -33,9 +41,13 @@ costosModel.deleteCostos = (id_orden, callback) => {
 costosModel.insertCostos = (costoData, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`INSERT INTO costo SET ? `, costoData, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(`INSERT INTO costo SET ? `, costoData, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -61,8 +73,11 @@ costosModel.updateCostos = (costoData, callback) => {
             WHERE id_orden = ${costoData.id_orden}`;
         dbAdmin.query(sql, function (error, rows) {
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             } else {
                 callback(null, rows);
             }
@@ -73,9 +88,13 @@ costosModel.updateCostos = (costoData, callback) => {
 costosModel.insertMateriales = (materialesData, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(materialesData, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(materialesData, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -88,9 +107,13 @@ costosModel.insertMateriales = (materialesData, callback) => {
 costosModel.getMateriales = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT * FROM material WHERE id_orden =  `+ id_orden, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(`SELECT * FROM material WHERE id_orden =  `+ id_orden, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -102,9 +125,13 @@ costosModel.getMateriales = (id_orden, callback) => {
 costosModel.deleteMateriales = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`DELETE FROM material WHERE id_orden =  `+ id_orden, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(`DELETE FROM material WHERE id_orden =  `+ id_orden, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);

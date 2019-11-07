@@ -1,51 +1,50 @@
 var mysql = require ('mysql');
 
-/*var connection = mysql.createConnection({
+var connection = mysql.createConnection({
     host : 'localhost',
     user : 'root',
     password : 'arisoft.2019',
     database : 'mesacontrol_db'
-});*/
+});
 
-module.exports.getConnection = function() {
-    // Test connection health before returning it to caller.
-    if ((module.exports.connection) && (module.exports.connection._socket)
-            && (module.exports.connection._socket.readable)
-            && (module.exports.connection._socket.writable)) {
-        return module.exports.connection;
+connection.on('error', function (err) {
+
+    //-
+    //- The server close the connection.
+    //-
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
+        return reconnect(connection);
     }
-    console.log(((module.exports.connection) ?
-            "UNHEALTHY SQL CONNECTION; RE" : "") + "CONNECTING TO SQL.");
-    var connection = mysql.createConnection({
-        host : 'localhost',
-        user : 'root',
-        password : 'arisoft.2019',
-        database : 'mesacontrol_db'
-    });
-    connection.connect(function(err) {
-        if (err) {
-            console.log("SQL CONNECT ERROR: " + err);
-        } else {
-            console.log("SQL CONNECT SUCCESSFUL.");
-        }
-    });
-    connection.on("close", function (err) {
-        console.log("SQL CONNECTION CLOSED.");
-    });
-    connection.on("error", function (err) {
-        console.log("SQL CONNECTION ERROR: " + err);
-    });
-    module.exports.connection = connection;
-    return module.exports.connection;
-}
+
+    else if (err.code === "PROTOCOL_ENQUEUE_AFTER_QUIT") {
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
+        return reconnect(connection);
+    }
+
+    else if (err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR") {
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
+        return reconnect(connection);
+    }
+
+    else if (err.code === "PROTOCOL_ENQUEUE_HANDSHAKE_TWICE") {
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
+    }
+
+    else {
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
+        return reconnect(connection);
+    }
+
+});
+
 
 // Open a connection automatically at app startup.
-module.exports.getConnection();
+//module.exports.getConnection();
 
 // If you've saved this file as database.js, then get and use the
 // connection as in the following example:
 // var database = require(__dirname + "/database");
 // var connection = database.getConnection();
 // connection.query(query, function(err, results) { ....
-
-//module.exports = connection;
+module.exports = connection;

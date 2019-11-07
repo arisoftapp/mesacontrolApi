@@ -7,14 +7,14 @@ module.exports = function (app) {
             if (err) {
                 res.json({
                     success: false,
-                    message: "Ocurrió un error al obtener los datos"
+                    message: "Ocurrió un error al obtener los datos " + err.message
                 });
             } else{
                 costos.getMateriales(id_orden, (err, mat) =>{
                     if (err){
                         res.json({
                             success: false,
-                            message: "Ocurrió un error al obtener los datos"
+                            message: "Ocurrió un error al obtener los datos " + err.message
                         });
                     } else {
                         res.json({
@@ -50,7 +50,7 @@ module.exports = function (app) {
             if (err) {
                 res.json({
                     success: false,
-                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
+                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo. ' + err.message
                 });
             } else {
                 if (materiales.length > 0) {
@@ -58,7 +58,7 @@ module.exports = function (app) {
                         if (err) {
                             res.json({
                                 success: false,
-                                message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
+                                message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo. ' + err.message
                             });
                         } else {
                             for (i = 0; i < materiales.length; i++) {
@@ -69,12 +69,12 @@ module.exports = function (app) {
                                     insert_script += ";";
                                 }
                             }
-                            console.log(insert_script);
+                            //console.log(insert_script);
                             costos.insertMateriales(insert_script, (err, data) => {
                                 if (err) {
                                     res.json({
                                         success: false,
-                                        message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
+                                        message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo. ' + err.message
                                     });
                                 } else {
                                     res.json({

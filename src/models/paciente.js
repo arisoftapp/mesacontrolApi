@@ -4,9 +4,13 @@ let pacienteModel = {};
 pacienteModel.getPacientes = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT * FROM paciente`, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query(`SELECT * FROM paciente`, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             }
             else {
                 callback(null, rows);
@@ -22,9 +26,13 @@ pacienteModel.getPaciente = (id_paciente, callback) => {
         IFNULL(b.calle, '') AS fact_calle, IFNULL(b.no_ext, '') AS fact_ext, IFNULL(b.no_int, '') AS fact_int, 
         IFNULL(b.id_edo, '') AS fact_idedo, IFNULL(b.id_mun, '') AS fact_idmun, IFNULL(b.colonia, '') AS fact_colonia, 
         IFNULL(b.email, '') AS fact_email FROM paciente LEFT JOIN fact_paciente AS b ON paciente.id_paciente = b.id_paciente 
-        WHERE paciente.id_paciente = ` + id_paciente, function(err, rows) {
-            if (err) {
-                throw err;
+        WHERE paciente.id_paciente = ` + id_paciente, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             }
             else {
                 callback(null, rows);
@@ -37,7 +45,11 @@ pacienteModel.insertPaciente = (pacienteData, callback) => {
     if (dbAdmin){
         dbAdmin.query(`INSERT INTO paciente SET ? `, pacienteData, (error, rows) => {
             if (error) {
-                console.log(error);
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -68,8 +80,11 @@ pacienteModel.updatePaciente = (pacienteData, callback) =>{
                 WHERE id_paciente = ${pacienteData.id_paciente}`;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -81,8 +96,11 @@ pacienteModel.deletePaciente = (id_pac, callback) => {
     if (dbAdmin){
         dbAdmin.query(`DELETE FROM paciente WHERE id_paciente = ` + id_pac, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }

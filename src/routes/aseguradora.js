@@ -6,7 +6,7 @@ module.exports = function (app) {
             if (err) {
                 res.json({
                     success: false,
-                    message: "Ocurrió un error al obtener los datos"
+                    message: "Ocurrió un error al obtener los datos" + err.message
                 });
             } else{
                 res.json({
@@ -23,14 +23,14 @@ module.exports = function (app) {
             if (err) {
                 res.json({
                     success: false,
-                    message: "Ocurrió un error al obtener los datos"
+                    message: "Ocurrió un error al obtener los datos" + err.message
                 });
             } else{
                 aseguradora.getPolizas(id_aseguradora, (err, dta) =>{
                     if (err){
                         res.json({
                             success: false,
-                            message: "Ocurrió un error al obtener los datos"
+                            message: "Ocurrió un error al obtener los datos" + err.message
                         });
 
                     } else {
@@ -52,7 +52,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: "Ocurrió un error al obtener los datos"
+                    message: "Ocurrió un error al obtener los datos" + err.message
                 });
 
             } else {
@@ -81,7 +81,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
+                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err.message
                 });
             }else{
                 var id = data.insertId;
@@ -98,7 +98,7 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err.code
+                            message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err.message
                         });
                     }else{
                         res.json({
@@ -127,14 +127,14 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
+                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err.message
                 });
             }else{
                 aseguradora.deletePolizas(id_aseguradora, (err, datadel) => {
                     if (err){
                         res.json({
                             success: false,
-                            message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
+                            message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err.message
                         });
                     }else{
                         var insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor, poliza_cancelacion, poliza_costo ) VALUES (");
@@ -153,7 +153,7 @@ module.exports = function (app) {
                             if (err){
                                 res.json({
                                     success: false,
-                                    message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err
+                                    message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err.message
                                 });
                             }else{
                                 res.json({
@@ -182,7 +182,7 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err
+                            message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err.message
                         });
                     } else{
                         res.json({

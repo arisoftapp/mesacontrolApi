@@ -160,7 +160,7 @@ module.exports = function (app) {
             if (err) {
                 res.json({
                     success: false,
-                    message: "Ocurrió un error al obtener los datos"
+                    message: "Ocurrió un error al obtener los datos. " + err.message
                 });
             } else {
                 res.json({
@@ -177,7 +177,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.message
                 });
             } else {
                 max = data[0].mayor + 1;
@@ -239,7 +239,7 @@ module.exports = function (app) {
                                 if (err){
                                     res.json({
                                         success: false,
-                                        message: err.code
+                                        message: err.message
                                     });
                                 }else{
                                     res.json({
@@ -301,7 +301,7 @@ module.exports = function (app) {
             if (err) {
                 res.json({
                     success: false,
-                    message: err.code
+                    message: err.code + " " + err.message
                 });
             } else {
                 res.json({
@@ -317,6 +317,11 @@ module.exports = function (app) {
         if (id_empleado == '1' || id_empleado == '3' || id_empleado !== null){
             var id_orden = req.body.id_orden;
             var id_status = req.body.id_status;
+            const orden = {
+                id_orden : id_orden,
+                asignada: req.body.asignada,
+                id_tecnico : req.body.id_tecnico
+            }
             var today = new Date();
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -326,13 +331,14 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: err.code
+                            message: err.code + " " + err.message
                         });
                     }else{
                         res.json({
                             success: true,
                             message: "¡Se Guardaron los cambios exitosamente!"
                         });
+                        sendNotification(orden);
                     }
                 });
             } else if (id_status == '2'){
@@ -341,7 +347,7 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: err.code
+                            message: err.code + " " + err.message
                         });
                     }else{
                         res.json({
@@ -356,7 +362,7 @@ module.exports = function (app) {
                     if (err) {
                         res.json({
                             success: false,
-                            message: err
+                            message: err.code + " " + err.message
                         });
                     } else {
                         res.json({
@@ -370,7 +376,7 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: err
+                            message: err.code + " " + err.message
                         });
                     }else{
                         res.json({
@@ -394,7 +400,7 @@ module.exports = function (app) {
         orden.getOrden(id_orden, (error, data) => {
             if (!error){
                 const municipio = data[0].id_municipio;
-                console.log(municipio);
+                //console.log(municipio);
                 if ( municipio == 1890) {
                     es_foraneo = false;
                     corre = 0;
@@ -441,7 +447,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err.code
+                    message: err.code + " " + err.message
                 });
             }else{
                 res.json({
@@ -462,7 +468,7 @@ module.exports = function (app) {
                     if (err) {
                         res.json({
                             success: false,
-                            message: err.code
+                            message: err.code + " " + err.message
                         });
                     } else {
                         res.json({
@@ -520,12 +526,11 @@ module.exports = function (app) {
             vehiculo_combustible  : req.body.vehiculo_combustible,
             vehiculo_litros : req.body.vehiculo_litros,
         };
-        sendNotification(ordenData);
         orden.updateOrden(ordenData, (err, data) => {
             if (err){
                 res.json({
                     success: false,
-                    message: err.code
+                    message: err.code + " " + err.message
                 });
             }else{
                 if (ordenData.id_status === 1 || ordenData.id_status === 2) {
@@ -535,13 +540,14 @@ module.exports = function (app) {
                             if (err){
                                 res.json({
                                     success: false,
-                                    message: err.code
+                                    message: err.code + " " + err.message
                                 });
                             }else{
                                 res.json({
                                     success: true,
                                     message: "¡Se Guardaron los cambios exitosamente!"
                                 });
+                                sendNotification(ordenData);
                             }
                         });
                     } else {
@@ -550,7 +556,7 @@ module.exports = function (app) {
                             if (err){
                                 res.json({
                                     success: false,
-                                    message: err.code
+                                    message: err.code + " " + err.message
                                 });
                             }else{
                                 res.json({
@@ -579,7 +585,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.code + " " + err.message
                 });
             }else{
                 res.json({
@@ -612,7 +618,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.code + " " + err.message
                 });
             }else{
                 res.json({
@@ -624,7 +630,7 @@ module.exports = function (app) {
     });
 
     app.post('/upload_evidencia/:id_orden', (req, res) => {
-        console.log(req.files.image);
+        //console.log(req.files.image);
         let images = req.files.image;
         let id_orden = req.params.id_orden;
        
@@ -632,44 +638,67 @@ module.exports = function (app) {
         if (images.length == undefined){
             var file = images;
             if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
-                console.log('Formato aceptado');
-                file.mv('evidencias/'+ id_orden + '_' + file.name, function(err) {          
-                    if (err) {
-                        console.log(err);
-                        return res.status(500).send(err);
-                    }
-                    imageData += id_orden + ",'" + id_orden + '_' + file.name + "');";
-                    console.log(imageData);
-                    orden.upload_evidencia(imageData, (err, data) => {
+                //console.log('Formato aceptado');
+                try {
+                    file.mv('evidencias/' + id_orden + '_' + file.name, function (err) {
                         if (err) {
-                            console.log(err);
-                        } else {
-                            res.json({
-                                success: true,
-                                message: "¡Se recibió el archivo de imagen!"
-                            });
+                            throw (err);
                         }
-                    })
-                });
+                        imageData += id_orden + ",'" + id_orden + '_' + file.name + "');";
+                        //console.log(imageData);
+                        orden.upload_evidencia(imageData, (err, data) => {
+                            if (err) {
+                                throw (err);
+                            } else {
+                                res.json({
+                                    success: true,
+                                    message: "¡Se recibió el archivo de imagen!"
+                                });
+                            }
+                        })
+                    });
+                } catch (error) {
+                    res.json({
+                        success: false,
+                        message: error.code + " " + error.message
+                    });
+                }
+                
             }
         } else {
             for (let i = 0; i < images.length; i++){
                 var file = images[i];
-                if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){           
-                    file.mv('../evidencias/'+ id_orden + '_' + file.name, function(err) {          
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send(err);
-                        } else {
-                            imageData += id_orden + ",'" + id_orden + '_' + file.name + "'";
-                            if (i < images.length-1){
-                                imageData += "),("
+                if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){ 
+                    try {
+                        file.mv('../evidencias/' + id_orden + '_' + file.name, function (err) {
+                            if (err) {
+                                throw (err);
                             } else {
-                                imageData += ");"
+                                imageData += id_orden + ",'" + id_orden + '_' + file.name + "'";
+                                if (i < images.length - 1) {
+                                    imageData += "),("
+                                } else {
+                                    imageData += ");"
+                                }
+                                //console.log(imageData);
                             }
-                            console.log(imageData);
-                        }
-                    });
+                        });
+                        orden.upload_evidencia(imageData, (err, data) => {
+                            if (err) {
+                                throw (err);
+                            } else {
+                                res.json({
+                                    success: true,
+                                    message: "¡Se recibió el archivo de imagen!"
+                                });
+                            }
+                        });
+                    } catch (e) {
+                        res.json({
+                            success: false,
+                            message: "¡Error al almacenar el archivo! " + e.message
+                        });
+                    };
                 } else {
                     res.json({
                         success: false,
@@ -677,21 +706,8 @@ module.exports = function (app) {
                     });
                 }
             };
-            console.log(imageData);
-            orden.upload_evidencia(imageData, (err, data) => {
-                if (err) {
-                    console.log(err);
-                    res.json({
-                        success: false,
-                        message: "Error al agregar evidencia al servidor"
-                    });
-                } else {
-                    res.json({                                  
-                        success: true,
-                        message: "¡Se recibió el archivo de imagen!"
-                    });
-                }
-            });
+            //console.log(imageData);
+            
         }
     });
 
@@ -701,58 +717,73 @@ module.exports = function (app) {
         if (req.files.pdf){
             //console.log(req.files.pdf);
             const file = req.files.pdf;
-            file.mv('../evidencias/PDF/'+ id_orden + '_' + file.name, function(err) {          
-                if (err) {
-                    console.log(err);
-                    throw (err);
-                }
-                let imageData = id_orden + '_' + file.name;
-                //console.log(imageData);
-                orden.upload_pdf(id_orden, imageData, (err, data) => {
+            try {
+                file.mv('../evidencias/PDF/' + id_orden + '_' + file.name, function (err) {
                     if (err) {
-                        console.log(err);
-                        throw err
-                    } 
-                });
-                if (factura){
-                    const factData = {
-                        id_orden : id_orden,
-                        folio_factura: path.parse(file.name).name
+                        //console.log(err);
+                        throw (err);
                     }
-                    orden.updateFolioFact(factData, (err, data) => {
+                    let imageData = id_orden + '_' + file.name;
+                    //console.log(imageData);
+                    orden.upload_pdf(id_orden, imageData, (err, data) => {
                         if (err) {
-                            throw console.error(err);
+                            throw (err);
+                        } else {
+                            if (factura) {
+                                const factData = {
+                                    id_orden: id_orden,
+                                    folio_factura: path.parse(file.name).name
+                                }
+                                orden.updateFolioFact(factData, (err, data) => {
+                                    if (err) {
+                                        throw (err);
+                                    } else {
+                                        res.json({
+                                            success: true,
+                                            message: "¡Se recibió el archivo de imagen!"
+                                        });
+                                    }
+                                })
+                            }
                         }
-                    })
-                }
-            });
+                    });
+                });
+            } catch (error) {
+                res.json({
+                    success: false,
+                    message: "Error al agregar factura al servidor. " + error.message
+                });
+            }
+            
         };
         if (req.files.xml){
             //console.log(req.files.xml);
             const xml = req.files.xml;
-            xml.mv('../evidencias/XML/'+ id_orden + '_' + xml.name, function(err) {          
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send(err);
-                }
-                let xmlData = id_orden + '_' + xml.name;
-                //console.log(xmlData);
-                orden.upload_xml(id_orden, xmlData, (err, data) => {
+            try {
+                xml.mv('../evidencias/XML/' + id_orden + '_' + xml.name, function (err) {
                     if (err) {
-                        console.log(err);
-                        throw err
-                    } 
-                })
-            });
+                        throw (err);
+                    }
+                    let xmlData = id_orden + '_' + xml.name;
+                    //console.log(xmlData);
+                    orden.upload_xml(id_orden, xmlData, (err, data) => {
+                        if (err) {
+                            throw (err);
+                        } else {
+                            res.json({
+                                success: true,
+                                message: "¡Se recibió el archivo de imagen!"
+                            });
+                        }
+                    })
+                });
+            } catch (error) {
+                res.json({
+                    success: false,
+                    message: "Error al agregar XML al servidor. " + error.message
+                });
+            }
         }
-        res.json({
-            success: true,
-            message: "¡Se recibió el archivo de imagen!"
-        });
-        /*let pdf = req.files.image;
-        let xml = req.files.image;
-        let id_orden = req.params.id_orden;*/
-
     });
 
 
@@ -762,7 +793,7 @@ module.exports = function (app) {
             if (err) {
                 res.json ({
                     success: false,
-                    message: "No se pudo recuperar la evidencia de la orden: " + err
+                    message: "No se pudo recuperar la evidencia de la orden: " + err.message
                 });
             } else {
                 res.json({
@@ -781,7 +812,7 @@ module.exports = function (app) {
                 if (err) {
                     res.json({
                         success: false,
-                        message: "Error al eliminar la orden: " + err.code
+                        message: "Error al eliminar la orden: " + err.message
                     });
                 } else {
                     res.json({

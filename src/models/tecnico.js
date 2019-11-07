@@ -1,5 +1,5 @@
 let db = require('../dbMesaControl');
-var dbAdmin = db.getConnection();
+let dbAdmin = require('../dbMesaControl');
 let tecnicoModel = {};
 
 tecnicoModel.getTecnicos = (callback) => {
@@ -10,7 +10,7 @@ tecnicoModel.getTecnicos = (callback) => {
                 if (error.fatal) {
                     throw (error);
                 } else {
-                    callback(error)
+                    callback(error);
                 }
             } else {
                 callback(null, rows);
@@ -22,9 +22,13 @@ tecnicoModel.getTecnicos = (callback) => {
 tecnicoModel.getTecnico = (id, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT * FROM tecnico WHERE id_tecnico = ` + id, function(err, rows) {
-            if (err) {
-                throw (err);
+        dbAdmin.query(`SELECT * FROM tecnico WHERE id_tecnico = ` + id, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             }
             else {
                 callback(null, rows);
@@ -36,9 +40,13 @@ tecnicoModel.getTecnico = (id, callback) => {
 tecnicoModel.getCelTecnico = (id, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(`SELECT num_cel FROM tecnico WHERE id_tecnico = ` + id, function (err, rows) {
-            if (err) {
-                throw (err);
+        dbAdmin.query(`SELECT num_cel FROM tecnico WHERE id_tecnico = ` + id, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             }
             else {
                 callback(null, rows);
@@ -49,12 +57,14 @@ tecnicoModel.getCelTecnico = (id, callback) => {
 
 
 tecnicoModel.insertTecnico = (tecnicoData, callback) =>{
-
     if (dbAdmin){
         dbAdmin.query(`INSERT INTO tecnico SET ?`, tecnicoData, (error, rows) => {
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -76,8 +86,11 @@ tecnicoModel.putTecnico = (tecnicoDta, callback) =>{
         datos_banco = '${tecnicoDta.datos_banco}'
         WHERE id_tecnico = ${tecnicoDta.id_tecnico}`, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }
@@ -89,8 +102,11 @@ tecnicoModel.deleteTecnico = (id_tecnico, callback) => {
     if (dbAdmin){
         dbAdmin.query(`DELETE FROM tecnico WHERE id_tecnico = ` + id_tecnico, function (error, rows){
             if (error) {
-                console.log(error);
-                //callback(null,err.message)
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
             } else {                  
                 callback(null, rows);
             }

@@ -1,14 +1,18 @@
 let db = require('../dbMesaControl');
-var dbAdmin = db.getConnection();
+let dbAdmin = require('../dbMesaControl');
 let dateFormat = require('dateformat');
 let empresaModel = {};
 
 empresaModel.getEmpresas = (callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query("SELECT * FROM empresa", function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query("SELECT * FROM empresa", function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -20,9 +24,13 @@ empresaModel.getEmpresas = (callback) => {
 empresaModel.getEmpresa = (idEmpresa, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query("SELECT * FROM empresa WHERE id_empresa = " + idEmpresa, function(err, rows) {
-            if (err) {
-                throw err;
+        dbAdmin.query("SELECT * FROM empresa WHERE id_empresa = " + idEmpresa, function(error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -33,9 +41,13 @@ empresaModel.getEmpresa = (idEmpresa, callback) => {
 
 empresaModel.getUsers = (idempresa, callback) => {
     if (dbAdmin) {
-        dbAdmin.query("SELECT * FROM usuario WHERE id_empresa = "+ idempresa, (err, rows) => {
-            if (err) {
-                throw err;
+        dbAdmin.query("SELECT * FROM usuario WHERE id_empresa = "+ idempresa, (error, rows) => {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
@@ -46,9 +58,13 @@ empresaModel.getUsers = (idempresa, callback) => {
 
 empresaModel.insertEmpresa = (empresa, callback) => {
     if (dbAdmin) {
-        dbAdmin.query("INSERT INTO empresa SET ? ", [empresa], (err, rows) => {
-            if (err) {
-                throw err;
+        dbAdmin.query("INSERT INTO empresa SET ? ", [empresa], (error, rows) => {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
             }
             else {
                 callback(null, rows);
