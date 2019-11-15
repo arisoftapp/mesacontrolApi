@@ -34,12 +34,24 @@ module.exports = function (app) {
                         });
 
                     } else {
-                        res.json({
-                            success: true,
-                            ase: data,
-                            pol: dta
+                        aseguradora.getSupervisores(id_aseguradora, (err, sup) => {
+                            if (err) {
+                                res.json({
+                                    success: true,
+                                    ase: data,
+                                    pol: dta,
+                                    superv: []
+                                });
+
+                            } else {
+                                res.json({
+                                    success: true,
+                                    ase: data,
+                                    pol: dta,
+                                    superv: sup
+                                });
+                            }
                         });
-                        //console.log(dta);
                     }
                 });
             }
@@ -65,6 +77,24 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/supervisores/:id_aseguradora', (req, res) => {
+        var id_aseguradora = req.params.id_aseguradora;
+        aseguradora.getSupervisores(id_aseguradora, (err, dta) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: "Ocurrió un error al obtener los datos" + err.message
+                });
+            } else {
+                res.json({
+                    success: true,
+                    data: dta
+                });
+                //console.log(dta);
+            }
+        });
+    });
+
 
 
     app.post('/aseguradora', (req, res) => {
@@ -75,6 +105,7 @@ module.exports = function (app) {
             telefono_supervisor : req.body.telefono_supervisor
         };
         const polizas = req.body.polizas;
+        const supervisores = req.body.supervisores;
         var insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor, poliza_cancelacion, poliza_costo ) VALUES (");
 
         aseguradora.insertAseguradora(ase_data, (err, data) => {
@@ -94,17 +125,45 @@ module.exports = function (app) {
                         insert_script += ";";
                     }
                 }
-                aseguradora.insertPolizas(insert_script, (err, dta) => {
+                aseguradora.insertData(insert_script, (err, dta) => {
                     if (err){
                         res.json({
                             success: false,
                             message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err.message
                         });
                     }else{
-                        res.json({
-                            success: true,
-                            message: "¡Se registró la aseguradora exitosamente!"
-                        });
+                        if (supervisores.length > 0){
+                            insert_script = ("INSERT INTO supervisor (id_aseguradora, id_supervisor, nombre_supervisor, telefono) VALUES (");
+                            for (i = 0; i < supervisores.length; i++) {
+                                //console.log(supervisores[i].poliza_nombre);
+                                let index = i + 1;
+                                insert_script = insert_script + id_aseguradora + "," + index + ",'" + supervisores[i].nombre_supervisor + "','" + supervisores[i].telefono + "'";
+                                if (i < supervisores.length - 1) {
+                                    insert_script += "),(";
+                                } else {
+                                    insert_script += ");";
+                                }
+                            }
+                            //console.log(insert_script);
+                            aseguradora.insertData(insert_script, (err, dta) => {
+                                if (err) {
+                                    res.json({
+                                        success: false,
+                                        message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err.message
+                                    });
+                                } else {
+                                    res.json({
+                                        success: true,
+                                        message: "¡Se guardó la aseguradora exitosamente!"
+                                    });
+                                }
+                            });
+                        } else {
+                            res.json({
+                                success: true,
+                                message: "¡Se guardó la aseguradora exitosamente!"
+                            });
+                        }
                     }
                 });
 
@@ -122,6 +181,7 @@ module.exports = function (app) {
         };
         const id_aseguradora = req.body.id_aseguradora;
         const polizas = req.body.polizas;
+        const supervisores = req.body.supervisores;
         //console.log(polizas[0]);
         aseguradora.updateAseguradora(ase_data, (err, data) => {
             if (err){
@@ -141,25 +201,62 @@ module.exports = function (app) {
                         for (i = 0; i < polizas.length; i++) { 
                             console.log(polizas[i].poliza_nombre);
                             let index = i+1;
-                            insert_script = insert_script + id_aseguradora + "," + index + ",'" + polizas[i].poliza_nombre + "','" + polizas[i].poliza_valor + "','" + polizas[i].poliza_cancelacion + "','" + polizas[i].poliza_costo + "')";
+                            insert_script = insert_script + id_aseguradora + "," + index + ",'" + polizas[i].poliza_nombre + "','" + polizas[i].poliza_valor + "','" + polizas[i].poliza_cancelacion + "','" + polizas[i].poliza_costo + "'";
                             if (i < polizas.length-1){
-                                insert_script += ",(";
+                                insert_script += "),(";
                             } else {
-                                insert_script += ";";
+                                insert_script += ");";
                             }
                         }
                         //console.log(insert_script);
-                        aseguradora.insertPolizas(insert_script, (err, dta) => {
+                        aseguradora.insertData(insert_script, (err, dta) => {
                             if (err){
                                 res.json({
                                     success: false,
                                     message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err.message
                                 });
                             }else{
-                                res.json({
-                                    success: true,
-                                    message: "¡Se editó la aseguradora exitosamente!"
-                                });
+                                aseguradora.deleteSupervisores(id_aseguradora, (err, datadel) => {
+                                    if (err) {
+                                        res.json({
+                                            success: false,
+                                            message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err.message
+                                        });
+                                    } else {
+                                        if (supervisores.length > 0){
+                                            var insert_script = ("INSERT INTO supervisor (id_aseguradora, id_supervisor, nombre_supervisor, telefono) VALUES (");
+                                            for (i = 0; i < supervisores.length; i++) {
+                                                console.log(supervisores[i].poliza_nombre);
+                                                let index = i + 1;
+                                                insert_script = insert_script + id_aseguradora + "," + index + ",'" + supervisores[i].nombre_supervisor + "','" + supervisores[i].telefono + "'";
+                                                if (i < supervisores.length - 1) {
+                                                    insert_script += "),(";
+                                                } else {
+                                                    insert_script += ");";
+                                                }
+                                            }
+                                            //console.log(insert_script);
+                                            aseguradora.insertData(insert_script, (err, dta) => {
+                                                if (err) {
+                                                    res.json({
+                                                        success: false,
+                                                        message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err.message
+                                                    });
+                                                } else {
+                                                    res.json({
+                                                        success: true,
+                                                        message: "¡Se editó la aseguradora exitosamente!"
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            res.json({
+                                                success: true,
+                                                message: "¡Se editó la aseguradora exitosamente!"
+                                            });
+                                        }
+                                    }
+                                })
                             }
                         });
                     }
@@ -182,12 +279,21 @@ module.exports = function (app) {
                     if (err){
                         res.json({
                             success: false,
-                            message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err.message
+                            message: 'Se presentó un error al intentar eliminar los datos. Inténtelo de nuevo.' + err.message
                         });
                     } else{
-                        res.json({
-                            success: true,
-                            message: "¡Se eliminó la aseguradora exitosamente!"
+                        aseguradora.deleteSupervisores(id_aseguradora, (err, datadel) => {
+                            if (err) {
+                                res.json({
+                                    success: false,
+                                    message: 'Se presentó un error al intentar eliminar los datos. Inténtelo de nuevo.' + err.message
+                                });
+                            } else {
+                                res.json({
+                                    success: true,
+                                    message: "¡Se eliminó la aseguradora exitosamente!"
+                                });
+                            }
                         });
                     }
                 });

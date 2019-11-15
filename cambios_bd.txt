@@ -1,0 +1,14 @@
+ALTER TABLE `costo` 
+ADD `precio_servicio` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `gasolina`,
+ADD `total_tecnico` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `precio_servicio`, ADD `total_ase` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `total_tecnico`, 
+ADD `total_exce` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `total_ase`, ADD `material_exce` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `total_exce`, 
+ADD `material_ase` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `material_exce`, 
+ADD `mano_obra_exce` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `material_ase`, 
+ADD `precio_gasolina_ase` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `mano_obra_exce`, 
+ADD `litros_gasolina_ase` INT(11) NOT NULL DEFAULT '0' AFTER `precio_gasolina_exce`,
+ADD `otros_ase` DOUBLE(255,2) NOT NULL DEFAULT '0' AFTER `litros_gasolina_ase`;
+
+CREATE TABLE `mesacontrol_db`.`supervisor` ( `id_aseguradora` INT(10) NOT NULL , `id_supervisor` INT(10) NOT NULL , `nombre_supervisor` VARCHAR(255) NOT NULL DEFAULT '' , `telefono` VARCHAR(10) NOT NULL DEFAULT '' , PRIMARY KEY (`id_aseguradora`, `id_supervisor`)) ENGINE = InnoDB;
+
+ALTER TABLE `orden` ADD `id_supervisor` INT NOT NULL DEFAULT '0' AFTER `id_poliza`;
+ALTER TABLE `orden` ADD `ejecutivo_cab` VARCHAR(80) NOT NULL DEFAULT '' AFTER `folio_cierre`;

@@ -56,6 +56,24 @@ aseguradoraModel.getPolizas = (id_aseguradora, callback) => {
     }
 };
 
+aseguradoraModel.getSupervisores = (id_aseguradora, callback) => {
+    //console.log(idEmpresa);
+    if (dbAdmin) {
+        dbAdmin.query(`SELECT * FROM supervisor WHERE id_aseguradora =  ` + id_aseguradora, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
 aseguradoraModel.deletePolizas = (id_aseguradora, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
@@ -74,10 +92,28 @@ aseguradoraModel.deletePolizas = (id_aseguradora, callback) => {
     }
 };
 
-aseguradoraModel.insertPolizas = (poliData, callback) => {
+aseguradoraModel.deleteSupervisores = (id_aseguradora, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        dbAdmin.query(poliData, function(error, rows) {
+        dbAdmin.query(`DELETE FROM supervisor WHERE id_aseguradora =  ` + id_aseguradora, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
+aseguradoraModel.insertData = (Data, callback) => {
+    //console.log(idEmpresa);
+    if (dbAdmin) {
+        dbAdmin.query(Data, function(error, rows) {
             if (error) {
                 if (error.fatal) {
                     throw (error);

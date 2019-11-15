@@ -1,5 +1,6 @@
 const orden = require('../models/orden');
 const tecnico = require('../models/tecnico');
+const servicio = require('../models/servicio');
 const costos = require('../models/costos.model');
 const path = require('path');
 const accountSid = 'ACe4f8ba482da90602871dd463b0900ed1';
@@ -189,6 +190,7 @@ module.exports = function (app) {
                     id_servicio : req.body.id_servicio,
                     id_aseguradora : req.body.id_aseguradora,
                     id_poliza : req.body.id_poliza,
+                    id_supervisor : req.body.id_supervisor,
                     benef_nombre : req.body.benef_nombre,
                     benef_paterno  : req.body.benef_paterno,
                     benef_materno  : req.body.benef_materno,
@@ -266,18 +268,18 @@ module.exports = function (app) {
     function sendNotification(orden) {
         tecnico.getTecnico(orden.id_tecnico, (err, data) => {
             if (!err) {
-                var fecha = new Date(orden.asignada);
-                let year = fecha.getFullYear();
-                let mes = fecha.getMonth() + 1;
-                let dia = fecha.getDate();
-                let hora = fecha.getHours();
-                let min = fecha.getMinutes();
-                const string = (year + '-' + mes + '-' + dia + ' ' + hora + ':' + min + ' UTC');
-                var today = new Date(string).toLocaleString("en-US", { timeZone: "America/Hermosillo" });
-                let message = 'Se te ha asignado la orden con folio *' + orden.expediente + '*, con fecha programada para el día *' + today + '* (fecha y hora local de Hermosillo). Para conocer más detalles de la orden ingresa a: http://www.arisoft.com.mx/mesadecontrol/';
-                if (data[0].num_cel !== undefined){
+                if (data[0]){
                     const celular = data[0].num_cel;
                     if (celular.length == 10){
+                        var fecha = new Date(orden.asignada);
+                        let year = fecha.getFullYear();
+                        let mes = fecha.getMonth() + 1;
+                        let dia = fecha.getDate();
+                        let hora = fecha.getHours();
+                        let min = fecha.getMinutes();
+                        const string = (year + '-' + mes + '-' + dia + ' ' + hora + ':' + min + ' UTC');
+                        var today = new Date(string).toLocaleString("en-US", { timeZone: "America/Hermosillo" });
+                        let message = 'Se te ha asignado la orden con folio *' + orden.expediente + '*, con fecha programada para el día *' + today + '* (fecha y hora local de Hermosillo). Para conocer más detalles de la orden ingresa a: http://www.arisoft.com.mx/mesadecontrol/';
                         let para = 'whatsapp:+521'+celular;
                         client.messages.create({
                             body: message,
@@ -288,7 +290,6 @@ module.exports = function (app) {
                 }         
             }
         });
-        
     }
 
     app.put('/arribo_tecnico/:id_orden', (req, res) => {
@@ -317,7 +318,7 @@ module.exports = function (app) {
         if (id_empleado == '1' || id_empleado == '3' || id_empleado !== null){
             var id_orden = req.body.id_orden;
             var id_status = req.body.id_status;
-            const orden = {
+            const _orden = {
                 id_orden : id_orden,
                 asignada: req.body.asignada,
                 id_tecnico : req.body.id_tecnico
@@ -338,7 +339,7 @@ module.exports = function (app) {
                             success: true,
                             message: "¡Se Guardaron los cambios exitosamente!"
                         });
-                        sendNotification(orden);
+                        sendNotification(_orden);
                     }
                 });
             } else if (id_status == '2'){
@@ -405,35 +406,39 @@ module.exports = function (app) {
                     es_foraneo = false;
                     corre = 0;
                 }
-                const costosData = {
-                    id_orden: id_orden,
-                    mano_obra: 0,
-                    corres: corre,
-                    kilometros: 0,
-                    cant_km: 0,
-                    precio_km: 0,
-                    tipo_gasolina: 0,
-                    gasolina_litros: 0,
-                    gasolina: 0,
-                    importe_materiales: corre,
-                    total: corre
-                };
-                costos.insertCostos(costosData, (err, data) => {
-                    if (err) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-
-                });
+                var precio_ser = 0;
+                orden.getCostoPoliza(id_orden, (err, dta) => {
+                    if (!err){
+                        precio_ser = dta[0].poliza_costo;
+                        const costosData = {
+                            id_orden: id_orden,
+                            precio_servicio: precio_ser,
+                            mano_obra: 0,
+                            corres: corre,
+                            kilometros: 0,
+                            cant_km: 0,
+                            precio_km: 0,
+                            tipo_gasolina: 0,
+                            gasolina_litros: 0,
+                            gasolina: 0,
+                            importe_materiales: 0,
+                            total_ase: corre + precio_ser
+                        };
+                        costos.insertCostos(costosData, (err, data) => {
+                            if (err) {
+                                console.log(err);
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        });
+                    } 
+                })
             } else {
                 return false;
                 console.log(error);
             }
         });
-        
-        
-        
     };
 
     app.put('/cancelar_orden/', (req, res) => {
@@ -494,9 +499,11 @@ module.exports = function (app) {
             id_servicio : req.body.id_servicio,
             id_aseguradora : req.body.id_aseguradora,
             id_poliza : req.body.id_poliza,
+            id_supervisor : req.body.id_supervisor,
             folio_cierre : req.body.folio_cierre,
             folio_factura : req.body.folio_factura,
             folio_recepcion : req.body.folio_recepcion,
+            ejecutivo_cab : req.body.ejecutivo_cab,
             observaciones : req.body.observaciones,
             benef_nombre : req.body.benef_nombre,
             benef_paterno  : req.body.benef_paterno,

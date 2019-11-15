@@ -120,7 +120,7 @@ ordenInternaModel.insertOrden = (ordenData, callback) => {
                 if (error.fatal) {
                     throw (error);
                 } else {
-                    callback(error)
+                    callback(error, null);
                 }
             } else {                  
                 callback(null, rows);

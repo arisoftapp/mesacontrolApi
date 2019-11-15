@@ -98,9 +98,30 @@ ordenModel.getAllOrdenesbyTecnico = (id_tecnico, callback) => {
     }
 };
 
+ordenModel.getCostoPoliza = (id_orden, callback) => {
+    if (dbAdmin) {
+        const query = `SELECT a.id_orden, h.poliza_costo FROM orden AS a
+        LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
+        WHERE a.id_orden = ` + id_orden;
+        dbAdmin.query(query, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+}
+
 ordenModel.getLayoutData = (id_orden, callback) => {
     if (dbAdmin){
-        const query = `SELECT a.id_orden, a.expediente,  
+        const query = `SELECT a.id_orden, a.expediente, a.folio_cierre, a.servicio_vial, DATE_FORMAT(fin, "%H:%i") AS fin,
+        a.vehiculo_ubicacion, a.vehiculo_tipo, a.vehiculo_color, a.vehiculo_placa, DATE_FORMAT(arribo, "%H:%i") AS arribo,
         CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
         e.nombre_servicio, a.calle, IFNULL(a.num_ext, 'S/N') AS num_ext, IFNULL(a.col, '') AS col, h.poliza_costo, f.nombre_entidad, m.nombre_municipio,
         e.erp, i.corres, i.gasolina, i.gasolina_litros, i.tipo_gasolina, i.kilometros, i.cant_km FROM orden AS a
@@ -182,7 +203,7 @@ ordenModel.getOrden = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
         dbAdmin.query(`SELECT a.*, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, 
-        c.nombre_aseguradora, d.orden_status AS estado_orden, e.nombre_servicio, f.nombre_entidad, g.nombre_municipio, IFNULL(h.poliza_nombre,"") AS poliza_nombre, IFNULL(h.poliza_valor,"") AS poliza_valor, h.poliza_costo FROM orden AS a
+        c.nombre_aseguradora, d.orden_status AS estado_orden, e.nombre_servicio, f.nombre_entidad, g.nombre_municipio, IFNULL(h.poliza_nombre,"") AS poliza_nombre, IFNULL(i.nombre_supervisor,""), IFNULL(h.poliza_valor,"") AS poliza_valor, h.poliza_costo FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
@@ -190,6 +211,7 @@ ordenModel.getOrden = (id_orden, callback) => {
         LEFT JOIN entidad_fed AS f ON a.id_estado = f.id_entidad
         LEFT JOIN municipio AS g ON a.id_municipio = g.id_municipio
         LEFT JOIN poliza AS h ON a.id_aseguradora = h.id_aseguradora AND a.id_poliza = h.id_poliza
+        LEFT JOIN supervisor AS i ON a.id_aseguradora = i.id_aseguradora AND a.id_supervisor= i.id_supervisor
         WHERE a.id_orden = ` + id_orden, function(error, rows) {
             if (error) {
                 if (error.fatal) {
@@ -281,7 +303,9 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 id_servicio = ${ordenData.id_servicio},
                 id_aseguradora = ${ordenData.id_aseguradora},
                 id_poliza = ${ordenData.id_poliza},
+                id_supervisor = ${ordenData.id_supervisor},
                 folio_cierre = '${ordenData.folio_cierre}',
+                ejecutivo_cab = '${ordenData.ejecutivo_cab}',
                 folio_factura = '${ordenData.folio_factura}',
                 folio_recepcion = '${ordenData.folio_recepcion}',
                 observaciones = '${ordenData.observaciones}',
@@ -289,10 +313,11 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 benef_paterno  = '${ordenData.benef_paterno}',
                 benef_materno  = '${ordenData.benef_materno}',
                 benef_tel  = '${ordenData.benef_tel}',
+                recibe_benef  = '${ordenData.recibe_benef}',
                 recibe_nombre  = '${ordenData.recibe_nombre}',
                 recibe_materno  = '${ordenData.recibe_materno}',
                 recibe_paterno  = '${ordenData.recibe_paterno}',
-                recibe_tel  = '${ordenData.benef_tel}',
+                recibe_tel  = '${ordenData.recibe_tel}',
                 id_tecnico  = ${ordenData.id_tecnico},
                 asignada  = '${ordenData.asignada}',
                 calle  = '${ordenData.calle}',
@@ -304,6 +329,7 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 entre_calle1  = '${ordenData.entre_calle1}',
                 entre_calle2  = '${ordenData.entre_calle2}',
                 referencia  = '${ordenData.referencia}',
+                servicio_vial  = '${ordenData.servicio_vial}',
                 vehiculo_tipo  = '${ordenData.vehiculo_tipo}',
                 vehiculo_color  = '${ordenData.vehiculo_color}',
                 vehiculo_placa  = '${ordenData.vehiculo_placa}',

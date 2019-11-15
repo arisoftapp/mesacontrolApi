@@ -28,25 +28,21 @@ module.exports = function (app) {
         });
     });
 
-    app.put('/costos', (req, res) => {
+    app.put('/costos_tecnico', (req, res) => {
         const costosData = {
             id_orden : req.body.id_orden,
             mano_obra : req.body.mano_obra,
-            corres : req.body.corres,
-            kilometros : req.body.kilometros,
-            cant_km : req.body.cant_km,
-            precio_km : req.body.precio_km,
             gasolina_litros : req.body.gasolina_litros,
             tipo_gasolina : req.body.tipo_gasolina,
             gasolina : req.body.gasolina,
             importe_materiales : req.body.importe_materiales,
-            total : req.body.total
+            total_tecnico: req.body.total
         };
         //console.log(costosData);
         const id_orden = req.body.id_orden;
         const materiales = req.body.materiales;
         var insert_script = ("INSERT INTO material (id_orden, descripcion, cantidad, precio_unitario, importe ) VALUES (");
-        costos.updateCostos(costosData, (err, data) => {
+        costos.updateCostosTecnico(costosData, (err, data) => {
             if (err) {
                 res.json({
                     success: false,
@@ -95,4 +91,59 @@ module.exports = function (app) {
             }
         });
     });
+
+    app.put('/precios_aseguradora', (req, res) => {
+        const costosData = {
+            id_orden: req.body.id_orden,
+            precio_servicio: req.body.precio_servicio,
+            corres: req.body.corres,
+            kilometros: req.body.kilometros,
+            cant_km: req.body.cant_km,
+            precio_km: req.body.precio_km,
+            litros_gasolina_ase: req.body.litros_gasolina_ase,
+            tipo_gasolina: req.body.tipo_gasolina,
+            precio_gasolina_ase: req.body.precio_gasolina_ase,
+            material_ase: req.body.material_ase,
+            total_ase: req.body.total_ase,
+            otros_ase: req.body.otros_ase
+        };
+        //console.log(costosData);
+        costos.updatePreciosAse(costosData, (err, data) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo. ' + err.message
+                });
+            } else {
+                res.json({
+                    success: true,
+                    message: "¡Se registraron los costos de la orden exitosamente!"
+                });
+            }
+        });
+    });
+
+    app.put('/costos_excedentes', (req, res) => {
+        const costosData = {
+            id_orden: req.body.id_orden,
+            mano_obra_exce: req.body.mano_obra_exce,
+            material_exce: req.body.material_exce,
+            total_exce: req.body.total_exce
+        };
+        //console.log(costosData);
+        costos.updateCostosExce(costosData, (err, data) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo. ' + err.message
+                });
+            } else {
+                res.json({
+                    success: true,
+                    message: "¡Se registraron los costos de la orden exitosamente!"
+                });
+            }
+        });
+    });
+
 }
