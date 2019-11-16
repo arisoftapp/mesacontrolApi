@@ -35,6 +35,8 @@ module.exports = function (app) {
             gasolina_litros : req.body.gasolina_litros,
             tipo_gasolina : req.body.tipo_gasolina,
             gasolina : req.body.gasolina,
+            litros_gasolina_ase: req.body.gasolina_litros,
+            precio_gasolina_ase: req.body.gasolina,
             importe_materiales : req.body.importe_materiales,
             total_tecnico: req.body.total
         };

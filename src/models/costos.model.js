@@ -64,6 +64,8 @@ costosModel.updateCostosTecnico = (costoData, callback) => {
             tipo_gasolina = '${costoData.tipo_gasolina}',
             gasolina_litros = ${costoData.gasolina_litros},
             gasolina = '${costoData.gasolina}',
+            litros_gasolina_ase = '${costoData.litros_gasolina_ase}',
+            precio_gasolina_ase = '${costoData.precio_gasolina_ase}',
             importe_materiales = '${costoData.importe_materiales}',
             total_tecnico = '${costoData.total_tecnico}'
             WHERE id_orden = ${costoData.id_orden}`;

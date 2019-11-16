@@ -744,10 +744,12 @@ module.exports = function (app) {
                                     if (err) {
                                         throw (err);
                                     } else {
-                                        res.json({
-                                            success: true,
-                                            message: "¡Se recibió el archivo de imagen!"
-                                        });
+                                        if (!req.files.xml && req.files.xml == null) {
+                                            res.json({
+                                                success: true,
+                                                message: "¡Se recibió el archivo de imagen!"
+                                            });
+                                        }
                                     }
                                 })
                             }
