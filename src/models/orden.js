@@ -203,7 +203,7 @@ ordenModel.getOrden = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
         dbAdmin.query(`SELECT a.*, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, 
-        c.nombre_aseguradora, d.orden_status AS estado_orden, e.nombre_servicio, f.nombre_entidad, g.nombre_municipio, IFNULL(h.poliza_nombre,"") AS poliza_nombre, IFNULL(i.nombre_supervisor,""), IFNULL(h.poliza_valor,"") AS poliza_valor, h.poliza_costo FROM orden AS a
+        c.nombre_aseguradora, d.orden_status AS estado_orden, e.nombre_servicio, f.nombre_entidad, g.nombre_municipio, IFNULL(h.poliza_nombre,"") AS poliza_nombre, IFNULL(i.nombre_supervisor,"") AS nombre_supervisor, IFNULL(h.poliza_valor,"") AS poliza_valor, h.poliza_costo FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status

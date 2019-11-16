@@ -647,7 +647,7 @@ module.exports = function (app) {
             if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
                 //console.log('Formato aceptado');
                 try {
-                    file.mv('evidencias/' + id_orden + '_' + file.name, function (err) {
+                    file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
                         if (err) {
                             throw (err);
                         }
@@ -677,7 +677,7 @@ module.exports = function (app) {
                 var file = images[i];
                 if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){ 
                     try {
-                        file.mv('../evidencias/' + id_orden + '_' + file.name, function (err) {
+                        file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
                             if (err) {
                                 throw (err);
                             } else {
@@ -714,7 +714,6 @@ module.exports = function (app) {
                 }
             };
             //console.log(imageData);
-            
         }
     });
 
@@ -725,7 +724,7 @@ module.exports = function (app) {
             //console.log(req.files.pdf);
             const file = req.files.pdf;
             try {
-                file.mv('../evidencias/PDF/' + id_orden + '_' + file.name, function (err) {
+                file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/PDF/' + id_orden + '_' + file.name, function (err) {
                     if (err) {
                         //console.log(err);
                         throw (err);
@@ -767,7 +766,7 @@ module.exports = function (app) {
             //console.log(req.files.xml);
             const xml = req.files.xml;
             try {
-                xml.mv('../evidencias/XML/' + id_orden + '_' + xml.name, function (err) {
+                xml.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/XML/' + id_orden + '_' + xml.name, function (err) {
                     if (err) {
                         throw (err);
                     }
