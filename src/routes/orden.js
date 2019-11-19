@@ -485,7 +485,7 @@ module.exports = function (app) {
         } else {
             res.json({
                 success: false,
-                message: 'El usuario no cuanta con los permisos para realizar esta acción.'
+                message: 'El usuario no cuenta con los permisos para realizar esta acción.'
             });
         }
     });
@@ -586,6 +586,7 @@ module.exports = function (app) {
     app.put('/orden_by_tecnico', (req, res) => {
         const ordenData = {
             id_orden : req.body.id_orden,
+            vehiculo_placa : req.body.vehiculo_placa,
             observaciones : req.body.observaciones,
         };
         orden.updateOrdenbyTecnico(ordenData, (err, data) => {
@@ -647,7 +648,8 @@ module.exports = function (app) {
             if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
                 //console.log('Formato aceptado');
                 try {
-                    file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
+                    //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + xml.name, function (err) {
+                    file.mv('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
                         if (err) {
                             throw (err);
                         }
@@ -677,7 +679,8 @@ module.exports = function (app) {
                 var file = images[i];
                 if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){ 
                     try {
-                        file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
+                        //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + xml.name, function (err) {
+                        file.mv('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
                             if (err) {
                                 throw (err);
                             } else {
@@ -724,7 +727,8 @@ module.exports = function (app) {
             //console.log(req.files.pdf);
             const file = req.files.pdf;
             try {
-                file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/PDF/' + id_orden + '_' + file.name, function (err) {
+                //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/PDF/' + id_orden + '_' + xml.name, function (err) {
+                file.mv('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/evidencias/PDF/' + id_orden + '_' + file.name, function (err) {
                     if (err) {
                         //console.log(err);
                         throw (err);
@@ -768,7 +772,8 @@ module.exports = function (app) {
             //console.log(req.files.xml);
             const xml = req.files.xml;
             try {
-                xml.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/XML/' + id_orden + '_' + xml.name, function (err) {
+                //xml.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/XML/' + id_orden + '_' + xml.name, function (err) {
+                xml.mv('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/evidencias/XML/' + id_orden + '_' + xml.name, function (err) {
                     if (err) {
                         throw (err);
                     }

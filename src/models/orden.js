@@ -356,7 +356,8 @@ ordenModel.updateOrden = (ordenData, callback) =>{
 ordenModel.updateOrdenbyTecnico = (ordenData, callback) =>{
     if (dbAdmin){
         const sql = `UPDATE orden SET 
-                observaciones = '${ordenData.observaciones}'
+                observaciones = '${ordenData.observaciones}',
+                vehiculo_placa = '${ordenData.vehiculo_placa}'
                 WHERE id_orden = ${ordenData.id_orden}`;
         dbAdmin.query(sql, function (error, rows){
             if (error) {
