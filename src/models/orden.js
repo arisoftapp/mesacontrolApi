@@ -500,7 +500,24 @@ ordenModel.deleteOrden = (id_orden, callback) => {
             }
         });
     }
-}
+};
+
+ordenModel.deleteEvidencia = (id, callback) => {
+    if (dbAdmin) {
+        const evi = `DELETE FROM evidencia WHERE id_evidencia = ` + id;
+        dbAdmin.query(evi, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
+            } else { 
+                callback(null, rows);
+            }
+        });
+    }
+};
 
 ordenModel.upload_evidencia = (imageData, callback) => {
     if (dbAdmin){

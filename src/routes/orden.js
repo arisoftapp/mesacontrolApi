@@ -648,7 +648,7 @@ module.exports = function (app) {
             if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
                 //console.log('Formato aceptado');
                 try {
-                    //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + xml.name, function (err) {
+                    //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
                     file.mv('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
                         if (err) {
                             throw (err);
@@ -679,7 +679,7 @@ module.exports = function (app) {
                 var file = images[i];
                 if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){ 
                     try {
-                        //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + xml.name, function (err) {
+                        //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
                         file.mv('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/evidencias/' + id_orden + '_' + file.name, function (err) {
                             if (err) {
                                 throw (err);
@@ -727,7 +727,7 @@ module.exports = function (app) {
             //console.log(req.files.pdf);
             const file = req.files.pdf;
             try {
-                //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/PDF/' + id_orden + '_' + xml.name, function (err) {
+                //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/PDF/' + id_orden + '_' + file.name, function (err) {
                 file.mv('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/evidencias/PDF/' + id_orden + '_' + file.name, function (err) {
                     if (err) {
                         //console.log(err);
@@ -815,6 +815,26 @@ module.exports = function (app) {
                 });
             }
         });
+    });
+
+    app.delete('/evidencia/:id_evidencia', (req, res) => {
+        const decoded = req.decoded;
+        const id = req.params.id_evidencia;
+        if (decoded.tipo == 1) {
+            orden.deleteEvidencia(id, (err, data) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Error al eliminar la evidencia: " + err.message
+                    });
+                } else {
+                    res.json({
+                        success: true,
+                        data: 'Se eliminó la evidencia indicada.'
+                    });
+                }
+            })
+        }
     });
 
     app.delete('/orden/:id_orden', (req, res) => {
