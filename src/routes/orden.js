@@ -6,6 +6,7 @@ const path = require('path');
 const accountSid = 'ACe4f8ba482da90602871dd463b0900ed1';
 const authToken = 'd0c1bbde9c3ccb8a590428942233c0c5';
 const client = require('twilio')(accountSid, authToken); 
+const fs = require('fs');
 
 module.exports = function (app) {
     app.get('/ordenes/:id_status/:id_tecnico/:fecha_opc/:fecha/:fecha_inicio/:fecha_fin', (req, res) => {
@@ -817,9 +818,10 @@ module.exports = function (app) {
         });
     });
 
-    app.delete('/evidencia/:id_evidencia', (req, res) => {
+    app.delete('/evidencia/:id_evidencia/:evidencia', (req, res) => {
         const decoded = req.decoded;
         const id = req.params.id_evidencia;
+        const evidencia = req.params.evidencia;
         if (decoded.tipo == 1) {
             orden.deleteEvidencia(id, (err, data) => {
                 if (err) {
@@ -828,9 +830,14 @@ module.exports = function (app) {
                         message: "Error al eliminar la evidencia: " + err.message
                     });
                 } else {
-                    res.json({
-                        success: true,
-                        data: 'Se eliminó la evidencia indicada.'
+                    //fs.unlink('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/evidencias/' + evidencia, (err) => {
+                    fs.unlink('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/evidencias/' + evidencia, (err) => {
+                        if (err) throw err;
+                        res.json({
+                            success: true,
+                            data: 'Se eliminó la evidencia indicada.'
+                        });
+                        console.log(evidencia + ' was deleted');
                     });
                 }
             })
