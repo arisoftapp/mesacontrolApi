@@ -46,10 +46,17 @@ ordenInternaModel.getOrdenesbyTecnico = (id_tecnico, callback) => {
 ordenInternaModel.getOrdenesBuscar = (buscar, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        const query = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.id_tecnico, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
+        const query = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
+        CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
+        a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
+        a.entre_calle1, a.entre_calle2, a.col,
+        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, a.descripcion,
+        d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
-        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE id_tipo = 2 AND (expediente LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%')`;
+        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
+        WHERE id_tipo = 2 AND (expediente LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%' OR benef_tel LIKE '%` + buscar + `%')`;
         //console.log(query);
         dbAdmin.query(query, function(error, rows) {
             if (error) {
@@ -69,10 +76,17 @@ ordenInternaModel.getOrdenesBuscar = (buscar, callback) => {
 ordenInternaModel.getOrdenesBuscarbyTecnico = (buscar, id_tecnico, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
-        const query = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.id_tecnico, CONCAT(a.benef_nombre, " ", a.benef_paterno, " ", a.benef_materno) AS nombre_beneficiario, CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, d.orden_status AS estado_orden FROM orden AS a
+        const query = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
+        CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
+        a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
+        a.entre_calle1, a.entre_calle2, a.col,
+        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, a.descripcion,
+        d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
-        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status WHERE id_tipo = 2 AND (expediente LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%') AND a.id_tecnico = ` + id_tecnico;
+        LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
+        LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
+        WHERE id_tipo = 2 AND (expediente LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%' OR benef_tel LIKE '%` + buscar + `%') AND a.id_tecnico = ` + id_tecnico;
         //console.log(query);
         dbAdmin.query(query, function(error, rows) {
             if (error) {

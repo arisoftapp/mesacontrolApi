@@ -15,8 +15,8 @@ module.exports = function (app) {
             id_tecnico = decoded.id;
         }
         let script = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
-        e.nombre_servicio, a.calle, a.num_int, a.num_ext, a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
-        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, a.descripcion,
+        e.nombre_servicio, a.calle, a.entre_calle1, a.entre_calle2, a.num_int, a.num_ext, a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
+        CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, a.descripcion, a.col,
         d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status

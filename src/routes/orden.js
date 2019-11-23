@@ -24,7 +24,7 @@ module.exports = function (app) {
         let script = `SELECT a.id_orden, a.expediente, a.id_status, a.levantamiento, a.asignada, a.id_tecnico, 
         CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
         a.benef_nombre, a.benef_paterno, a.benef_materno, e.nombre_servicio, a.calle, a.num_int, a.num_ext,
-        a.recibe_nombre, a.recibe_paterno, a.recibe_materno,
+        a.recibe_nombre, a.recibe_paterno, a.recibe_materno, a.entre_calle1, a.entre_calle2, a.col,
         CONCAT(b.nombre," ",b.ap_paterno," ", b.ap_materno) AS nombre_tecnico, c.nombre_aseguradora, a.descripcion,
         d.orden_status AS estado_orden, a.recibe_benef, a.servicio_vial FROM orden AS a
         LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
