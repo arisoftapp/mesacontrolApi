@@ -231,7 +231,7 @@ module.exports = function (app) {
                         } else{
                             res.json({
                                 success: false,
-                                message: err.code
+                                message: err.code + " " + err.message
                             });
                         }
                         //console.log(res);
@@ -536,14 +536,21 @@ module.exports = function (app) {
         };
         orden.updateOrden(ordenData, (err, data) => {
             if (err){
-                res.json({
-                    success: false,
-                    message: err.code + " " + err.message
-                });
+                if (err.errno == 1062) {
+                    res.json({
+                        success: false,
+                        message: 'Ya existe una orden con la aseguradora y expediente indicado'
+                    });
+                } else {
+                    res.json({
+                        success: false,
+                        message: err.code + " " + err.message
+                    });
+                }
             }else{
                 if (ordenData.id_status === 1 || ordenData.id_status === 2) {
                     if (ordenData.asignada !== ""  && ordenData.asignada !== null && ordenData.asignada !== "0000-00-00 00:00:00.000000"){
-                        console.log('ORDEN ASIGNADA');
+                        //console.log('ORDEN ASIGNADA');
                         orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
                             if (err){
                                 res.json({
@@ -559,7 +566,7 @@ module.exports = function (app) {
                             }
                         });
                     } else {
-                        console.log('ORDEN NO ASIGNADA', ordenData);
+                        //console.log('ORDEN NO ASIGNADA');
                         orden.updateProgramada(ordenData.id_orden, '1', (err, data) => {
                             if (err){
                                 res.json({
