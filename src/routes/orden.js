@@ -400,7 +400,7 @@ module.exports = function (app) {
     function createCostos(id_orden) {
         costos.getCostos(id_orden, (err, result) => {
             if (!err && result.length == 0) {
-                console.log(result.length);
+                console.log(result, result.length);
                 var corre = 300;
                 orden.getOrden(id_orden, (error, data) => {
                     if (!error) {
@@ -413,7 +413,9 @@ module.exports = function (app) {
                         var precio_ser = 0;
                         orden.getCostoPoliza(id_orden, (err, dta) => {
                             if (!err) {
-                                precio_ser = dta[0].poliza_costo;
+                                if (dta[0].poliza_costo) {
+                                    precio_ser = dta[0].poliza_costo;
+                                }
                                 const costosData = {
                                     id_orden: id_orden,
                                     precio_servicio: precio_ser,
