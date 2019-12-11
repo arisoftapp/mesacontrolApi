@@ -238,6 +238,7 @@ module.exports = function (app) {
                     } else {
                         if (ordenData.asignada !== "" && ordenData.asignada !== null && ordenData.asignada !== "0000-00-00 00:00:00.000000"){
                             console.log('ORDEN ASIGNADA');
+                            createCostos(id_orden);
                             orden.updateProgramada(max, '2', (err, data) => {
                                 if (err){
                                     res.json({
@@ -329,6 +330,7 @@ module.exports = function (app) {
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             var dateTime = date+' '+time;
             if (id_status == '1'){
+                createCostos(id_orden);
                 orden.updateProgramada(id_orden, '2', (err, data) => {
                     if (err){
                         res.json({
@@ -359,7 +361,6 @@ module.exports = function (app) {
                     }
                 });
             } else if (id_status == '3'){
-                makeCostos(id_orden);
                 orden.updateFinalizado(id_orden, '4', dateTime, (err, data) => {
                     if (err) {
                         res.json({
@@ -396,7 +397,7 @@ module.exports = function (app) {
         }
     });
 
-    function makeCostos(id_orden) {
+    function createCostos(id_orden) {
         var es_foraneo = true;
         var corre = 300;
         orden.getOrden(id_orden, (error, data) => {
