@@ -238,7 +238,7 @@ module.exports = function (app) {
                     } else {
                         if (ordenData.asignada !== "" && ordenData.asignada !== null && ordenData.asignada !== "0000-00-00 00:00:00.000000"){
                             console.log('ORDEN ASIGNADA');
-                            createCostos(id_orden);
+                            createCostos(max);
                             orden.updateProgramada(max, '2', (err, data) => {
                                 if (err){
                                     res.json({
@@ -398,47 +398,51 @@ module.exports = function (app) {
     });
 
     function createCostos(id_orden) {
-        var es_foraneo = true;
-        var corre = 300;
-        orden.getOrden(id_orden, (error, data) => {
-            if (!error){
-                const municipio = data[0].id_municipio;
-                //console.log(municipio);
-                if ( municipio == 1890) {
-                    es_foraneo = false;
-                    corre = 0;
-                }
-                var precio_ser = 0;
-                orden.getCostoPoliza(id_orden, (err, dta) => {
-                    if (!err){
-                        precio_ser = dta[0].poliza_costo;
-                        const costosData = {
-                            id_orden: id_orden,
-                            precio_servicio: precio_ser,
-                            mano_obra: 0,
-                            corres: corre,
-                            kilometros: 0,
-                            cant_km: 0,
-                            precio_km: 0,
-                            tipo_gasolina: 0,
-                            gasolina_litros: 0,
-                            gasolina: 0,
-                            importe_materiales: 0,
-                            total_ase: corre + precio_ser
-                        };
-                        costos.insertCostos(costosData, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                                return false;
-                            } else {
-                                return true;
+        costos.getCostos(id_orden, (err, result) => {
+            if (!err && result.length == 0) {
+                console.log(result.length);
+                var corre = 300;
+                orden.getOrden(id_orden, (error, data) => {
+                    if (!error) {
+                        const municipio = data[0].id_municipio;
+                        //console.log(municipio);
+                        if (municipio == 1890) {
+                            es_foraneo = false;
+                            corre = 0;
+                        }
+                        var precio_ser = 0;
+                        orden.getCostoPoliza(id_orden, (err, dta) => {
+                            if (!err) {
+                                precio_ser = dta[0].poliza_costo;
+                                const costosData = {
+                                    id_orden: id_orden,
+                                    precio_servicio: precio_ser,
+                                    mano_obra: 0,
+                                    corres: corre,
+                                    kilometros: 0,
+                                    cant_km: 0,
+                                    precio_km: 0,
+                                    tipo_gasolina: 0,
+                                    gasolina_litros: 0,
+                                    gasolina: 0,
+                                    importe_materiales: 0,
+                                    total_ase: corre + precio_ser
+                                };
+                                costos.insertCostos(costosData, (err, data) => {
+                                    if (err) {
+                                        console.log(err);
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                });
                             }
-                        });
-                    } 
-                })
-            } else {
-                return false;
-                console.log(error);
+                        })
+                    } else {
+                        return false;
+                        console.log(error);
+                    }
+                });
             }
         });
     };
@@ -563,6 +567,7 @@ module.exports = function (app) {
                                     success: true,
                                     message: "¡Se Guardaron los cambios exitosamente!"
                                 });
+                                createCostos(ordenData.id_orden);
                                 sendNotification(ordenData);
                             }
                         });
