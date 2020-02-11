@@ -177,6 +177,32 @@ ordenModel.getOrdenesBuscar = (buscar, callback) => {
     }
 };
 
+ordenModel.getOrdenBuscarDuplicar = (buscar, callback) => {
+    //console.log(idEmpresa);
+    if (dbAdmin) {
+        const query = `SELECT a.expediente, a.id_tecnico, 
+        CONCAT(a.benef_nombre," ",a.benef_paterno," ", a.benef_materno) AS nombre_beneficiario,
+        a.benef_nombre, a.benef_paterno, a.benef_materno, a.calle, a.num_int, a.num_ext,
+        a.recibe_nombre, a.recibe_paterno, a.recibe_materno, a.entre_calle1, a.entre_calle2, a.col, a.referencia,
+        a.recibe_benef, a.id_estado, a.id_municipio, a.benef_tel, a.recibe_tel FROM orden AS a
+        WHERE a.id_tipo = 1 AND a.expediente = '` + buscar + `'`;
+        //console.log(query);
+        dbAdmin.query(query, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    console.log(error);
+                    callback(error)
+                }
+            }
+            else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
 ordenModel.getOrdenesBuscarbyTecnico = (buscar, id_tecnico, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
@@ -317,6 +343,7 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 folio_factura = '${ordenData.folio_factura}',
                 folio_recepcion = '${ordenData.folio_recepcion}',
                 observaciones = '${ordenData.observaciones}',
+                observaciones_cabina = '${ordenData.observaciones_cabina}',
                 benef_nombre = '${ordenData.benef_nombre}',
                 benef_paterno  = '${ordenData.benef_paterno}',
                 benef_materno  = '${ordenData.benef_materno}',
@@ -365,6 +392,7 @@ ordenModel.updateOrdenbyTecnico = (ordenData, callback) =>{
     if (dbAdmin){
         const sql = `UPDATE orden SET 
                 observaciones = '${ordenData.observaciones}',
+                observaciones_cabina = '${ordenData.observaciones_cabina}',
                 vehiculo_placa = '${ordenData.vehiculo_placa}'
                 WHERE id_orden = ${ordenData.id_orden}`;
         dbAdmin.query(sql, function (error, rows){
