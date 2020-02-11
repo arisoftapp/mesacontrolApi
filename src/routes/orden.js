@@ -137,6 +137,25 @@ module.exports = function (app) {
         }        
     });
 
+    app.get('/orden_duplicar/:buscar', (req, res) => {
+        var buscar = req.params.buscar;
+        //console.log(decoded);
+        orden.getOrdenBuscarDuplicar(buscar, (err, data) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: "Ocurrió un error al obtener los datos"
+                });
+            } else {
+                res.json({
+                    success: true,
+                    data: data
+                });
+            }
+        });
+        
+    });
+
     app.get('/orden/:id_orden', (req, res) => {
         var id_orden = req.params.id_orden;
         //console.log(req.params);
@@ -207,6 +226,7 @@ module.exports = function (app) {
                     num_ext  : req.body.num_ext,
                     num_int  : req.body.num_int,
                     col  : req.body.col,
+                    observaciones_cabina : req.body.observaciones_cabina,
                     id_municipio  : req.body.id_municipio,
                     id_estado  : req.body.id_estado,
                     entre_calle1  : req.body.entre_calle1,
@@ -250,7 +270,7 @@ module.exports = function (app) {
                                         success: true,
                                         message: "¡Se Guardaron los cambios exitosamente!"
                                     });
-                                    sendNotification(ordenData);
+                                    //sendNotification(ordenData);
                                 }
 
                             });
@@ -513,6 +533,7 @@ module.exports = function (app) {
             folio_recepcion : req.body.folio_recepcion,
             ejecutivo_cab : req.body.ejecutivo_cab,
             observaciones : req.body.observaciones,
+            observaciones_cabina: req.body.observaciones_cabina,
             benef_nombre : req.body.benef_nombre,
             benef_paterno  : req.body.benef_paterno,
             benef_materno  : req.body.benef_materno,
@@ -604,6 +625,7 @@ module.exports = function (app) {
             id_orden : req.body.id_orden,
             vehiculo_placa : req.body.vehiculo_placa,
             observaciones : req.body.observaciones,
+            observaciones_cabina : req.body.observaciones_cabina
         };
         orden.updateOrdenbyTecnico(ordenData, (err, data) => {
             if (err){
