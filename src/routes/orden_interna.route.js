@@ -114,7 +114,7 @@ module.exports = function (app) {
             if (err){
                 res.json({
                     success: false,
-                    message: err
+                    message: err.message
                 });
             } else {
                 max = data[0].mayor + 1;
@@ -168,7 +168,7 @@ module.exports = function (app) {
                                 } else{
                                     res.json({
                                         success: false,
-                                        message: err
+                                        message: err.message
                                     });
                                 }
                                 //console.log(res);
