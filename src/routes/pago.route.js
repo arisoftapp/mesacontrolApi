@@ -16,7 +16,9 @@ module.exports = function (app) {
         const fecha_inicio = req.params.fecha_inicio;
         const fecha_fin = req.params.fecha_fin;
         let where = 0;
-        let script = `SELECT * FROM pago`;
+        let script = `SELECT DISTINCT a.*, CONCAT(c.nombre," ",c.ap_paterno," ", c.ap_materno) AS nombre_tecnico FROM pago AS a
+        INNER JOIN orden AS b ON b.id_doc_pago =  a.id_pago
+        INNER JOIN tecnico AS c ON b.id_tecnico = c.id_tecnico`;
         if (status > 0) {
             script += ' WHERE status = ' + status;
             where += 1;
@@ -114,6 +116,8 @@ module.exports = function (app) {
             } else {
                 script += " AND DATE(a.asignada) BETWEEN '" + fecha_inicio + "' AND '" + fecha_fin + "'";
             }
+        } else{
+            script += " AND DATE(a.asignada) >= '2019-01-01 00:00:00'";
         }
         script += ' ORDER BY a.asignada ASC;'
         //console.log(script);
@@ -155,6 +159,7 @@ module.exports = function (app) {
     app.post('/pago/:ordenes', (req, res) => {
         const busqueda = req.params.ordenes;
         const pago_data = {
+            fecha_registro: req.body.fecha_registro,
             total: req.body.total,
             comentarios: req.body.comentarios
         };
@@ -170,7 +175,7 @@ module.exports = function (app) {
                     if (err) {
                         res.json({
                             success: false,
-                            message: 'Se presentó un error al intentar guardar los datos de las pólizas.' + err.message
+                            message: 'Se presentó un error al intentar guardar los datos del pago.' + err.message
                         });
                     } else {
                         res.json({
@@ -181,5 +186,80 @@ module.exports = function (app) {
                 });
             }
         });
+    });
+
+    app.put('/documento_pagado/', (req, res) => {
+        const id_pago = req.body.id_pago;
+        const pago_data = {
+            id_pago: req.body[0].id_pago,
+            folio: req.body[0].folio,
+            fecha_pago: req.body[0].fecha_pago,
+            forma_pago: req.body[0].forma_pago,
+            total: req.body[0].total,
+            comentarios: req.body[0].comentarios
+        };
+        console.log(req.body[0]);
+        pago.updatePago(pago_data, (err, data) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: 'Se presentó un error al intentar guardar los datos. Inténtelo de nuevo.' + err.message
+                });
+            } else {
+                var id = data.insertId;
+                pago.updateOrdenesPagadas(id_pago, (err, dta) => {
+                    if (err) {
+                        res.json({
+                            success: false,
+                            message: 'Se presentó un error al intentar actualizar las ordenes del pago' + err.message
+                        });
+                    } else {
+                        res.json({
+                            success: true,
+                            data: data
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    app.post('/upload_comprobante/:id_pago', (req, res) => {
+        let images = req.files.image;
+        let id_pago = req.params.id_pago;
+
+        let imageData = "UPDATE pago SET url_comprobante ='";
+        if (images.length == undefined) {
+            var file = images;
+            if (file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/gif") {
+                //console.log('Formato aceptado');
+                try {
+                    //file.mv('C:/Users/Frank Crow-Belloso/Desktop/Arisoft/mesacontrolapi/pagos/' + id_pago + '_' + file.name, function (err) {
+                    file.mv('C:/Users/Administrator.VM3327892/Desktop/API_REST/mesacontrolapi/pagos/' + id_pago + '_' + file.name, function (err) {
+                        if (err) {
+                            throw (err);
+                        }
+                        imageData +=  id_pago + '_' + file.name + "' WHERE id_pago = " + id_pago;
+                        //console.log(imageData);
+                        pago.getPagos(imageData, (err, data) => {
+                            if (err) {
+                                throw (err);
+                            } else {
+                                res.json({
+                                    success: true,
+                                    message: "¡Se recibió el archivo de imagen!"
+                                });
+                            }
+                        })
+                    });
+                } catch (error) {
+                    res.json({
+                        success: false,
+                        message: error.code + " " + error.message
+                    });
+                }
+
+            }
+        }
     });
 }
