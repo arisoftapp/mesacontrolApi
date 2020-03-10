@@ -67,6 +67,50 @@ pagosModel.updateIdPago = (id, busqueda, callback) => {
                 if (error.fatal) {
                     throw (error);
                 } else {
+                    console.error(error);
+                    callback(error);
+                }
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+pagosModel.updatePago = (pago_data, callback) => {
+    if (dbAdmin) {
+        const sql = `UPDATE pago SET 
+            folio = '${pago_data.folio}',
+            fecha_pago = '${pago_data.fecha_pago}',
+            forma_pago = '${pago_data.forma_pago}',
+            comentarios = '${pago_data.comentarios}',
+            status = 1
+            WHERE id_pago = '${pago_data.id_pago}'`;
+        dbAdmin.query(sql, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    console.error(error);
+                    callback(error);
+                }
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+pagosModel.updateOrdenesPagadas = (id_pago, callback) => {
+    if (dbAdmin) {
+        const sql = `UPDATE orden SET 
+            status_pago = 2
+            WHERE id_doc_pago = '${id_pago}'`;
+        dbAdmin.query(sql, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
                     callback(error);
                 }
             } else {
