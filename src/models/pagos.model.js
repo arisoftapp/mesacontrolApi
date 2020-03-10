@@ -1,6 +1,22 @@
 let dbAdmin = require('../dbMesaControl');
 let pagosModel = {};
 
+pagosModel.getPagos = (script, callback) => {
+    if (dbAdmin) {
+        dbAdmin.query(script, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+};
+
 pagosModel.getOrdenesCostos = (id_orden, callback) => {
     //console.log(idEmpresa);
     if (dbAdmin) {
@@ -21,6 +37,44 @@ pagosModel.getOrdenesCostos = (id_orden, callback) => {
         });
     }
 };
+
+pagosModel.insertPago = (aseData, callback) => {
+    if (dbAdmin) {
+        dbAdmin.query(`INSERT INTO pago SET ? `, aseData, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error)
+                }
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}
+
+
+
+pagosModel.updateIdPago = (id, busqueda, callback) => {
+    if (dbAdmin) {
+        const sql = `UPDATE orden SET 
+               id_doc_pago = '${id}',
+               status_pago = 1
+               WHERE id_orden in (` + busqueda + ');';
+        dbAdmin.query(sql, function (error, rows) {
+            if (error) {
+                if (error.fatal) {
+                    throw (error);
+                } else {
+                    callback(error);
+                }
+            } else {
+                callback(null, rows);
+            }
+        });
+    }
+}
 
 
 module.exports = pagosModel;
