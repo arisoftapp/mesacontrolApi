@@ -99,13 +99,14 @@ module.exports = function (app) {
         const fecha_inicio = req.params.fecha_inicio;
         const fecha_fin = req.params.fecha_fin;
     
-        let script = `SELECT a.id_orden, a.expediente, a.folio_cierre, a.id_status,
-                e.nombre_servicio, c.nombre_aseguradora,
+        let script = `SELECT a.id_orden, a.expediente, a.asignada, a.folio_cierre, a.id_status,
+                e.nombre_servicio, c.nombre_aseguradora, f.*,
                 d.orden_status AS estado_orden FROM orden AS a
                 LEFT JOIN tecnico AS b ON a.id_tecnico = b.id_tecnico
                 LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
                 LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
                 LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
+                LEFT JOIN costo AS f ON a.id_orden = f.id_orden
                 WHERE id_tipo = 1 AND a.id_status > 3 AND a.status_pago = 0`;
         if (id_tecnico > 0) {
             script += ' AND a.id_tecnico = ' + id_tecnico;
