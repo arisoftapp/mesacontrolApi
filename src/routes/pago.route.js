@@ -66,11 +66,13 @@ module.exports = function (app) {
 
     app.get('/pago/:id_pago', (req, res) => {
         const id_pago = req.params.id_pago;
-        let script = `SELECT a.*, a.total AS total_pago, b.id_orden, b.expediente, b.folio_cierre, c.*, 
-        CONCAT(d.nombre," ",d.ap_paterno," ", d.ap_materno) AS nombre_tecnico FROM pago AS a 
+        let script = `SELECT a.*, a.total AS total_pago, f.forma_pago AS f_pago, b.id_orden, b.expediente, b.folio_cierre, b.asignada, c.*, 
+        e.nombre_servicio, CONCAT(d.nombre," ",d.ap_paterno," ", d.ap_materno) AS nombre_tecnico FROM pago AS a 
         INNER JOIN orden AS b ON a.id_pago = b.id_doc_pago 
         INNER JOIN costo AS c ON b.id_orden = c.id_orden 
         INNER JOIN tecnico AS d ON d.id_tecnico = b.id_tecnico
+        LEFT JOIN servicio AS e ON b.id_servicio = e.id_servicio 
+        LEFT JOIN forma_pago AS f ON a.forma_pago = f.id_pago
         WHERE a.id_pago = ` + id_pago;
 
         orden.getOrdenes(script, (err, data) => {
