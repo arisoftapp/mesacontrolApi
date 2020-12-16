@@ -20,7 +20,7 @@ module.exports = function (app) {
         INNER JOIN orden AS b ON b.id_doc_pago =  a.id_pago
         INNER JOIN tecnico AS c ON b.id_tecnico = c.id_tecnico`;
         if (status > 0) {
-            script += ' WHERE status = ' + status;
+            script += ' WHERE a.status = ' + status;
             where += 1;
         }
         if (id_tecnico > 0) {
@@ -34,15 +34,15 @@ module.exports = function (app) {
         if (fecha_opc > 0) {
             if (fecha_opc <= 2) {
                 if (where > 0) {
-                    script += " AND DATE(a.asignada) = '" + fecha + "'";
+                    script += " AND DATE(b.asignada) = '" + fecha + "'";
                 } else {
-                    script += " WHERE DATE(a.asignada) = '" + fecha + "'";
+                    script += " WHERE DATE(b.asignada) = '" + fecha + "'";
                 }
             } else {
                 if (where > 0) {
-                    script += " AND DATE(a.asignada) BETWEEN '" + fecha_inicio + "' AND '" + fecha_fin + "'";
+                    script += " AND DATE(b.asignada) BETWEEN '" + fecha_inicio + "' AND '" + fecha_fin + "'";
                 } else {
-                    script += " WHERE DATE(a.asignada) BETWEEN '" + fecha_inicio + "' AND '" + fecha_fin + "'";
+                    script += " WHERE DATE(b.asignada) BETWEEN '" + fecha_inicio + "' AND '" + fecha_fin + "'";
                 }
             }
         }

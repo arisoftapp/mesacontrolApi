@@ -84,7 +84,7 @@ pagosModel.updatePago = (pago_data, callback) => {
             fecha_pago = '${pago_data.fecha_pago}',
             forma_pago = '${pago_data.forma_pago}',
             comentarios = '${pago_data.comentarios}',
-            status = 1
+            status = 2
             WHERE id_pago = '${pago_data.id_pago}'`;
         dbAdmin.query(sql, function (error, rows) {
             if (error) {
