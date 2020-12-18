@@ -46,6 +46,8 @@ module.exports = function (app) {
             num_cel  : req.body.num_cel,
             num_fijo : req.body.num_fijo,
             datos_banco : req.body.datos_banco,
+            inicio_descanso: req.body.inicio_descanso,
+            fin_descanso: req.body.fin_descanso
         }
         
         tecnico.insertTecnico(tecnicoData, (err, data) => {
@@ -75,6 +77,8 @@ module.exports = function (app) {
             num_cel  : req.body.num_cel,
             num_fijo : req.body.num_fijo,
             datos_banco : req.body.datos_banco,
+            inicio_descanso : req.body.inicio_descanso,
+            fin_descanso : req.body.fin_descanso
         }
         
         tecnico.putTecnico(tecnicoData, (err, data) => {

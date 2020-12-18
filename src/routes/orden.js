@@ -18,7 +18,6 @@ module.exports = function (app) {
         const fecha = req.params.fecha;
         const fecha_inicio = req.params.fecha_inicio;
         const fecha_fin = req.params.fecha_fin;
-        //console.log(decoded);
         if (decoded.tipo == 3){
             id_tecnico = decoded.id;
         } 
@@ -51,7 +50,6 @@ module.exports = function (app) {
             }
         }
         script += ' ORDER BY a.id_status ASC, a.asignada ASC;'
-        //console.log(script);
         orden.getOrdenes(script, (err, data) => {
             if (err) {
                 res.json({
@@ -69,7 +67,6 @@ module.exports = function (app) {
 
     app.get('/all_ordenes', (req, res) => {
         const decoded = req.decoded;
-        //console.log(decoded);
         if (decoded.tipo == 3){
             orden.getAllOrdenesbyTecnico(decoded.id, (err, data) => {
                 if (err) {
@@ -105,7 +102,6 @@ module.exports = function (app) {
     app.get('/ordenes_buscar/:buscar', (req, res) => {
         var buscar = req.params.buscar;
         const decoded = req.decoded;
-        //console.log(decoded);
         if (decoded.tipo == 3){ 
             orden.getOrdenesBuscarbyTecnico(buscar, decoded.id, (err, data) => {
                 if (err) {
@@ -139,7 +135,6 @@ module.exports = function (app) {
 
     app.get('/orden_duplicar/:buscar', (req, res) => {
         var buscar = req.params.buscar;
-        //console.log(decoded);
         orden.getOrdenBuscarDuplicar(buscar, (err, data) => {
             if (err) {
                 res.json({
@@ -158,7 +153,6 @@ module.exports = function (app) {
 
     app.get('/orden/:id_orden', (req, res) => {
         var id_orden = req.params.id_orden;
-        //console.log(req.params);
         orden.getOrden(id_orden, (err, data) => {
             if (err) {
                 res.json({
@@ -176,7 +170,6 @@ module.exports = function (app) {
 
     app.get('/layout/:id_orden', (req, res) => {
         var id_orden = req.params.id_orden;
-        //console.log(req.params);
         orden.getLayoutData(id_orden, (err, data) => {
             if (err) {
                 res.json({
@@ -202,7 +195,6 @@ module.exports = function (app) {
                 });
             } else {
                 max = data[0].mayor + 1;
-                console.log(max);
                 const ordenData = {
                     id_orden : max,
                     expediente : req.body.expediente,
@@ -254,7 +246,6 @@ module.exports = function (app) {
                                 message: err.code + " " + err.message
                             });
                         }
-                        //console.log(res);
                     } else {
                         if (ordenData.asignada !== "" && ordenData.asignada !== null && ordenData.asignada !== "0000-00-00 00:00:00.000000"){
                             console.log('ORDEN ASIGNADA');
@@ -420,12 +411,10 @@ module.exports = function (app) {
     function createCostos(id_orden) {
         costos.getCostos(id_orden, (err, result) => {
             if (!err && result.length == 0) {
-                console.log(result, result.length);
                 var corre = 300;
                 orden.getOrden(id_orden, (error, data) => {
                     if (!error) {
                         const municipio = data[0].id_municipio;
-                        //console.log(municipio);
                         if (municipio == 1890) {
                             es_foraneo = false;
                             corre = 0;
@@ -452,7 +441,6 @@ module.exports = function (app) {
                                 };
                                 costos.insertCostos(costosData, (err, data) => {
                                     if (err) {
-                                        console.log(err);
                                         return false;
                                     } else {
                                         return true;
@@ -493,7 +481,6 @@ module.exports = function (app) {
 
     app.put('/update_status/:orden/:status', (req, res) => {
         var id_empleado = req.decoded.tipo;
-        //console.log(id_empleado);
         if (id_empleado == '1' || id_empleado !== null) {
             var id_orden = req.params.orden;
             var id_status = req.params.status;
@@ -578,7 +565,6 @@ module.exports = function (app) {
             }else{
                 if (ordenData.id_status === 1 || ordenData.id_status === 2) {
                     if (ordenData.asignada !== ""  && ordenData.asignada !== null && ordenData.asignada !== "0000-00-00 00:00:00.000000"){
-                        //console.log('ORDEN ASIGNADA');
                         orden.updateProgramada(ordenData.id_orden, '2', (err, data) => {
                             if (err){
                                 res.json({
@@ -595,7 +581,6 @@ module.exports = function (app) {
                             }
                         });
                     } else {
-                        //console.log('ORDEN NO ASIGNADA');
                         orden.updateProgramada(ordenData.id_orden, '1', (err, data) => {
                             if (err){
                                 res.json({
@@ -874,7 +859,6 @@ module.exports = function (app) {
                             success: true,
                             data: 'Se eliminó la evidencia indicada.'
                         });
-                        console.log(evidencia + ' was deleted');
                     });
                 }
             })

@@ -96,6 +96,7 @@ require ('./routes/entidad')(server);
 require('./routes/reporte.route')(server);
 require('./routes/encuesta.route')(server);
 require('./routes/pago.route')(server);
+require('./routes/autorizacion.route')(server);
 
 
 

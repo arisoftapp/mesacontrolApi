@@ -160,7 +160,7 @@ ordenModel.getOrdenesBuscar = (buscar, callback) => {
         LEFT JOIN aseguradora AS c ON a.id_aseguradora = c.id_aseguradora
         LEFT JOIN estado_orden AS d ON a.id_status = d.id_status
         LEFT JOIN servicio AS e ON a.id_servicio = e.id_servicio 
-        WHERE id_tipo = 1 AND (expediente LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%')`;
+        WHERE id_tipo = 1 AND (expediente LIKE '%` + buscar + `%' OR folio_cierre LIKE '%` + buscar + `%' OR benef_nombre LIKE '%` + buscar + `%' OR benef_paterno LIKE '%` + buscar + `%' OR benef_materno LIKE '%` + buscar + `%')`;
         //console.log(query);
         dbAdmin.query(query, function(error, rows) {
             if (error) {

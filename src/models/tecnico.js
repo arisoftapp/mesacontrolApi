@@ -83,7 +83,9 @@ tecnicoModel.putTecnico = (tecnicoDta, callback) =>{
         servicios  = '${tecnicoDta.servicios}',
         num_cel  = '${tecnicoDta.num_cel}',
         num_fijo = '${tecnicoDta.num_fijo}',
-        datos_banco = '${tecnicoDta.datos_banco}'
+        datos_banco = '${tecnicoDta.datos_banco}',
+        inicio_descanso = '${tecnicoDta.inicio_descanso}',
+        fin_descanso = '${tecnicoDta.fin_descanso}'
         WHERE id_tecnico = ${tecnicoDta.id_tecnico}`, function (error, rows){
             if (error) {
                 if (error.fatal) {
