@@ -353,7 +353,6 @@ module.exports = function (app) {
                             success: true,
                             message: "¡Se Guardaron los cambios exitosamente!"
                         });
-                        sendNotification(_orden);
                     }
                 });
             } else if (id_status == '2'){
@@ -577,7 +576,6 @@ module.exports = function (app) {
                                     message: "¡Se Guardaron los cambios exitosamente!"
                                 });
                                 createCostos(ordenData.id_orden);
-                                sendNotification(ordenData);
                             }
                         });
                     } else {
