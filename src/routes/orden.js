@@ -532,6 +532,7 @@ module.exports = function (app) {
             recibe_tel: req.body.recibe_tel,
             id_tecnico  : req.body.id_tecnico,
             asignada : req.body.asignada,
+            fin : req.body.fin,
             calle  : req.body.calle,
             num_ext  : req.body.num_ext,
             num_int  : req.body.num_int,
@@ -624,22 +625,6 @@ module.exports = function (app) {
                 });
             }
         });
-        /*
-        console.log(req.body);
-        /*orden.updateOrden(ordenData, (err, data) => {
-            if (err){
-                res.json({
-                    success: false,
-                    message: err
-                });
-            }else{
-                orden.insertEvidencia(req.body.id_orden, )
-                res.json({
-                    success: true,
-                    message: "¡Se Guardaron los cambios exitosamente!"
-                });
-            }
-        });*/
     });
 
     app.delete('/orden/:id_orden', (req, res) => {
