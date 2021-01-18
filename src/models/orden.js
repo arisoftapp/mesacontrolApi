@@ -355,6 +355,7 @@ ordenModel.updateOrden = (ordenData, callback) =>{
                 recibe_tel  = '${ordenData.recibe_tel}',
                 id_tecnico  = ${ordenData.id_tecnico},
                 asignada  = '${ordenData.asignada}',
+                fin  = '${ordenData.fin}',
                 calle  = '${ordenData.calle}',
                 num_ext  = '${ordenData.num_ext}',
                 num_int  = '${ordenData.num_int}',
