@@ -214,6 +214,7 @@ module.exports = function (app) {
                     recibe_tel: req.body.recibe_tel,
                     id_tecnico  : req.body.id_tecnico,
                     asignada : req.body.asignada,
+                    fin : req.body.fin,
                     calle  : req.body.calle,
                     num_ext  : req.body.num_ext,
                     num_int  : req.body.num_int,
