@@ -199,9 +199,9 @@ module.exports = function (app) {
                     }else{
                         var insert_script = ("INSERT INTO poliza (id_aseguradora, id_poliza, poliza_nombre, poliza_valor, poliza_cancelacion, poliza_costo ) VALUES (");
                         for (i = 0; i < polizas.length; i++) { 
-                            console.log(polizas[i].poliza_nombre);
+                            //console.log(polizas[i].poliza_nombre);
                             let index = i+1;
-                            insert_script = insert_script + id_aseguradora + "," + index + ",'" + polizas[i].poliza_nombre + "','" + polizas[i].poliza_valor + "','" + polizas[i].poliza_cancelacion + "','" + polizas[i].poliza_costo + "'";
+                            insert_script = insert_script + id_aseguradora + "," + index + ",'" + polizas[i].poliza_nombre + "'," + polizas[i].poliza_valor + "," + polizas[i].poliza_cancelacion + "," + polizas[i].poliza_costo + "";
                             if (i < polizas.length-1){
                                 insert_script += "),(";
                             } else {
@@ -226,7 +226,6 @@ module.exports = function (app) {
                                         if (supervisores.length > 0){
                                             var insert_script = ("INSERT INTO supervisor (id_aseguradora, id_supervisor, nombre_supervisor, telefono) VALUES (");
                                             for (i = 0; i < supervisores.length; i++) {
-                                                console.log(supervisores[i].poliza_nombre);
                                                 let index = i + 1;
                                                 insert_script = insert_script + id_aseguradora + "," + index + ",'" + supervisores[i].nombre_supervisor + "','" + supervisores[i].telefono + "'";
                                                 if (i < supervisores.length - 1) {

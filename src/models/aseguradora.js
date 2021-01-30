@@ -111,7 +111,7 @@ aseguradoraModel.deleteSupervisores = (id_aseguradora, callback) => {
 };
 
 aseguradoraModel.insertData = (Data, callback) => {
-    //console.log(idEmpresa);
+    //console.log(Data);
     if (dbAdmin) {
         dbAdmin.query(Data, function(error, rows) {
             if (error) {
