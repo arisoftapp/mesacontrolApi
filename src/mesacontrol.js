@@ -44,7 +44,7 @@ server.use(function (req, res, next) {
 
 // Rutas
 require ('./routes/log')(server);
-server.use('/static', express.static('evidencias'));
+server.use('/static', express.static('evidencias/'));
 /*server.use('/files_p', express.static('evidencias/PDF'));
 server.use('/files_x', express.static('evidencias/XML'));
 server.use('/comp_pago', express.static('pagos'));
